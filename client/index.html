@@ -34,22 +34,21 @@
                 >About Us</a
               >
             </li>
-          </ul>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search..."
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
-          <li class="nav-item">
-            <a class="nav-link" href="./shelters.html">Shelters</a>
-          </li>
-          <!-- <li class="nav-item dropdown">
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search..."
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+            <li class="nav-item">
+              <a class="nav-link" href="./shelters.html">Shelters</a>
+            </li>
+            <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -68,16 +67,44 @@
                 </li>
               </ul>
             </li> -->
-          <ul>
             <li class="nav-item">
-              <a class="nav-link" aria-disabled="false" href="./login.html"
-                >Login / Sign Up</a
-              >
+              <a class="nav-link" aria-disabled="false" href="./login.html">Login / Sign Up</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+
+    <div class="container py-4">
+      
+      <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">Fill out an adoption form today!</h1>
+          <p class="col-md-8 fs-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, voluptatum debitis. </p>
+          <button class="btn btn-primary btn-lg" type="button">Fill out form</button>
+        </div>
+      </div>
+  
+      <!-- use the cards below as the templates loaded when the page is being loaded (done in js) -->
+      <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+          <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+            <h2>Pet Card</h2>
+            <p>lorem ipsum...</p>
+            <button class="btn btn-outline-secondary" type="button">See {pet.Name}</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+            <h2>Pet Card</h2>
+            <p>lorem ipsum...</p>
+            <button class="btn btn-outline-secondary" type="button">See {pet.Name}</button>
+          </div>
+        </div>
+      </div>
+  
+
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
