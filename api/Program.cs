@@ -11,8 +11,8 @@ builder.Services.AddCors(options =>
         builder.AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader();
-    })
-})
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
