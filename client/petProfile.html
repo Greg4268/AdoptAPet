@@ -86,11 +86,11 @@
                 <p class="lead fs-4 text-secondary mb-3">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Facilis, nostrum dignissimos assumenda vero modi laudantium
-                  incidunt 
+                  incidunt
                 </p>
                 <p class="mb-5">
                   Nullam gravida orci ac luctus molestie. Fusce finibus congue
-                  erat, non aliquam magna tincidunt at. 
+                  erat, non aliquam magna tincidunt at.
                 </p>
                 <div class="row gy-4 gy-md-0 gx-xxl-5X">
                   <div class="col-12 col-md-6">
@@ -102,6 +102,41 @@
                     <div class="d-flex">
                       <div class="me-4 text-primary"></div>
                     </div>
+                    <div>
+                      <!-- Google Calendar Appointment Scheduling begin -->
+                      <link
+                        href="https://calendar.google.com/calendar/scheduling-button-script.css"
+                        rel="stylesheet"
+                      />
+                      <script
+                        src="https://calendar.google.com/calendar/scheduling-button-script.js"
+                        async
+                      ></script>
+                      <script>
+                        (function () {
+                          var target = document.currentScript;
+                          window.addEventListener("load", function () {
+                            calendar.schedulingButton.load({
+                              url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2D2ULlPx1ltNi_I0H_G5g5SMzYFpy4RZAZ58_sySMT0i0g2bv-6N4fagSlmTTgKcfg7OlN9rxp?gv=true",
+                              color: "#039BE5",
+                              label: "Book an appointment",
+                              target,
+                            });
+                          });
+                        })();
+                      </script>
+                      <!-- end Google Calendar Appointment Scheduling -->
+                    </div>
+                    <div>
+                      <button class="btn btn-outline-secondary" role="button">
+                        Submit for Adoption
+                      </button>
+                    </div>
+                    <div>
+                      <button class="btn btn-outline-secondary" role="button">
+                        Favorite
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -110,32 +145,6 @@
         </div>
       </div>
     </section>
-
-    <div class="container py-4" display="none">
-      <!-- Google Calendar Appointment Scheduling begin -->
-      <link
-        href="https://calendar.google.com/calendar/scheduling-button-script.css"
-        rel="stylesheet"
-      />
-      <script
-        src="https://calendar.google.com/calendar/scheduling-button-script.js"
-        async
-      ></script>
-      <script>
-        (function () {
-          var target = document.currentScript;
-          window.addEventListener("load", function () {
-            calendar.schedulingButton.load({
-              url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2D2ULlPx1ltNi_I0H_G5g5SMzYFpy4RZAZ58_sySMT0i0g2bv-6N4fagSlmTTgKcfg7OlN9rxp?gv=true",
-              color: "#039BE5",
-              label: "Book an appointment",
-              target,
-            });
-          });
-        })();
-      </script>
-      <!-- end Google Calendar Appointment Scheduling -->
-    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
