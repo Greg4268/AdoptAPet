@@ -20,7 +20,7 @@ namespace api.Controllers
 
         // GET: api/UserAccounts/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public string GetUser(int id)
         {
             return "value";
         }

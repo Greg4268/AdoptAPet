@@ -19,8 +19,8 @@ namespace api.Controllers
         }
 
         // GET: api/Shelters/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetShelter")]
+        public string GetShelter(int id)
         {
             return "value";
         }
