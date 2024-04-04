@@ -53,6 +53,10 @@
             "System.Data.SQLite.Core": {
               "target": "Package",
               "version": "[1.0.118, )"
+            },
+            "mysql.data": {
+              "target": "Package",
+              "version": "[8.3.0, )"
             }
           },
           "imports": [
