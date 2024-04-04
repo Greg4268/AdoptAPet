@@ -15,15 +15,14 @@ namespace api.Controllers
         
         // GET: api/Pets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pets>>> GetPets()
+        public List<Pets> GetPets()
         {
-            var pets = await;
-            return Ok(pets);
+            return Pets.GetAllPets();
         }
 
         // GET: api/Pets/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}", Name = "GetPet")]
+        public string GetPet(int id)
         {
             return "value";
         }
