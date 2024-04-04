@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,13 @@ namespace api.Controllers
     [ApiController]
     public class PetsController : ControllerBase
     {
+        
         // GET: api/Pets
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<IEnumerable<Pets>>> GetPets()
         {
-            return new string[] { "value1", "value2" };
+            var pets = await;
+            return Ok(pets);
         }
 
         // GET: api/Pets/5
@@ -42,5 +45,9 @@ namespace api.Controllers
         public void Delete(int id)
         {
         }
+    }
+
+    internal class PetsContext
+    {
     }
 }
