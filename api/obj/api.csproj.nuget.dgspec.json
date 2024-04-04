@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jmnut/Desktop/Adopt-A-Pet Project/AdoptAPet/api/api.csproj": {}
+    "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj": {}
   },
   "projects": {
-    "/Users/jmnut/Desktop/Adopt-A-Pet Project/AdoptAPet/api/api.csproj": {
+    "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jmnut/Desktop/Adopt-A-Pet Project/AdoptAPet/api/api.csproj",
+        "projectUniqueName": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
         "projectName": "api",
-        "projectPath": "/Users/jmnut/Desktop/Adopt-A-Pet Project/AdoptAPet/api/api.csproj",
-        "packagesPath": "/Users/jmnut/.nuget/packages/",
-        "outputPath": "/Users/jmnut/Desktop/Adopt-A-Pet Project/AdoptAPet/api/obj/",
+        "projectPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
+        "packagesPath": "/Users/pbrandolph/.nuget/packages/",
+        "outputPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jmnut/.nuget/NuGet/NuGet.Config"
+          "/Users/pbrandolph/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet/7.0.100/libexec/sdk/7.0.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }
