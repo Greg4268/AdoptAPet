@@ -1,0 +1,5 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: column; /* Change to 'row' to display the box to the right */
+    align-items: flex-start;
+}
