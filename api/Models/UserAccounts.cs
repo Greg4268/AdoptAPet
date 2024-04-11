@@ -1,79 +1,118 @@
+using MySql.Data.MySqlClient;
+using api.Data;
 namespace api.Models
 {
     public class UserAccounts
     {
-        public int UserID { get; set; }
-        public string Username { get; set; }
+        public int UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public DateTime RegistrationDate { get; set; }
-        public bool IsActive { get; set; }
+        public string PrimaryPhone { get; set; }
+        public bool IsAdmin { get; set; }
 
-        // Method to retrieve all user accounts from the database
-        public static List<UserAccounts> GetAllUserAccounts()
+        public static List<UserAccounts> GetAllUsers() // method to retrieve pet from database
         {
-            List<UserAccounts> UserAccounts = new List<UserAccounts>();
-            GetPublicConnection cs = new GetPublicConnection();
+            List<UserAccounts> myUsers = new List<UserAccounts>(); // initialize array to hold pet
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
-            con.Open();
-            string stm = "SELECT * FROM UserAccounts";
-            MySqlCommand cmd = new MySqlCommand(stm, con);
+            con.Open(); // open databse connection
+            string stm = "Select * from User_Profile"; // sql statement to select everything from the pet table
+            MySqlCommand cmd = new MySqlCommand(stm, con); 
 
-            using MySqlDataReader rdr = cmd.ExecuteReader();
-            while (rdr.Read())
+            using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+            while(rdr.Read()) // iterate through table rows
             {
-                userAccounts.Add(new UserAccounts()
+                myUsers.Add(new UserAccounts() // create pet object for each row
                 {
-                    UserID = rdr.GetInt32("UserID"),
-                    Username = rdr.GetString("Username"),
+                    UserId = rdr.GetInt32("UserId"),
+                    FirstName = rdr.GetString("FirstName"),
+                    LastName = rdr.GetString("LastName"),
+                    Age = rdr.GetInt32("Age"),
                     Email = rdr.GetString("Email"),
                     Password = rdr.GetString("Password"),
-                    RegistrationDate = rdr.GetDateTime("RegistrationDate"),
-                    IsActive = rdr.GetBoolean("IsActive")
+                    PrimaryPhone = rdr.GetString("PrimaryPhone"),
+                    IsAdmin = rdr.GetInt32("IsAdmin") == 1 // convert tinyint to boolean, if 1 then it is true
                 });
             }
-            return UserAccounts;
+            return myUsers; // return populated list
         }
 
-        // Method to save the user account to the database
-        public void SaveToDB()
+        public void SaveToDB() // method to save the pets to the database
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
-            con.Open();
-            string stm = "INSERT INTO UserAccounts (Username, Email, Password, RegistrationDate, IsActive) VALUES (@Username, @Email, @Password, @RegistrationDate, @IsActive)";
+            con.Open(); // open database connection
+            string stm = "INSERT INTO User_Profile (UserId, FirstName, LastName, Age, Email, Password, PrimaryPhone, IsAdmin) VALUES (@UserId, @FirstName, @LastName, @Age, @Email, @Password, @PrimaryPhone, @IsAdmin)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@Username", Username);
+            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to the sql command
+            cmd.Parameters.AddWithValue("@FirstName", FirstName);
+            cmd.Parameters.AddWithValue("@LastName", LastName);
+            cmd.Parameters.AddWithValue("@Age", Age);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Password", Password);
-            cmd.Parameters.AddWithValue("@RegistrationDate", RegistrationDate);
-            cmd.Parameters.AddWithValue("@IsActive", IsActive ? 1 : 0);
-            cmd.ExecuteNonQuery();
+            cmd.Parameters.AddWithValue("@PrimaryPhone", PrimaryPhone);
+            cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin? 1 : 0);
+            cmd.ExecuteNonQuery(); // execute sql command
         }
 
-        // Method to retrieve a specific user account by ID
-        public static UserAccounts GetUserAccountsById(int UserID)
+        public void UpdateToDB() // method to update existing pet in database
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
-            con.Open();
-            string stm = "SELECT * FROM UserAccounts WHERE UserID = @UserID";
+            con.Open(); // open db connection
+    
+            string stm = "UPDATE User_Profile set UserId = @UserId, FirstName = @FirstName, LastName = @LastName, Age = @Age, Email = @Email, Password = @Password, PrimaryPhone = @PrimaryPhone, IsAdmin = @IsAdmin WHERE UserID = @UserId"; // sql command for updating a pet
+            Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
+            Console.WriteLine("Parameters:"); // log parameters
+            Console.WriteLine("@UserId: " + UserId);
+            Console.WriteLine("@FirstName: " + FirstName);
+            Console.WriteLine("@LastName: " + LastName);
+            Console.WriteLine("@Age: " + Age);
+            Console.WriteLine("@Email: " + Email);
+            Console.WriteLine("@Password: " + Password);
+            Console.WriteLine("@PrimaryPhone: " + PrimaryPhone);
+            Console.WriteLine("@IsAdmin: " + (IsAdmin ? 1 : 0));
+    
+            using var cmd = new MySqlCommand(stm, con); 
+            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to sql command
+            cmd.Parameters.AddWithValue("@FirstName", FirstName);
+            cmd.Parameters.AddWithValue("@LastName", LastName);
+            cmd.Parameters.AddWithValue("@Age", Age);
+            cmd.Parameters.AddWithValue("@Email", Email);
+            cmd.Parameters.AddWithValue("@Password", Password);
+            cmd.Parameters.AddWithValue("@PrimaryPhone", PrimaryPhone);
+            cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin ? 1 : 0);
+            cmd.ExecuteNonQuery(); // execute sql command
+        }
+
+
+        public static UserAccounts GetUserById(int UserId) // method to retrieve specific pet
+        {
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
+            con.Open(); // open connection to db
+            string stm = "select * from User_Profile where UserId = @UserId"; // sql statement to retrieve specific pet
             MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserID", UserID);
-            using MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.Read())
+            cmd.Parameters.AddWithValue("@UserId", UserId); // add PetProfileID as parameter
+            using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+            if(rdr.Read()) // check if pet is found
             {
-                return new UserAccounts()
+                return new UserAccounts() // construct and initialize new pet object
                 {
-                    UserID = rdr.GetInt32("UserID"),
-                    Username = rdr.GetString("Username"),
+                    UserId = rdr.GetInt32("UserId"),
+                    FirstName = rdr.GetString("FirstName"),
+                    LastName = rdr.GetString("LastName"),
+                    Age = rdr.GetInt32("Age"),
                     Email = rdr.GetString("Email"),
                     Password = rdr.GetString("Password"),
-                    RegistrationDate = rdr.GetDateTime("RegistrationDate"),
-                    IsActive = rdr.GetBoolean("IsActive")
+                    PrimaryPhone = rdr.GetString("PrimaryPhone"),
+                    IsAdmin = rdr.GetInt32("IsAdmin") == 1 // convert tinyint to boolean, if 1 then it is true
                 };
             }
-            return null;
+            return null; // if no pet is found
         }
     }
 }

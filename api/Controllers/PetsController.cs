@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,9 @@ namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("OpenPolicy")]
     public class PetsController : ControllerBase
     {
-        
         // GET: api/Pets
         [HttpGet]
         public List<Pets> GetPets()
