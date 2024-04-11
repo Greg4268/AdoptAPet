@@ -87,7 +87,7 @@ namespace api.Models
         }
 
 
-        public static Pets GetpetById(int PetProfileId) // method to retrieve specific pet
+        public static Pets GetPetById(int PetProfileId) // method to retrieve specific pet
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
