@@ -4,7 +4,7 @@ namespace api.Models
 {
     public class Pets
     {
-        public int PetProfileID { get; set; }
+        public int PetProfileId { get; set; }
         public int Age { get; set; }
         public string Breed { get; set; }
         public string Name { get; set; }
@@ -28,7 +28,7 @@ namespace api.Models
             {
                 myPets.Add(new Pets() // create pet object for each row
                 {
-                    PetProfileID = rdr.GetInt32("PetProfileId"),
+                    PetProfileId = rdr.GetInt32("PetProfileId"),
                     Age = rdr.GetInt32("Age"),
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
@@ -49,7 +49,7 @@ namespace api.Models
             con.Open(); // open database connection
             string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, Breed, Name, Availability, Species, CanVisit, ReturnedCount, FavoriteCount) VALUES (@PetProfileId, @Age, @Breed, @Name, @Availability, @Species, @CanVisit, @ReturnedCount, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileID); // add parameters to the sql command
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
@@ -67,40 +67,40 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "UPDATE Pet_Profile set PetProfileID = @PetProfileId, Age = @Age, Breed = @Breed, Name = @Name, Availability = @Availability WHERE PetProfileID = @PetProfileId"; // sql command for updating a pet
+            string stm = "UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, Breed = @Breed, Name = @Name, Availability = @Availability WHERE PetProfileID = @PetProfileId"; // sql command for updating a pet
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
-            Console.WriteLine("@PetProfileId: " + PetProfileID);
+            Console.WriteLine("@PetProfileId: " + PetProfileId);
             Console.WriteLine("@Age: " + Age);
             Console.WriteLine("@Breed: " + Breed);
             Console.WriteLine("@Name: " + Name);
             Console.WriteLine("@Availability: " + (Availability ? 1 : 0));
     
             using var cmd = new MySqlCommand(stm, con); 
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileID); // add parameters to sql command
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to sql command
             cmd.Parameters.AddWithValue("@Age", Age);
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Availability", Availability ? 1 : 0);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileID);
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.ExecuteNonQuery(); // execute sql command
         }
 
 
-        public static Pets GetpetById(int PetProfileID) // method to retrieve specific pet
+        public static Pets GetpetById(int PetProfileId) // method to retrieve specific pet
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open connection to db
-            string stm = "select * from Pet_Profile where PetProfileID = @PetProfileId"; // sql statement to retrieve specific pet
+            string stm = "select * from Pet_Profile where PetProfileId = @PetProfileId"; // sql statement to retrieve specific pet
             MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileID); // add PetProfileID as parameter
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add PetProfileID as parameter
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
             if(rdr.Read()) // check if pet is found
             {
                 return new Pets() // construct and initialize new pet object
                 {
-                    PetProfileID = rdr.GetInt32("PetProfileId"),
+                    PetProfileId = rdr.GetInt32("PetProfileId"),
                     Age = rdr.GetInt32("Age"),
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
