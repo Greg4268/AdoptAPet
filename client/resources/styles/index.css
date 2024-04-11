@@ -1,7 +1,28 @@
 .dropdown-container {
-    display: flex;
-    flex-direction: column; /* Change to 'row' to display the box to the right */
-    align-items: flex-start;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+select {
+    width: 100%; /* Full width */
+    padding: 8px 16px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded borders */
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-size: 16px; /* Increased font size for better readability */
+    color: #333; /* Dark grey text color for better contrast */
+}
+
+select:focus {
+    outline: none; /* Removes the default focus outline */
+    border-color: #665eff; /* Changes border color when focused */
+    box-shadow: 0 0 8px rgba(102, 94, 255, 0.6); /* More prominent shadow on focus */
+}
+
+/* Styling options within the select box */
+select option {
+    padding: 10px; /* Makes options easier to click */
 }
 
 .profile-dropdown {
