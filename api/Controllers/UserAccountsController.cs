@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +11,14 @@ namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("OpenPolicy")]
     public class UserAccountsController : ControllerBase
     {
         // GET: api/UserAccounts
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<UserAccounts> GetUserAccounts()
         {
-            return new string[] { "value1", "value2" };
+            return UserAccounts.GetAllUsers();
         }
 
         // GET: api/UserAccounts/5
