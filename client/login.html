@@ -39,6 +39,9 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
+              <a class="nav-link" href="./adoptForm.html">Adoption Form</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
@@ -47,6 +50,16 @@
             <li class="nav-item">
               <a class="nav-link" href="./login.html">Login / Sign Up</a>
             </li>
+            <div class="profile-dropdown">
+              <img
+                src="./resources/images/profile_icon.png"
+                alt="Profile"
+                id="profileDropdownMenu"
+              />
+              <div class="dropdown-menu" aria-labelledby="profileDropdownMenu">
+                <!-- Links will be dynamically inserted here -->
+              </div>
+            </div>
           </ul>
         </div>
       </div>
@@ -68,7 +81,7 @@
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-                    <form>
+                    <form id="loginForm">
                       <div class="d-flex align-items-center mb-3 pb-1">
                         <i
                           class="fas fa-cubes fa-2x me-3"
@@ -87,11 +100,12 @@
                       <div class="form-outline mb-4">
                         <input
                           type="email"
-                          id="form2Example17"
+                          id="userEmail"
+                          name="email"
                           class="form-control form-control-lg"
                           required
                         />
-                        <label class="form-label" for="form2Example17"
+                        <label class="form-label" for="userEmail"
                           >Email address</label
                         >
                       </div>
@@ -99,11 +113,12 @@
                       <div class="form-outline mb-4">
                         <input
                           type="password"
-                          id="form2Example27"
+                          id="userPassword"
+                          name="password"
                           class="form-control form-control-lg"
                           required
                         />
-                        <label class="form-label" for="form2Example27"
+                        <label class="form-label" for="userPassword"
                           >Password</label
                         >
                       </div>
@@ -112,21 +127,18 @@
                         <button
                           id="loginButton"
                           class="btn btn-dark btn-lg btn-block"
-                          type="button"
+                          type="submit"
                         >
                           Login
                         </button>
                       </div>
 
-                      <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
                       <p class="mb-5 pb-lg-2" style="color: #393f81">
                         Don't have an account?
                         <a href="./signup.html" style="color: #393f81"
                           >Register here</a
                         >
                       </p>
-                      <!-- <a href="#!" class="small text-muted">Terms of use.</a>
-                        <a href="#!" class="small text-muted">Privacy policy</a> -->
                     </form>
                   </div>
                 </div>
@@ -142,6 +154,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="./resources/scripts/index.js"></script>
+    <script src="./resources/scripts/login.js"></script>
   </body>
 </html>

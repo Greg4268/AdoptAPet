@@ -39,6 +39,9 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
+              <a class="nav-link" href="./adoptForm.html">Adoption Form</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
@@ -47,6 +50,16 @@
             <li class="nav-item">
               <a class="nav-link" href="./login.html">Login / Sign Up</a>
             </li>
+            <div class="profile-dropdown">
+              <img
+                src="./resources/images/profile_icon.png"
+                alt="Profile"
+                id="profileDropdownMenu"
+              />
+              <div class="dropdown-menu" aria-labelledby="profileDropdownMenu">
+                <!-- Links will be dynamically inserted here -->
+              </div>
+            </div>
           </ul>
         </div>
       </div>
@@ -68,108 +81,42 @@
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-                    <form>
-                      <div class="d-flex align-items-center mb-3 pb-1">
-                        <i
-                          class="fas fa-cubes fa-2x me-3"
-                          style="color: #ff6219"
-                        ></i>
-                        <span class="h1 fw-bold mb-0">Adopt-A-Pet</span>
-                      </div>
-
-                      <h5
-                        class="fw-normal mb-3 pb-3"
-                        style="letter-spacing: 1px"
-                      >
-                        Create Account
-                      </h5>
-
+                    <form id="signupForm">
+                      <!-- Existing content above... -->
                       <div class="form-outline mb-4">
-                        <input
-                          type="firstname"
-                          id="form2Example17"
-                          class="form-control form-control-lg"
-                          placeholder="John"
-                          required
-                        />
-                        <label class="form-label" for="form2Example17"
-                          >First Name</label
-                        >
+                          <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder="John" required />
+                          <label class="form-label" for="firstName">First Name</label>
                       </div>
-
+                  
                       <div class="form-outline mb-4">
-                        <input
-                          type="lastname"
-                          id="form2Example17"
-                          class="form-control form-control-lg"
-                          placeholder="Doe"
-                          required
-                        />
-                        <label class="form-label" for="form2Example17"
-                          >Last Name</label
-                        >
+                          <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" placeholder="Doe" required />
+                          <label class="form-label" for="lastName">Last Name</label>
                       </div>
-
+                  
                       <div class="form-outline mb-4">
-                        <input
-                          type="email"
-                          id="form2Example17"
-                          class="form-control form-control-lg"
-                          placeholder="JohnDoe1@gmail.com"
-                          required
-                        />
-                        <label class="form-label" for="form2Example17"
-                          >Email address</label
-                        >
+                          <input type="email" id="userEmail" name="email" class="form-control form-control-lg" placeholder="JohnDoe1@gmail.com" required />
+                          <label class="form-label" for="userEmail">Email address</label>
                       </div>
-
+                  
                       <div class="form-outline mb-4">
-                        <input
-                          type="password"
-                          id="form2Example27"
-                          class="form-control form-control-lg"
-                          placeholder="***********"
-                          required
-                        />
-                        <label class="form-label" for="form2Example27"
-                          >Password</label
-                        >
+                          <input type="password" id="userPassword" name="password" class="form-control form-control-lg" placeholder="***********" required />
+                          <label class="form-label" for="userPassword">Password</label>
                       </div>
-
-                      <a>
-                        Account Type
-                      </a>
+                  
                       <div class="dropdown-container">
-                        <select id="dropdownMenu">
-                          <option value="Option 1">choose</option>
-                          <option value="Option 2">Adopter</option>
-                          <option value="Option 3">Shelter</option>
-                        </select>
-                        
+                          <select id="accountType" name="accountType">
+                              <option value="choose">Choose</option>
+                              <option value="adopter">Adopter</option>
+                              <option value="shelter">Shelter</option>
+                          </select>
                       </div>
-
-                      <br /><br />
-
+                  
                       <div class="pt-1 mb-4">
-                        <button
-                          id="registerButton"
-                          class="btn btn-dark btn-lg btn-block"
-                          type="button"
-                        >
-                          Register
-                        </button>
+                          <button id="registerButton" class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
                       </div>
-
-                      <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
-                      <p class="mb-5 pb-lg-2" style="color: #393f81">
-                        Already have an account?
-                        <a href="./login.html" style="color: #393f81"
-                          >Login Here</a
-                        >
-                      </p>
-                      <!-- <a href="#!" class="small text-muted">Terms of use.</a>
-                        <a href="#!" class="small text-muted">Privacy policy</a> -->
-                    </form>
+                      <!-- Existing content below... -->
+                  </form>
+                  
                   </div>
                 </div>
               </div>
@@ -184,6 +131,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="./resources/scripts/index.js"></script>
+    <script src="./resources/scripts/signup.js"></script>
   </body>
 </html>

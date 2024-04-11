@@ -9,7 +9,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link href="./resources/styles/index.css" />
+    <link href="./resources/styles/index.css" rel="stylesheet"/>
     <title>Adopt-A-Pet</title>
   </head>
   <body>
@@ -39,6 +39,9 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
+              <a class="nav-link" href="./adoptForm.html">Adoption Form</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
@@ -47,6 +50,16 @@
             <li class="nav-item">
               <a class="nav-link" href="./login.html">Login / Sign Up</a>
             </li>
+            <div class="profile-dropdown">
+              <img
+                src="./resources/images/profile_icon.png"
+                alt="Profile"
+                id="profileDropdownMenu"
+              />
+              <div class="dropdown-menu" aria-labelledby="profileDropdownMenu">
+                <!-- Links will be dynamically inserted here -->
+              </div>
+            </div>
           </ul>
         </div>
       </div>
@@ -82,6 +95,7 @@
                           type="email"
                           id="form2Example17"
                           class="form-control form-control-lg"
+                          placeholder="111 Orchard Road"
                         />
                         <label class="form-label" for="form2Example17"
                           >Address</label
@@ -90,9 +104,10 @@
 
                       <div class="form-outline mb-4">
                         <input
-                          type="password"
+                          type="yardsize"
                           id="form2Example27"
                           class="form-control form-control-lg"
+                          placeholder="250"
                         />
                         <label class="form-label" for="form2Example27"
                           >Yard Size (square feet approx.)</label
@@ -101,6 +116,7 @@
 
                       <div class="pt-1 mb-4">
                         <button
+                          id="formSubmitButton"
                           class="btn btn-dark btn-lg btn-block"
                           type="button"
                         >
@@ -122,6 +138,6 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="./resources/scripts/index.js"></script>
+    <script src="./resources/scripts/adoptForm.js"></script>
   </body>
 </html>
