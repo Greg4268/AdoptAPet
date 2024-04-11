@@ -50,6 +50,16 @@
             <li class="nav-item">
               <a class="nav-link" href="./login.html">Login / Sign Up</a>
             </li>
+            <div class="profile-dropdown">
+              <img
+                src="./resources/images/profile_icon.png"
+                alt="Profile"
+                id="profileDropdownMenu"
+              />
+              <div class="dropdown-menu" aria-labelledby="profileDropdownMenu">
+                <!-- Links will be dynamically inserted here -->
+              </div>
+            </div>
           </ul>
         </div>
       </div>
@@ -62,10 +72,7 @@
           <p class="col-md-8 fs-4">
             To view individual pet pages, please login or sign up.
           </p>
-          <a
-            class="btn btn-primary btn-lg"
-            type="button"
-            href="./signup.html"
+          <a class="btn btn-primary btn-lg" type="button" href="./signup.html"
             >Sign Up</a
           >
         </div>
@@ -78,9 +85,7 @@
           placeholder="Search..."
           aria-label="Search"
         />
-        <button class="btn btn-outline-success" type="submit">
-          Search
-        </button>
+        <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
 
       <!-- use the cards below as the templates loaded when the page is being loaded (done in js) -->
