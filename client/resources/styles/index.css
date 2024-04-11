@@ -3,3 +3,33 @@
     flex-direction: column; /* Change to 'row' to display the box to the right */
     align-items: flex-start;
 }
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-dropdown img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    display: none;
+    margin-top: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* Display the dropdown menu on img click */
+.profile-dropdown:hover .dropdown-menu {
+    display: block;
+}
