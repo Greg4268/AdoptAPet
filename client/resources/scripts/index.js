@@ -58,20 +58,29 @@ function displayPets() {
   });
 }
 
+// event listener to check login button is clicked and setting a userToken in local storage
+// so that other event listener can display profile icon 'dashboard' & 'logout' options
+// also redirects to index.html main page
 document.addEventListener("DOMContentLoaded", function () {
   var loginButton = document.getElementById("loginButton");
   loginButton.addEventListener("click", function () {
-    window.location.href = "./index.html";
+    (window.location.href = "./index.html"),
+      localStorage.setItem("userToken", "password"),
+      console.log(localStorage.getItem("userToken"));
   });
 });
 
+// event listener to check register button is clicked then routing back to main page index.html
 document.addEventListener("DOMContentLoaded", function () {
-  var loginButton = document.getElementById("registerButton");
-  loginButton.addEventListener("click", function () {
+  console.log("DOMContentLoaded fired!");
+  var registerButton = document.getElementById("registerButton");
+  console.log("Button element:", registerButton);
+  registerButton.addEventListener("click", function () {
     window.location.href = "./index.html";
   });
 });
 
+// event listener to update profile icon dropdown once logged in
 document.addEventListener("DOMContentLoaded", function () {
   var profileDropdown = document.getElementById("profileDropdownMenu");
   var dropdownMenu = profileDropdown.nextElementSibling;
