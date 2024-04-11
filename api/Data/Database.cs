@@ -1,19 +1,19 @@
 using MySql.Data.MySqlClient;
 namespace api.Data
 {
-    public class Database
+    public class GetPublicConnection
     {
-        private string server = "wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
-        private string port = "3306";
-        private string username = "ra175v3sv9oai4bv";
-        private string password = "v2xnjd2x4ctiwnqx";
-        private string schema = "cve7x3dbdr8snfxd";
+        public string cs { get; set; }
 
-        public MySqlConnection GetPublicConnection()
+        public GetPublicConnection()
         {
-            string cs = $"server={server};user={username};database={schema};port={port};password={password}";
-            using var con = new MySqlConnection(cs);
-            return con;
+            string server = "wftuqljwesiffol6.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
+            string port = "3306";
+            string username = "ra175v3sv9oai4bv";
+            string password = "v2xnjd2x4ctiwnqx";
+            string schema = "cve7x3dbdr8snfxd";
+
+            cs = $@"Server={server};Port={port};Database={schema};Uid={username};Pwd={password};";
         }
     }
 }

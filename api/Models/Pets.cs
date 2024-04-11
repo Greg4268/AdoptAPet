@@ -17,8 +17,8 @@ namespace api.Models
         public static List<Pets> GetAllPets() // method to retrieve pet from database
         {
             List<Pets> myPets = new List<Pets>(); // initialize array to hold pet
-            Database database = new Database(); // create new instance of database
-            using var con = database.GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
             string stm = "Select * from Pet_Profile"; // sql statement to select everything from the pet table
             MySqlCommand cmd = new MySqlCommand(stm, con); 
@@ -44,8 +44,8 @@ namespace api.Models
 
         public void SaveToDB() // method to save the pets to the database
         {
-            Database database = new Database(); // create a new instance of database
-            using var con = database.GetPublicConnection(); 
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
             string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, Breed, Name, Availability, Species, CanVisit, ReturnedCount, FavoriteCount) VALUES (@PetProfileId, @Age, @Breed, @Name, @Availability, @Species, @CanVisit, @ReturnedCount, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
@@ -63,8 +63,8 @@ namespace api.Models
 
         public void UpdateToDB() // method to update existing pet in database
         {
-            Database database = new Database(); // create new instance database
-            using var con = database.GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
             string stm = "UPDATE Pet_Profile set PetProfileID = @PetProfileId, Age = @Age, Breed = @Breed, Name = @Name, Availability = @Availability WHERE PetProfileID = @PetProfileId"; // sql command for updating a pet
@@ -89,8 +89,8 @@ namespace api.Models
 
         public static Pets GetpetById(int PetProfileID) // method to retrieve specific pet
         {
-            Database database = new Database(); // create new instance of db
-            using var con = database.GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
             con.Open(); // open connection to db
             string stm = "select * from Pet_Profile where PetProfileID = @PetProfileId"; // sql statement to retrieve specific pet
             MySqlCommand cmd = new MySqlCommand(stm, con);
