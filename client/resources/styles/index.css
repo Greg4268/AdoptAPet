@@ -50,8 +50,26 @@ select option {
     cursor: pointer;
 }
 
+
+
 /* Display the dropdown menu on img click */
 .profile-dropdown:hover .dropdown-menu {
     display: block;
 }
 
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 0 10px;
+}
+
+th, td {
+    border: 1px solid black; /* Adds border to th and td elements */
+    padding: 8px; /* Padding inside each cell */
+    text-align: left; /* Aligns text to the left */
+}
+
+.container-fluid {
+    display: flex;
+    justify-content: space-evenly;
+}
