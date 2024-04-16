@@ -47,10 +47,11 @@ namespace api.Models
                     BirthDate = rdr.GetDateTime("BirthDate")
                 });
             }
+            con.Close();
             return myUsers; // return populated list
         }
 
-        public void SaveToDB() // method to save the pets to the database
+        public void SaveToDB() // method to save the users to the database
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
@@ -71,6 +72,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Fenced", Fenced);
             cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void UpdateToDB() // method to update existing pet in database
@@ -111,6 +113,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Fenced", Fenced ? 1 : 0);
             cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
 
@@ -135,14 +138,30 @@ namespace api.Models
                     Password = rdr.GetString("Password"),
                     PrimaryPhone = rdr.GetString("PrimaryPhone"),
                     IsAdmin = rdr.GetInt32("IsAdmin") == 1, // convert tinyint to boolean, if 1 then it is true
-                    deleted = rdr.GetInt32("deleted") == 1,
+                    deleted = rdr.GetInt32("deleted") == 0,
                     Address = rdr.GetString("Address"),
                     YardSize = rdr.GetInt32("YardSize"),
                     Fenced = rdr.GetInt32("Fenced") == 1,
                     BirthDate = rdr.GetDateTime("BirthDate")
                 };
             }
+            con.Close();
             return null; // if no pet is found
+        }
+
+        public void DeleteUser(UserAccounts value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE User_Profile SET deleted = @deleted WHERE UserId = @UserId";
+            cmd.Parameters.AddWithValue("@UserId", value.UserId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
     }
 }
