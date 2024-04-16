@@ -9,8 +9,9 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link href="./resources/styles/index.css" rel="stylesheet"/>
-    <title>Adopt-A-Pet</title>
+    <link href="./resources/styles/index.css" rel="stylesheet" />
+    <title>Shelter Directory</title>
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png">
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -35,20 +36,22 @@
                 >About Us</a
               >
             </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./FAQ.html">FAQ</a>
+            </li>
           </ul>
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="./adoptForm.html">Adoption Form</a>
+              <a class="nav-link active" href="./adoptForm.html"
+                >Adoption Form</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./shelters.html">Shelters</a>
+              <a class="nav-link active" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./FAQ.html">FAQ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./login.html">Login / Sign Up</a>
+              <a class="nav-link active" href="./login.html">Login / Sign Up</a>
             </li>
             <div class="profile-dropdown">
               <img
@@ -64,70 +67,116 @@
         </div>
       </div>
     </nav>
-    
 
-    <h3>Shelter Directory Page</h3>
+    <div class="container mt-3">
+      <h3>Shelter Directory</h3>
+      <div class="accordion" id="shelterAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="false"
+              aria-controls="collapseOne"
+            >
+              Shelter #1
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingOne"
+            data-bs-parent="#shelterAccordion"
+          >
+            <div class="accordion-body">
+              Detailed information about Shelter #1. Could include contact info,
+              location, mission statement, etc.
+            </div>
+          </div>
+        </div>
 
-    <div class="accordion w-100" id="basicAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-            data-mdb-target="#basicAccordionCollapseOne" aria-expanded="false" aria-controls="collapseOne">
-            Shelter #1
-          </button>
-        </h2>
-        <div id="basicAccordionCollapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-          data-mdb-parent="#basicAccordion" style="">
-          <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default,
-            until the collapse plugin adds the appropriate classes that we use to style each
-            element. These classes control the overall appearance, as well as the showing and
-            hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-            our default variables. It's also worth noting that just about any HTML can go within
-            the <code>.accordion-body</code>, though the transition does limit overflow.
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              Shelter #2
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#shelterAccordion"
+          >
+            <div class="accordion-body">
+              Detailed information about Shelter #2. Could include contact info,
+              location, mission statement, etc.
+            </div>
           </div>
         </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-            data-mdb-target="#basicAccordionCollapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Shelter #2
-          </button>
-        </h2>
-        <div id="basicAccordionCollapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-          data-mdb-parent="#basicAccordion" style="">
-          <div class="accordion-body">
-            <strong>This is the second item's accordion body.</strong> It is hidden by default,
-            until the collapse plugin adds the appropriate classes that we use to style each
-            element. These classes control the overall appearance, as well as the showing and
-            hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-            our default variables. It's also worth noting that just about any HTML can go within
-            the <code>.accordion-body</code>, though the transition does limit overflow.
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              Shelter #3
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingThree"
+            data-bs-parent="#shelterAccordion"
+          >
+            <div class="accordion-body">
+              Detailed information about Shelter #3. Could include contact info,
+              location, mission statement, etc.
+            </div>
           </div>
         </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingThree">
-          <button class="accordion-button collapsed" type="button" data-mdb-toggle="collapse"
-            data-mdb-target="#basicAccordionCollapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Shelter #3
-          </button>
-        </h2>
-        <div id="basicAccordionCollapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-          data-mdb-parent="#basicAccordion" style="">
-          <div class="accordion-body">
-            <strong>This is the third item's accordion body.</strong> It is hidden by default,
-            until the collapse plugin adds the appropriate classes that we use to style each
-            element. These classes control the overall appearance, as well as the showing and
-            hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-            our default variables. It's also worth noting that just about any HTML can go within
-            the <code>.accordion-body</code>, though the transition does limit overflow.
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseFour"
+              aria-expanded="false"
+              aria-controls="collapseFour"
+            >
+              Shelter #4
+            </button>
+          </h2>
+          <div
+            id="collapseFour"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingFour"
+            data-bs-parent="#shelterAccordion"
+          >
+            <div class="accordion-body">
+              Detailed information about Shelter #4. Could include contact info,
+              location, mission statement, etc.
+            </div>
           </div>
         </div>
+        <!-- Additional shelters as needed -->
       </div>
     </div>
-
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

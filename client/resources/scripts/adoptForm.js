@@ -1,8 +1,17 @@
-// event listener to check submit adoption form button is clicked then routing back to main page index.html
 document.addEventListener("DOMContentLoaded", function () {
-  var formSubmitButton = document.getElementById("formSubmitButton");
+  var adoptionFormButton = document.getElementById("adoptionFormButton");
 
-  formSubmitButton.addEventListener("click", function () {
-    window.location.href = "./index.html";
-  });
+  if (adoptionFormButton) {
+      adoptionFormButton.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent the link from navigating immediately
+
+          // Check if the user is logged in
+          if (!localStorage.getItem("userToken")) {
+              alert("Please login to complete the adoption form.");
+              window.location.href = "./login.html"; // Redirect to the login page
+          } else {
+              window.location.href = "./adoptForm.html"; // Navigate to the form if logged in
+          }
+      });
+  }
 });
