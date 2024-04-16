@@ -127,6 +127,36 @@ namespace api.Models
             con.Close();
         }
 
+        public void FavoritePet(Pets value) {
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
+            con.Open(); // open db connection
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Pet_Profile SET favorited = @favorited WHERE PetProfileId = @PetProfileId";
+            cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
+            cmd.Parameters.AddWithValue("@favorited", value.favorited);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        public void DeletePet(Pets value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Pet_Profile SET deleted = @deleted WHERE PetProfileId = @PetProfileId";
+            cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
 
         public static Pets GetPetById(int PetProfileId) // method to retrieve specific pet
         {

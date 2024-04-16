@@ -12,6 +12,11 @@ namespace api.Models
         public string Password { get; set; }
         public string PrimaryPhone { get; set; }
         public bool IsAdmin { get; set; }
+        public bool deleted { get; set; }
+        public string Address {get; set;}
+        public int YardSize {get;set;}
+        public bool Fenced {get; set;}
+        public DateTime BirthDate {get;set;}
 
         public static List<UserAccounts> GetAllUsers() // method to retrieve pet from database
         {
@@ -34,18 +39,24 @@ namespace api.Models
                     Email = rdr.GetString("Email"),
                     Password = rdr.GetString("Password"),
                     PrimaryPhone = rdr.GetString("PrimaryPhone"),
-                    IsAdmin = rdr.GetInt32("IsAdmin") == 1 // convert tinyint to boolean, if 1 then it is true
+                    IsAdmin = rdr.GetInt32("IsAdmin") == 1, // convert tinyint to boolean, if 1 then it is true
+                    deleted = rdr.GetInt32("deleted") == 1,
+                    Address = rdr.GetString("Address"),
+                    YardSize = rdr.GetInt32("YardSize"),
+                    Fenced = rdr.GetInt32("Fenced") == 1,
+                    BirthDate = rdr.GetDateTime("BirthDate")
                 });
             }
+            con.Close();
             return myUsers; // return populated list
         }
 
-        public void SaveToDB() // method to save the pets to the database
+        public void SaveToDB() // method to save the users to the database
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO User_Profile (UserId, FirstName, LastName, Age, Email, Password, PrimaryPhone, IsAdmin) VALUES (@UserId, @FirstName, @LastName, @Age, @Email, @Password, @PrimaryPhone, @IsAdmin)"; // sql command to insert a new pet
+            string stm = "INSERT INTO User_Profile (UserId, FirstName, LastName, Age, Email, Password, PrimaryPhone, IsAdmin, deleted, Address, YardSize, Fenced, BirthDate) VALUES (@UserId, @FirstName, @LastName, @Age, @Email, @Password, @PrimaryPhone, @IsAdmin, @deleted, @Address, @YardSize, @Fenced, @BirthDate)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@FirstName", FirstName);
@@ -55,7 +66,13 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Password", Password);
             cmd.Parameters.AddWithValue("@PrimaryPhone", PrimaryPhone);
             cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin? 1 : 0);
+            cmd.Parameters.AddWithValue("@deleted", deleted? 1 : 0);
+            cmd.Parameters.AddWithValue("@Address", Address);
+            cmd.Parameters.AddWithValue("@YardSize", YardSize);
+            cmd.Parameters.AddWithValue("@Fenced", Fenced);
+            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void UpdateToDB() // method to update existing pet in database
@@ -64,7 +81,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "UPDATE User_Profile set UserId = @UserId, FirstName = @FirstName, LastName = @LastName, Age = @Age, Email = @Email, Password = @Password, PrimaryPhone = @PrimaryPhone, IsAdmin = @IsAdmin WHERE UserID = @UserId"; // sql command for updating a pet
+            string stm = "UPDATE User_Profile set UserId = @UserId, FirstName = @FirstName, LastName = @LastName, Age = @Age, Email = @Email, Password = @Password, PrimaryPhone = @PrimaryPhone, IsAdmin = @IsAdmin, deleted = @deleted, Address = @Address, YardSize = @YardSize, Fenced = @Fenced, BirthDate = @BirthDate WHERE UserID = @UserId"; // sql command for updating a pet
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@UserId: " + UserId);
@@ -75,6 +92,11 @@ namespace api.Models
             Console.WriteLine("@Password: " + Password);
             Console.WriteLine("@PrimaryPhone: " + PrimaryPhone);
             Console.WriteLine("@IsAdmin: " + (IsAdmin ? 1 : 0));
+            Console.WriteLine("@deleted: " + (deleted ? 1 : 0));
+            Console.WriteLine("@Address: " + Address);
+            Console.WriteLine("@YardSize: " + YardSize);
+            Console.WriteLine("@Fenced: " + (Fenced ? 1 : 0));
+            Console.WriteLine("@BirthDate: " + BirthDate);
     
             using var cmd = new MySqlCommand(stm, con); 
             cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to sql command
@@ -85,7 +107,13 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Password", Password);
             cmd.Parameters.AddWithValue("@PrimaryPhone", PrimaryPhone);
             cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin ? 1 : 0);
+            cmd.Parameters.AddWithValue("@deleted", deleted ? 1 : 0);
+            cmd.Parameters.AddWithValue("@Address", Address);
+            cmd.Parameters.AddWithValue("@YardSize", YardSize);
+            cmd.Parameters.AddWithValue("@Fenced", Fenced ? 1 : 0);
+            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
 
@@ -109,10 +137,31 @@ namespace api.Models
                     Email = rdr.GetString("Email"),
                     Password = rdr.GetString("Password"),
                     PrimaryPhone = rdr.GetString("PrimaryPhone"),
-                    IsAdmin = rdr.GetInt32("IsAdmin") == 1 // convert tinyint to boolean, if 1 then it is true
+                    IsAdmin = rdr.GetInt32("IsAdmin") == 1, // convert tinyint to boolean, if 1 then it is true
+                    deleted = rdr.GetInt32("deleted") == 0,
+                    Address = rdr.GetString("Address"),
+                    YardSize = rdr.GetInt32("YardSize"),
+                    Fenced = rdr.GetInt32("Fenced") == 1,
+                    BirthDate = rdr.GetDateTime("BirthDate")
                 };
             }
+            con.Close();
             return null; // if no pet is found
+        }
+
+        public void DeleteUser(UserAccounts value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE User_Profile SET deleted = @deleted WHERE UserId = @UserId";
+            cmd.Parameters.AddWithValue("@UserId", value.UserId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
     }
 }

@@ -32,18 +32,21 @@ namespace api.Controllers
         [HttpPost]
         public void Post([FromBody] UserAccounts value)
         {
+            value.SaveToDB();
         }
 
         // PUT: api/UserAccounts/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] UserAccounts value)
         {
+            value.UpdateToDB()
         }
 
         // DELETE: api/UserAccounts/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(UserAccounts value)
         {
+            value.DeleteUser(id);
         }
     }
 }
