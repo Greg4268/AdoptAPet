@@ -15,37 +15,37 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class AppointmentsController : ControllerBase
     {
-        // GET: api/Appointments
+        // GET: api/Appointment
         [HttpGet]
-        public List<Appointments> GetAppointments()
+        public List<Appointment> GetAppointment()
         {
-            return Appointments.GetAllAppointments();
+            return Appointment.GetAllAppointment();
         }
 
-        // GET: api/Appointments/5
+        // GET: api/Appointment/5
         [HttpGet("{id}", Name = "GetAppointment")]
-        public Appointments GetAppointment(int id)
+        public Appointment GetAppointment(int id)
         {
-            return Appointments.GetAppointmentById(id);
+            return Appointment.GetAppointmentById(id);
         }
 
-        // POST: api/Appointments
+        // POST: api/Appointment
         [HttpPost]
-        public void Post([FromBody] Appointments value)
+        public void Post([FromBody] Appointment value)
         {
             value.SaveToDB();
         }
 
-        // PUT: api/Appointments/5
+        // PUT: api/Appointment/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Appointments value)
+        public void Put(int id, [FromBody] Appointment value)
         {
             value.UpdateToDB();
         }
 
-        // DELETE: api/Appointments/5
+        // DELETE: api/Appointment/5
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] Appointments value)
+        public void Delete(int id, [FromBody] Appointment value)
         {
             value.DeleteAppointment(value);
         }
