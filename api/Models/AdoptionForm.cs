@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace api.Models
 {
@@ -18,7 +19,7 @@ namespace api.Models
         public static List<AdoptionForm> GetAllAdoptionForms()
         {
             List<AdoptionForm> forms = new List<AdoptionForm>();
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM AdoptionForms";
@@ -27,7 +28,7 @@ namespace api.Models
             using MySqlDataReader rdr = cmd.ExecuteReader();
             while (rdr.Read())
             {
-                forms.Add(new AdoptionForms()
+                forms.Add(new AdoptionForm()
                 {
                     FormID = rdr.GetInt32("FormID"),
                     UserID = rdr.GetInt32("UserID"),
@@ -43,7 +44,7 @@ namespace api.Models
         // Method to save the adoption form to the database
         public void SaveToDB()
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "INSERT INTO AdoptionForms (UserID, PetProfileID, FormDate, FormStatus, FormNotes) VALUES (@UserID, @PetProfileID, @FormDate, @FormStatus, @FormNotes)";
@@ -59,7 +60,7 @@ namespace api.Models
         // Method to retrieve a specific adoption Form by ID
         public static AdoptionForm GetAdoptionFormById(int FormID)
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM AdoptionForms WHERE FormID = @FormID";

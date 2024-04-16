@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace api.Models
 {
@@ -17,7 +18,7 @@ namespace api.Models
         public static List<Appointment> GetAllAppointments()
         {
             List<Appointment> appointments = new List<Appointment>();
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM Appointments";
@@ -41,7 +42,7 @@ namespace api.Models
         // Method to save the appointment to the database
         public void SaveToDB()
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "INSERT INTO Appointments (PetProfileID, UserID, AppointmentDate, AppointmentLocation) VALUES (@PetProfileID, @UserID, @AppointmentDate, @AppointmentLocation)";
@@ -56,7 +57,7 @@ namespace api.Models
         // Method to update the appointment in the database
         public void UpdateToDB()
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
 
@@ -73,7 +74,7 @@ namespace api.Models
         // Method to retrieve a specific appointment by ID
         public static Appointment GetAppointmentById(int AppointmentID)
         {
-            GetPublicConnection cs = new GetPublicConnection();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM Appointments WHERE AppointmentID = @AppointmentID";
