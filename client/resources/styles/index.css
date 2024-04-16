@@ -50,26 +50,26 @@ select option {
     cursor: pointer;
 }
 
-
-
-/* Display the dropdown menu on img click */
-.profile-dropdown:hover .dropdown-menu {
-    display: block;
+.background-image {
+    background-image: url('../images/dogs_running.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
 }
 
-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin: 0 10px;
+#main-page-text {
+    color: white;
 }
 
-th, td {
-    border: 1px solid black; /* Adds border to th and td elements */
-    padding: 8px; /* Padding inside each cell */
-    text-align: left; /* Aligns text to the left */
+.index-body {
+    background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/dog/Hero-DogSearch_DesktopTablet.webp);
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    height: auto;
 }
 
-.container-fluid {
-    display: flex;
-    justify-content: space-evenly;
-}
+/* background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/shelter/Hero-ShelterRescueSearch_DesktopTablet.webp); */
+
+
