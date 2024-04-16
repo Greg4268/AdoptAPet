@@ -5,8 +5,8 @@ namespace api.Models
     public class Shelters
     {
         public int ShelterId { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string ShelterUsername { get; set; }
+        public string ShelterPassword { get; set; }
         public string Address { get; set; }
         public string HoursOfOperation { get; set; }
 
@@ -27,8 +27,8 @@ namespace api.Models
                 myShelters.Add(new Shelters() // create shelter object for each row
                 {
                     ShelterId = rdr.GetInt32("ShelterId"),
-                    Username = rdr.GetString("Username"),
-                    Password = rdr.GetString("Password"),
+                    ShelterUsername = rdr.GetString("ShelterUsername"),
+                    ShelterPassword = rdr.GetString("ShelterPassword"),
                     Address = rdr.GetString("Address"),
                     HoursOfOperation = rdr.GetString("HoursOfOperation")
                 });
@@ -42,11 +42,11 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Shelter (ShelterId, Username, Password, Address, HoursOfOperation) VALUES (@ShelterId, @Username, @Password, @Address, @HoursOfOperation)"; // sql command to insert a new shelter
+            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation) VALUES (@ShelterId, @Username, @Password, @Address, @HoursOfOperation)"; // sql command to insert a new shelter
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to the sql command
-            cmd.Parameters.AddWithValue("@Username", Username);
-            cmd.Parameters.AddWithValue("@Password", Password);
+            cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
+            cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.ExecuteNonQuery(); // execute sql command
@@ -63,15 +63,15 @@ namespace api.Models
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@ShelterId: " + ShelterId);
-            Console.WriteLine("@Username: " + Username);
-            Console.WriteLine("@Password: " + Password);
+            Console.WriteLine("@ShelterUsername: " + ShelterUsername);
+            Console.WriteLine("@ShelterPassword: " + ShelterPassword);
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@HoursOfOperation: " + HoursOfOperation);
     
             using var cmd = new MySqlCommand(stm, con); 
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to sql command
-            cmd.Parameters.AddWithValue("@Username", Username);
-            cmd.Parameters.AddWithValue("@Password", Password);
+            cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
+            cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.ExecuteNonQuery(); // execute sql command
@@ -93,8 +93,8 @@ namespace api.Models
                 return new Shelters() // construct and initialize new shelter object
                 {
                     ShelterId = rdr.GetInt32("ShelterId"),
-                    Username = rdr.GetString("Username"),
-                    Password = rdr.GetString("Password"),
+                    ShelterUsername = rdr.GetString("ShelterUsername"),
+                    ShelterPassword = rdr.GetString("ShelterPassword"),
                     Address = rdr.GetString("Address"),
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
                     deleted = rdr.GetBoolean("deleted")

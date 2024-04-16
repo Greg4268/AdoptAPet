@@ -9944,16 +9944,11 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
-    "/Users/joshlyon/.nuget/packages/": {}
-=======
-    "/Users/pbrandolph/.nuget/packages/": {}
->>>>>>> origin/main
+  "/Users/joshlyon/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "/Users/joshlyon/AdoptAPet/api/api.csproj",
       "projectName": "api",
       "projectPath": "/Users/joshlyon/AdoptAPet/api/api.csproj",
@@ -9962,16 +9957,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/joshlyon/.nuget/NuGet/NuGet.Config"
-=======
-      "projectUniqueName": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
-      "projectName": "api",
-      "projectPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
-      "packagesPath": "/Users/pbrandolph/.nuget/packages/",
-      "outputPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/obj/",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "/Users/pbrandolph/.nuget/NuGet/NuGet.Config"
->>>>>>> origin/main
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -10038,5 +10023,13 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /Users/joshlyon/AdoptAPet/api/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

@@ -39,7 +39,7 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] UserAccounts value)
         {
-            value.UpdateToDB()
+            value.UpdateToDB();
         }
 
         // DELETE: api/UserAccounts/5

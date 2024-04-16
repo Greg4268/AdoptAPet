@@ -19,7 +19,7 @@ namespace api.Controllers
         [HttpGet]
         public List<Appointment> GetAppointment()
         {
-            return Appointment.GetAllAppointment();
+            return Appointment.GetAllAppointments();
         }
 
         // GET: api/Appointment/5
