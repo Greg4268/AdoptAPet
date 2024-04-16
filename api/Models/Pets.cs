@@ -68,6 +68,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ReturnedCount", ReturnedCount);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void UpdateToDB() // method to update existing pet in database
@@ -93,6 +94,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Availability", Availability ? 1 : 0);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void FavoritePet(Pets value) {
@@ -154,6 +156,7 @@ namespace api.Models
                     Age = rdr.GetInt32("Age"),
                 };
             }
+            con.Close();
             return null; // if no pet is found
         }
     }

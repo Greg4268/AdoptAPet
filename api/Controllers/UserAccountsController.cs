@@ -23,20 +23,20 @@ namespace api.Controllers
 
         // GET: api/UserAccounts/5
         [HttpGet("{id}", Name = "Get")]
-        public string GetUser(int id)
+        public UserAccounts GetUser(int id)
         {
-            return "value";
+            return UserAccounts.GetUserById(id);
         }
 
         // POST: api/UserAccounts
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] UserAccounts value)
         {
         }
 
         // PUT: api/UserAccounts/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] UserAccounts value)
         {
         }
 
