@@ -10,13 +10,15 @@ namespace api.Models
         public string Address { get; set; }
         public string HoursOfOperation { get; set; }
 
+        public bool deleted { get; set; }
+
         public static List<Shelters> GetAllShelters() // method to retrieve shelter from database
         {
             List<Shelters> myShelters = new List<Shelters>(); // initialize array to hold shelter
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
-            string stm = "Select * from Shelter"; // sql statement to select everything from the shelter table
+            string stm = "SELECT * FROM Shelter"; // sql statement to select everything from the shelter table
             MySqlCommand cmd = new MySqlCommand(stm, con); 
 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
@@ -31,6 +33,7 @@ namespace api.Models
                     HoursOfOperation = rdr.GetString("HoursOfOperation")
                 });
             }
+            con.Close();
             return myShelters; // return populated list
         }
 
@@ -47,6 +50,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void UpdateToDB() // method to update existing shelter in database
@@ -55,7 +59,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "UPDATE Shelter set ShelterId = @ShelterId, Username = @Username, Password = @Password, Address = @Address, HoursOfOperation = @HoursOfOperation WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
+            string stm = "UPDATE Shelter SET ShelterId = @ShelterId, Username = @Username, Password = @Password, Address = @Address, HoursOfOperation = @HoursOfOperation WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@ShelterId: " + ShelterId);
@@ -71,15 +75,16 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
 
-        public static Shelters GetpetById(int ShelterId) // method to retrieve specific shelter
+        public static Shelters GetShelterById(int ShelterId) // method to retrieve specific shelter
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open connection to db
-            string stm = "select * from Shelter where ShelterId = @ShelterId"; // sql statement to retrieve specific shelter
+            string stm = "SELECT * FROM Shelter WHERE ShelterId = @ShelterId"; // sql statement to retrieve specific shelter
             MySqlCommand cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add ShelterID as parameter
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
@@ -91,10 +96,27 @@ namespace api.Models
                     Username = rdr.GetString("Username"),
                     Password = rdr.GetString("Password"),
                     Address = rdr.GetString("Address"),
-                    HoursOfOperation = rdr.GetString("HoursOfOperation")
+                    HoursOfOperation = rdr.GetString("HoursOfOperation"),
+                    deleted = rdr.GetBoolean("deleted")
                 };
             }
+            con.Close();
             return null; // if no shelter is found
+        }
+
+        public void DeleteShelter(Shelters value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Shelters SET deleted = @deleted WHERE SheltersId = @SheltersId";
+            cmd.Parameters.AddWithValue("@ShelterId", value.ShelterId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
     }
 }

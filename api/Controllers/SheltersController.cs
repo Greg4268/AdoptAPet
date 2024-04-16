@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,27 +24,30 @@ namespace api.Controllers
 
         // GET: api/Shelters/5
         [HttpGet("{id}", Name = "GetShelter")]
-        public string GetShelter(int id)
+        public Shelters GetShelter(int id)
         {
-            return "value";
+            return Shelters.GetShelterById(id);
         }
 
         // POST: api/Shelters
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Shelters value)
         {
+            value.SaveToDB();
         }
 
         // PUT: api/Shelters/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Shelters value)
         {
+            value.UpdateToDB();
         }
 
         // DELETE: api/Shelters/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, [FromBody] Shelters value)
         {
+            value.DeleteShelter(value);
         }
     }
 }
