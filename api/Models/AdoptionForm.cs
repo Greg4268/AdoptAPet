@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using api.Data;
 
 namespace api.Models
 {
@@ -12,7 +13,7 @@ namespace api.Models
         public int UserID { get; set; }
         public int PetProfileID { get; set; }
         public DateTime FormDate { get; set; }
-        public string FormStatus { get; set; }
+        public bool Approved { get; set; }
         public string FormNotes { get; set; }
 
         // Method to retrieve all adoption forms from the database
@@ -34,7 +35,7 @@ namespace api.Models
                     UserID = rdr.GetInt32("UserID"),
                     PetProfileID = rdr.GetInt32("PetProfileID"),
                     FormDate = rdr.GetDateTime("FormDate"),
-                    FormStatus = rdr.GetString("FormStatus"),
+                    Approved = rdr.GetInt32("Approved") == 1,
                     FormNotes = rdr.GetString("FormNotes")
                 });
             }
@@ -47,12 +48,12 @@ namespace api.Models
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "INSERT INTO AdoptionForms (UserID, PetProfileID, FormDate, FormStatus, FormNotes) VALUES (@UserID, @PetProfileID, @FormDate, @FormStatus, @FormNotes)";
+            string stm = "INSERT INTO AdoptionForms (UserID, PetProfileID, FormDate, Approved, FormNotes) VALUES (@UserID, @PetProfileID, @FormDate, @Approved, @FormNotes)";
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@UserID", UserID);
             cmd.Parameters.AddWithValue("@PetProfileID", PetProfileID);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
-            cmd.Parameters.AddWithValue("@FormStatus", FormStatus);
+            cmd.Parameters.AddWithValue("@Approved", Approved ? 1 : 0);
             cmd.Parameters.AddWithValue("@FormNotes", FormNotes);
             cmd.ExecuteNonQuery();
         }
@@ -75,7 +76,7 @@ namespace api.Models
                     UserID = rdr.GetInt32("UserID"),
                     PetProfileID = rdr.GetInt32("PetProfileID"),
                     FormDate = rdr.GetDateTime("FormDate"),
-                    FormStatus = rdr.GetString("FormStatus"),
+                    Approved = rdr.GetInt32("Approved") == 1,
                     FormNotes = rdr.GetString("FormNotes")
                 };
             }
