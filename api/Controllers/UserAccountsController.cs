@@ -46,7 +46,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public void Delete(UserAccounts value)
         {
-            value.DeleteUser(id);
+            value.DeleteUser(value);
         }
     }
 }
