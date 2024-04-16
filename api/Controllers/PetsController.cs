@@ -23,27 +23,31 @@ namespace api.Controllers
 
         // GET: api/Pets/5
         [HttpGet("{id}", Name = "GetPet")]
-        public string GetPet(int id)
+        public Pets GetPet(int id)
         {
-            return "value";
+            return Pets.GetPetById(id);
         }
 
         // POST: api/Pets
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Pets value)
         {
+            value.SaveToDB();
         }
 
         // PUT: api/Pets/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Pets value)
         {
+            value.FavoritePet(value);
+            value.UpdateToDB();
         }
 
         // DELETE: api/Pets/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, [FromBody] Pets value)
         {
+            value.FavoritePet(value);
         }
     }
 
