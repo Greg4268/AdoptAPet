@@ -11,9 +11,9 @@
     />
     <link href="./resources/styles/index.css" rel="stylesheet" />
     <title>Sign Up</title>
-    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png">
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
-  <body>
+  <body class="alt-background">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="./index.html">Adopt-A-Pet</a>
@@ -43,7 +43,9 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="./adoptForm.html">Adoption Form</a>
+              <a class="nav-link active" href="./adoptForm.html"
+                >Adoption Form</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="./shelters.html">Shelters</a>
@@ -66,20 +68,34 @@
       </div>
     </nav>
 
-    <section class="vh-200" style="background-color: #726165">
+    <section class="vh-200">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col col-xl-10">
             <div class="card" style="border-radius: 1rem">
               <div class="row g-0">
                 <div class="col-md-6 col-lg-5 d-none d-md-block">
-                  <div style="text-align: center;">
-                    <img src="./resources/images/Logo.png" alt="Logo" style="display: block; padding-top: 50%; margin: auto; max-width: 100%; height: auto;">
+                  <div style="text-align: center">
+                    <img
+                      src="./resources/images/Logo.png"
+                      alt="Logo"
+                      style="
+                        display: block;
+                        padding-top: 50%;
+                        margin: auto;
+                        max-width: 100%;
+                        height: auto;
+                      "
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-                    <form id="signupForm">
+                    <form
+                      id="signupForm"
+                      class="bg-white p-6 rounded shadow-md"
+                      onsubmit="submitForm(); return false;"
+                    >
                       <!-- Existing content above... -->
                       <div class="form-outline mb-4">
                         <input
