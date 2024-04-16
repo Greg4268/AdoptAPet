@@ -72,8 +72,8 @@ select option {
 
 /* background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/shelter/Hero-ShelterRescueSearch_DesktopTablet.webp); */
 
-#search-bar {
-    width: 25%;
+#searchForm {
+    width: 50%;
 }
 
 

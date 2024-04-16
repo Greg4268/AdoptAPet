@@ -1,5 +1,6 @@
 const petsURL = "http://localhost:5292/api/Pets";
 // const imageURL = "https://dog.ceo/api/breeds/image/random";
+let allPets = [];
 
 function handleOnLoad() {
   fetchPets(petsURL);
@@ -12,6 +13,7 @@ async function fetchPets(petsURL) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const pets = await response.json();
+    allPets = pets;
     displayPets(pets);
     console.log("Pets Objects: ", pets);
   } catch (error) {
@@ -47,7 +49,7 @@ async function displayPets(pets) {
               <h2>${pet.name}</h2>
               <h5>${pet.breed}</h5>
               <p>${pet.species}</p>
-              <a class="btn btn-outline-secondary" role="button" href="./petProfile.html">See ${pet.name}</a>
+              <a class="btn btn-outline-secondary" role="button" href="./petProfile.html?petId=${pet.id}">See ${pet.name}</a>
             </div>
             <img src="${pet.image}" class="ms-3">
           </div>
@@ -58,3 +60,21 @@ async function displayPets(pets) {
   }
 }
 
+
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  searchPets(searchQuery);
+});
+
+function searchPets(query) {
+  const filteredPets = allPets.filter(pet => 
+      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query)
+  );
+  displayPets(filteredPets);
+}
+
+document.getElementById('clearSearch').addEventListener('click', function() {
+  document.getElementById('searchInput').value = '';  // Clear the search input
+  displayPets(allPets);  // Display all pets
+});
