@@ -47,6 +47,7 @@ namespace api.Models
                     Age = rdr.GetInt32("Age"),
                 });
             }
+            con.Close();
             return myPets; // return populated list
         }
 
