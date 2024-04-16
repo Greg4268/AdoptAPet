@@ -74,6 +74,13 @@ function searchPets(query) {
   displayPets(filteredPets);
 }
 
+function searchPets(query) {
+  const filteredPets = allPets.filter(pet => 
+      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query) || pet.species.toLowerCase().includes(query)
+  );
+  displayPets(filteredPets);
+}
+
 document.getElementById('clearSearch').addEventListener('click', function() {
   document.getElementById('searchInput').value = '';  // Clear the search input
   displayPets(allPets);  // Display all pets
