@@ -72,6 +72,22 @@ select option {
 
 /* background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/shelter/Hero-ShelterRescueSearch_DesktopTablet.webp); */
 
-#search-bar {
-    width: 25%;
+#searchForm {
+    width: 50%;
 }
+
+
+.pet-card .card-body {
+    display: flex;
+    flex-direction: row;
+  }
+  .pet-card .card-info {
+    flex: 1;  /* Takes as much space as possible */
+  }
+  .pet-card img {
+    width: 120px; /* Fixed width for the image */
+    height: 120px; /* Fixed height for the image */
+    border-radius: 15px; /* Rounded corners instead of fully round */
+    align-self: center; /* Center the image vertically */
+    object-fit: cover; /* Ensures the image covers the area without distorting ratio */
+  }

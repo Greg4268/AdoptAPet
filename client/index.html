@@ -71,8 +71,10 @@
     <div class="container py-4">
       <div class="p-2 mb-4 bg-body-tertiary rounded-3 background-image">
         <!-- div for big container background image -->
-        <div class="container-fluid py-5 px-5 "> 
-          <h1 class="display-5 fw-bold" id="main-page-text">Sign up for an account today!</h1>
+        <div class="container-fluid py-5 px-5">
+          <h1 class="display-5 fw-bold" id="main-page-text">
+            Sign up for an account today!
+          </h1>
           <p class="col-md-8 fs-4" id="main-page-text">
             To view individual pet pages, please login or sign up.
           </p>
@@ -82,14 +84,16 @@
         </div>
       </div>
 
-      <form class="d-flex mx-auto" role="search" id="search-bar">
+      <form class="d-flex mx-auto" role="search" id="searchForm">
         <input
           class="form-control me-2"
           type="search"
-          placeholder="Search..."
+          placeholder="Search by name or breed..."
           aria-label="Search"
+          id="searchInput"
         />
-        <button class="btn btn-primary btn-primary" type="submit">Search</button>
+        <button class="btn btn-primary" type="submit">Search</button>
+        <button class="btn btn-light px-3" type="button" id="clearSearch" style="margin-left: 10px;">Clear</button>
       </form>
 
       <!-- use the cards below as the templates loaded when the page is being loaded (done in js) -->
