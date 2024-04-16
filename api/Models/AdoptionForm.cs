@@ -9,12 +9,13 @@ namespace api.Models
 {
     public class AdoptionForm
     {
-        public int FormID { get; set; }
-        public int UserID { get; set; }
-        public int PetProfileID { get; set; }
+        public int FormId { get; set; }
+        public int UserId { get; set; }
+        public int PetProfileId { get; set; }
         public DateTime FormDate { get; set; }
         public bool Approved { get; set; }
         public string FormNotes { get; set; }
+        public bool deleted { get; set; }
 
         // Method to retrieve all adoption forms from the database
         public static List<AdoptionForm> GetAllAdoptionForms()
@@ -23,7 +24,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM AdoptionForms";
+            string stm = "SELECT * FROM Adoption_Forms";
             MySqlCommand cmd = new MySqlCommand(stm, con);
 
             using MySqlDataReader rdr = cmd.ExecuteReader();
@@ -31,9 +32,9 @@ namespace api.Models
             {
                 forms.Add(new AdoptionForm()
                 {
-                    FormID = rdr.GetInt32("FormID"),
-                    UserID = rdr.GetInt32("UserID"),
-                    PetProfileID = rdr.GetInt32("PetProfileID"),
+                    FormId = rdr.GetInt32("FormID"),
+                    UserId = rdr.GetInt32("UserID"),
+                    PetProfileId = rdr.GetInt32("PetProfileID"),
                     FormDate = rdr.GetDateTime("FormDate"),
                     Approved = rdr.GetInt32("Approved") == 1,
                     FormNotes = rdr.GetString("FormNotes")
@@ -50,8 +51,8 @@ namespace api.Models
             con.Open();
             string stm = "INSERT INTO AdoptionForms (UserID, PetProfileID, FormDate, Approved, FormNotes) VALUES (@UserID, @PetProfileID, @FormDate, @Approved, @FormNotes)";
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserID", UserID);
-            cmd.Parameters.AddWithValue("@PetProfileID", PetProfileID);
+            cmd.Parameters.AddWithValue("@UserId", UserId);
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
             cmd.Parameters.AddWithValue("@Approved", Approved ? 1 : 0);
             cmd.Parameters.AddWithValue("@FormNotes", FormNotes);
@@ -59,22 +60,22 @@ namespace api.Models
         }
 
         // Method to retrieve a specific adoption Form by ID
-        public static AdoptionForm GetAdoptionFormById(int FormID)
+        public static AdoptionForm GetAdoptionFormById(int FormId)
         {
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM AdoptionForms WHERE FormID = @FormID";
+            string stm = "SELECT * FROM Adoption_Forms WHERE FormId = @FormId";
             MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@FormID", FormID);
+            cmd.Parameters.AddWithValue("@FormId", FormId);
             using MySqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.Read())
             {
                 return new AdoptionForm()
                 {
-                    FormID = rdr.GetInt32("FormID"),
-                    UserID = rdr.GetInt32("UserID"),
-                    PetProfileID = rdr.GetInt32("PetProfileID"),
+                    FormId = rdr.GetInt32("FormId"),
+                    UserId = rdr.GetInt32("UserId"),
+                    PetProfileId = rdr.GetInt32("PetProfileId"),
                     FormDate = rdr.GetDateTime("FormDate"),
                     Approved = rdr.GetInt32("Approved") == 1,
                     FormNotes = rdr.GetString("FormNotes")
@@ -82,5 +83,34 @@ namespace api.Models
             }
             return null;
         }
+        public void UpdateToDB()
+        {
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+            string stm = "UPDATE Adoption_Forms SET FormId = @FormId, UserId = @UserId, PetProfileId = @PetProfileId, FormDate = @FormDate, Approved = @Approved, FormNotes = @FormNotes";
+            using var cmd = new MySqlCommand(stm, con);
+            cmd.Parameters.AddWithValue("@FormId", FormId);
+            cmd.Parameters.AddWithValue("@UserId", UserId);
+            cmd.Parameters.AddWithValue("@FormDate", FormDate);
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
+            cmd.Parameters.AddWithValue("@Approved", Approved);
+            cmd.ExecuteNonQuery();
+        }
+        public void DeleteAdoptionForm(AdoptionForm value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Adoption_Forms SET deleted = @deleted WHERE FormId = @FormId";
+            cmd.Parameters.AddWithValue("@FormId", value.FormId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }        
+
     }
 }
