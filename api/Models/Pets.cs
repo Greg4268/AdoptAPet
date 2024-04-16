@@ -24,7 +24,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
-            string stm = "Select * from Pet_Profile"; // sql statement to select everything from the pet table
+            string stm = "SELECT * FROM Pet_Profile"; // sql statement to select everything from the pet table
             MySqlCommand cmd = new MySqlCommand(stm, con); 
 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command

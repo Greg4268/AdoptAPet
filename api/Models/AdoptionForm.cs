@@ -24,7 +24,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM AdoptionForms";
+            string stm = "SELECT * FROM Adoption_Forms";
             MySqlCommand cmd = new MySqlCommand(stm, con);
 
             using MySqlDataReader rdr = cmd.ExecuteReader();
@@ -65,7 +65,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM AdoptionForms WHERE FormID = @FormID";
+            string stm = "SELECT * FROM Adoption_Forms WHERE FormID = @FormID";
             MySqlCommand cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@FormID", FormID);
             using MySqlDataReader rdr = cmd.ExecuteReader();
@@ -83,5 +83,20 @@ namespace api.Models
             }
             return null;
         }
+        public void DeleteAdoptionForm(AdoptionForm value) {
+            GetPublicConnection cs = new GetPublicConnection();
+            using var con = new MySqlConnection(cs.cs);
+            con.Open();
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Adoption_Forms SET deleted = @deleted WHERE FormId = @FormId";
+            cmd.Parameters.AddWithValue("@FormId", value.FormId);
+            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }        
+
     }
 }
