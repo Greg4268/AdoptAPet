@@ -17,6 +17,7 @@ namespace api.Models
         public bool favorited { get; set; }
         public bool deleted { get; set; }
         public int ShelterId { get; set; }
+        public string Image { get; set; }
 
         public static List<Pets> GetAllPets() // method to retrieve pet from database
         {
@@ -45,6 +46,7 @@ namespace api.Models
                     favorited = rdr.GetBoolean("deleted"),
                     deleted = rdr.GetBoolean("favorited"),
                     Age = rdr.GetInt32("Age"),
+                    Image = rdr.GetString("ImageUrl")
                 });
             }
             con.Close();
