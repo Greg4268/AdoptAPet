@@ -9944,19 +9944,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/joshlyon/.nuget/packages/": {}
+    "/Users/pbrandolph/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/joshlyon/AdoptAPet/api/api.csproj",
+      "projectUniqueName": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
       "projectName": "api",
-      "projectPath": "/Users/joshlyon/AdoptAPet/api/api.csproj",
-      "packagesPath": "/Users/joshlyon/.nuget/packages/",
-      "outputPath": "/Users/joshlyon/AdoptAPet/api/obj/",
+      "projectPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/api.csproj",
+      "packagesPath": "/Users/pbrandolph/.nuget/packages/",
+      "outputPath": "/Users/pbrandolph/Desktop/321/repos/AdoptAPet/api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/joshlyon/.nuget/NuGet/NuGet.Config"
+        "/Users/pbrandolph/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
