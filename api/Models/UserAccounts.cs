@@ -5,7 +5,6 @@ namespace api.Models
 {
     public class UserAccounts
     {
-        
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -18,7 +17,7 @@ namespace api.Models
         public string Address { get; set; }
         public double YardSize { get; set; }
         public bool Fenced { get; set; }
-        public DateTime BirthDate { get; set; }
+        // public DateTime BirthDate { get; set; }
 
         public static List<UserAccounts> GetAllUsers() // method to retrieve pet from database
         {
@@ -46,7 +45,7 @@ namespace api.Models
                     Address = rdr.GetString("Address"),
                     YardSize = rdr.GetInt32("YardSize"),
                     Fenced = rdr.GetInt32("Fenced") == 1,
-                    BirthDate = rdr.GetDateTime("BirthDate")
+                    // BirthDate = rdr.GetDateTime("BirthDate")
                 });
             }
             con.Close();
@@ -61,10 +60,12 @@ namespace api.Models
 
             string stm = @"INSERT INTO User_Profile (
                 UserId, FirstName, LastName, Age, Email, Password, PrimaryPhone, IsAdmin, 
-                deleted, Address, YardSize, Fenced, BirthDate) 
+                deleted, Address, YardSize, Fenced) 
             VALUES (
                 @UserId, @FirstName, @LastName, @Age, @Email, @Password, @PrimaryPhone, 
-                @IsAdmin, @deleted, @Address, @YardSize, @Fenced, @BirthDate)"; // sql command to insert a new pet
+                @IsAdmin, @deleted, @Address, @YardSize, @Fenced)"; // sql command to insert a new pet
+            
+            System.Console.WriteLine("test");
 
 
             using var cmd = new MySqlCommand(stm, con);
@@ -75,12 +76,12 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Password", Password);
             cmd.Parameters.AddWithValue("@PrimaryPhone", PrimaryPhone);
-            cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin ? 1 : 0);
-            cmd.Parameters.AddWithValue("@deleted", deleted ? 1 : 0);
+            cmd.Parameters.AddWithValue("@IsAdmin", IsAdmin);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@YardSize", YardSize);
             cmd.Parameters.AddWithValue("@Fenced", Fenced);
-            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
+            // cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
 
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
@@ -107,7 +108,7 @@ namespace api.Models
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@YardSize: " + YardSize);
             Console.WriteLine("@Fenced: " + (Fenced ? 1 : 0));
-            Console.WriteLine("@BirthDate: " + BirthDate);
+            // Console.WriteLine("@BirthDate: " + BirthDate);
 
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to sql command
@@ -122,7 +123,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@YardSize", YardSize);
             cmd.Parameters.AddWithValue("@Fenced", Fenced ? 1 : 0);
-            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
+            // cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -153,7 +154,7 @@ namespace api.Models
                     Address = rdr.GetString("Address"),
                     YardSize = rdr.GetInt32("YardSize"),
                     Fenced = rdr.GetInt32("Fenced") == 1,
-                    BirthDate = rdr.GetDateTime("BirthDate")
+                    // BirthDate = rdr.GetDateTime("BirthDate")
                 };
             }
             con.Close();
