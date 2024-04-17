@@ -16,16 +16,17 @@ async function fetchProfiles(profURL) {
 
 // form submission for sign up page
 function submitForm() {
-
   const formData = {
     FirstName: document.getElementById("firstName").value.trim(),
     LastName: document.getElementById("lastName").value.trim(),
     Age: document.getElementById("age").value.trim(),
     Email: document.getElementById("email").value.trim(),
     Password: document.getElementById("password").value,
-    AccountType: document.getElementById("accountType").value,
     deleted: false,
     Address: "N/A",
+    YardSize: 0,
+    Fenced: false,
+    AccountType: document.getElementById("accountType").value,
   };
 
   fetch("http://localhost:5292/api/UserAccounts", {
@@ -36,8 +37,24 @@ function submitForm() {
     },
     body: JSON.stringify(formData),
   })
-    .then((response) => response.json()) // Convert the response to JSON
+    .then((response) => {
+      if (!response.ok) {
+        // Extracting error message from response body
+        return response.json().then((errorData) => {
+          console.error("Server responded with error:", errorData);
+          alert(`Error signing up: ${errorData.title || "Unknown error"}`);
+          throw new Error(`HTTP error, status = ${response.status}`);
+        });
+      }
+      alert("response ok");
+      return response.json();
+    })
     .then((data) => {
-      Alert("Server response data:", data); // Log the response data
+      console.log("Server response data:", data);
+      alert("Signup successful!");
+    })
+    .catch((error) => {
+      console.error("Error during sign up:", error);
+      alert(`Error during sign up: ${error.message}`);
     });
 }

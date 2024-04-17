@@ -51,6 +51,7 @@ namespace api.Models
 
         public void SaveToDB() // method to save the users to the database
         {
+            System.Console.WriteLine("SaveToDB called");
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection

@@ -74,8 +74,8 @@ async function displayUsers(users) {
               <td>${user.userId}</td>
               <td>${user.firstName + " " + user.lastName}</td>
               <td>${user.email}</td>
-              <td>${user.primaryPhone}</td>
-              <td>[Account type holder]</td>
+              <td>[placeholder]</td>
+              <td>${user.accountType}</td>
               <td>[Action buttons column?]</td>
             </tr>
       `;
