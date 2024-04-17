@@ -124,18 +124,19 @@ namespace api.Models
         }
 
 
-        public static UserAccounts GetUserById(int UserId) // method to retrieve specific pet
+        public static UserAccounts GetUserById(string Email, string Password)
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open connection to db
-            string stm = "select * from User_Profile where UserId = @UserId"; // sql statement to retrieve specific pet
+            string stm = "SELECT * FROM User_Profile where Email = @Email AND Password = @Password";
             MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId); // add PetProfileID as parameter
+            cmd.Parameters.AddWithValue("@Email", Email);
+            cmd.Parameters.AddWithValue("@Password", Password); 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            if (rdr.Read()) // check if pet is found
+            if (rdr.Read())
             {
-                return new UserAccounts() // construct and initialize new pet object
+                return new UserAccounts()
                 {
                     UserId = rdr.GetInt32("UserId"),
                     FirstName = rdr.GetString("FirstName"),

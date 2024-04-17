@@ -22,10 +22,10 @@ namespace api.Controllers
         }
 
         // GET: api/UserAccounts/5
-        [HttpGet("{id}", Name = "Get")]
-        public UserAccounts GetUser(int id)
+        [HttpGet("{password}", Name = "Get")]
+        public UserAccounts GetUser(string email, string password)
         {
-            return UserAccounts.GetUserById(id);
+            return UserAccounts.GetUserById(email, password);
         }
 
         // POST: api/UserAccounts

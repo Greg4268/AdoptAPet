@@ -11,6 +11,7 @@ namespace api.Models
         public string HoursOfOperation { get; set; }
 
         public bool deleted { get; set; }
+        public bool approved { get; set; }
 
         public static List<Shelters> GetAllShelters() // method to retrieve shelter from database
         {
@@ -30,7 +31,9 @@ namespace api.Models
                     ShelterUsername = rdr.GetString("ShelterUsername"),
                     ShelterPassword = rdr.GetString("ShelterPassword"),
                     Address = rdr.GetString("Address"),
-                    HoursOfOperation = rdr.GetString("HoursOfOperation")
+                    HoursOfOperation = rdr.GetString("HoursOfOperation"),
+                    deleted = rdr.GetBoolean("deleted"),
+                    approved = rdr.GetBoolean("approved"),
                 });
             }
             con.Close();
@@ -49,6 +52,8 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("approved", approved);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -67,6 +72,9 @@ namespace api.Models
             Console.WriteLine("@ShelterPassword: " + ShelterPassword);
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@HoursOfOperation: " + HoursOfOperation);
+            Console.WriteLine("@deleted" + deleted);
+            Console.WriteLine("@approved" + approved);
+
     
             using var cmd = new MySqlCommand(stm, con); 
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to sql command
@@ -74,6 +82,8 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("approved", approved);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -97,7 +107,8 @@ namespace api.Models
                     ShelterPassword = rdr.GetString("ShelterPassword"),
                     Address = rdr.GetString("Address"),
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
-                    deleted = rdr.GetBoolean("deleted")
+                    deleted = rdr.GetBoolean("deleted"),
+                    approved = rdr.GetBoolean("approved"),
                 };
             }
             con.Close();
