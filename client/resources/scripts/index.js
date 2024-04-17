@@ -21,20 +21,6 @@ async function fetchPets(petsURL) {
   }
 }
 
-async function fetchImage() {
-  try {
-    const response = await fetch(imageURL);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const imageData = await response.json();
-    return imageData.message; // Directly return the image URL
-  } catch (error) {
-    console.error("Error fetching image:", error);
-    return "default-dog.jpg"; // Fallback image if fetch fails
-  }
-}
-
 async function displayPets(pets) {
   const petsContainer = document.querySelector(".row.align-items-md-stretch");
   petsContainer.innerHTML = ""; // Clear existing content
