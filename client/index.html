@@ -11,8 +11,9 @@
     />
     <link href="./resources/styles/index.css" rel="stylesheet" />
     <title>Adopt-A-Pet</title>
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
-  <body onload="handleOnLoad()">
+  <body onload="handleOnLoad()" class="index-body">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="./index.html">Adopt-A-Pet</a>
@@ -42,7 +43,9 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="./adoptForm.html">Adoption Form</a>
+              <a class="nav-link active" href="./adoptForm.html"
+                >Adoption Form</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="./shelters.html">Shelters</a>
@@ -65,11 +68,14 @@
       </div>
     </nav>
 
-    <div class="container py-4">
-      <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-        <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">Sign up for an account today!</h1>
-          <p class="col-md-8 fs-4">
+    <div class="container py-4" id="card-container">
+      <div class="p-2 mb-4 bg-body-tertiary rounded-3 background-image" id="main-banner">
+        <!-- div for big container background image -->
+        <div class="container-fluid py-5 px-5">
+          <h1 class="display-5 fw-bold" id="main-page-text">
+            Sign up for an account today!
+          </h1>
+          <p class="col-md-8 fs-4" id="main-page-text">
             To view individual pet pages, please login or sign up.
           </p>
           <a class="btn btn-primary btn-lg" type="button" href="./signup.html"
@@ -77,18 +83,19 @@
           >
         </div>
       </div>
-      
-      <div class="searcharea">
-        <form class="d-flex mx-auto" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
+
+      <form class="d-flex mx-auto" role="search" id="searchForm">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search by name, breed, or species..."
+          aria-label="Search"
+          id="searchInput"
+        />
+        <button class="btn btn-primary" type="submit">Search</button>
+        <button class="btn btn-light px-3" type="button" id="clearSearch" style="margin-left: 10px;">Clear</button>
+      </form>
+
       <!-- use the cards below as the templates loaded when the page is being loaded (done in js) -->
       <div class="row align-items-md-stretch">
         <div class="col-md-4">

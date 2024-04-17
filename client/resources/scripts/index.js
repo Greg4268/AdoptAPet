@@ -1,85 +1,73 @@
 const petsURL = "http://localhost:5292/api/Pets";
+// const imageURL = "https://dog.ceo/api/breeds/image/random";
+let allPets = [];
 
 function handleOnLoad() {
   fetchPets(petsURL);
 }
 
 async function fetchPets(petsURL) {
-  fetch(petsURL)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json(); // Parse the JSON from the response
-    })
-    .then((pets) => {
-      displayPets(pets); // Pass the fetched pets to displayPets function
-      console.log("Pets Objects: ", pets)
-    })
-    .catch((error) => console.error("Error fetching pets:", error));
+  try {
+    const response = await fetch(petsURL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const pets = await response.json();
+    allPets = pets;
+    displayPets(pets);
+    console.log("Pets Objects: ", pets);
+  } catch (error) {
+    console.error("Error fetching pets:", error);
+  }
 }
 
-function displayPets(pets) {
-
-  const petsContainer = document.querySelector(".row.align-items-md-stretch"); // Adjust the selector as necessary
+async function displayPets(pets) {
+  const petsContainer = document.querySelector(".row.align-items-md-stretch");
   petsContainer.innerHTML = ""; // Clear existing content
 
-  pets.forEach((pet) => {
+  for (const pet of pets) {
+    //const imageUrl = await fetchImage(); // Fetch image for each pet
     const petCard = `
       <div class="col-md-4">
-        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-          <h2>${pet.name}</h2>
-          <h5>${pet.breed}</h5>
-          <p>${pet.species}</p>
-          <a class="btn btn-outline-secondary" role="button" href="./petProfile.html">See ${pet.name}</a>
+        <div class="h-100 p-5 bg-light border rounded-3 pet-card">
+          <div class="card-body">
+            <div class="card-info">
+              <h2>${pet.name}</h2>
+              <h5>${pet.breed}</h5>
+              <p>${pet.species}</p>
+              <a class="btn btn-outline-secondary" role="button" href="./petProfile.html?petId=${pet.id}">See ${pet.name}</a>
+            </div>
+            <img src="${pet.image}" class="ms-3">
+          </div>
         </div>
       </div>
     `;
     petsContainer.innerHTML += petCard; // Append the new card
-  });
+  }
 }
 
-// event listener to update profile icon dropdown once logged in
-document.addEventListener("DOMContentLoaded", function () {
-  var profileDropdown = document.getElementById("profileDropdownMenu");
-  var dropdownMenu = profileDropdown.nextElementSibling;
 
-  // Check for user authentication (e.g., checking local storage for a token)
-  var isAuthenticated = localStorage.getItem("userToken") !== null;
-
-  if (isAuthenticated) {
-    // User is signed in, populate the dropdown menu
-    // need to update so that dashboard link will redirect to either adminDash.html or adopterDash.html or shelterDash.html
-    var dashboardLink =
-      '<a class="dropdown-item" href="./adminDash.html">Dashboard</a>';
-    var logoutLink = '<a class="dropdown-item" href="./logout.html">Logout</a>'; // update 
-    dropdownMenu.innerHTML = dashboardLink + logoutLink;
-
-    // Attach onclick event to show/hide the dropdown
-    profileDropdown.onclick = function (event) {
-      dropdownMenu.style.display =
-        dropdownMenu.style.display === "block" ? "none" : "block";
-    };
-  } else {
-    // User is not signed in, disable the dropdown
-    profileDropdown.style.cursor = "default";
-    profileDropdown.onclick = function (event) {
-      event.preventDefault(); // Prevents any attached link actions if accidentally used in <a> tags
-    };
-  }
-
-  // Handle clicking outside the dropdown to close it
-  window.onclick = function (event) {
-    if (!event.target.matches("#profileDropdownMenu")) {
-      if (dropdownMenu.style.display === "block") {
-        dropdownMenu.style.display = "none";
-      }
-    }
-  };
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  searchPets(searchQuery);
 });
 
-// let table = new DataTable('#myTable', {
-//   responsive: true
-//   // config options...
-// });
+function searchPets(query) {
+  const filteredPets = allPets.filter(pet => 
+      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query)
+  );
+  displayPets(filteredPets);
+}
 
+function searchPets(query) {
+  const filteredPets = allPets.filter(pet => 
+      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query) || pet.species.toLowerCase().includes(query)
+  );
+  displayPets(filteredPets);
+}
+
+document.getElementById('clearSearch').addEventListener('click', function() {
+  document.getElementById('searchInput').value = '';  // Clear the search input
+  displayPets(allPets);  // Display all pets
+});

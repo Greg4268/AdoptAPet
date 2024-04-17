@@ -1,0 +1,13 @@
+# Exclude the obj directory
+obj/
+
+# Exclude other generated files that are specific to your environment
+*.csproj.nuget.dgspec.json
+*.csproj.nuget.g.targets
+project.assets.json
+project.nuget.cache
+*.assets.cache
+*.AssemblyReference.cache
+*api.dll
+*api.pdb
+*api.assets.cache

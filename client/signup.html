@@ -10,9 +10,10 @@
       crossorigin="anonymous"
     />
     <link href="./resources/styles/index.css" rel="stylesheet" />
-    <title>Adopt-A-Pet</title>
+    <title>Sign Up</title>
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
-  <body>
+  <body class="alt-background">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="./index.html">Adopt-A-Pet</a>
@@ -35,20 +36,22 @@
                 >About Us</a
               >
             </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="./FAQ.html">FAQ</a>
+            </li>
           </ul>
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="./adoptForm.html">Adoption Form</a>
+              <a class="nav-link active" href="./adoptForm.html"
+                >Adoption Form</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./shelters.html">Shelters</a>
+              <a class="nav-link active" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./FAQ.html">FAQ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./login.html">Login / Sign Up</a>
+              <a class="nav-link active" href="./login.html">Login / Sign Up</a>
             </li>
             <div class="profile-dropdown">
               <img
@@ -65,58 +68,131 @@
       </div>
     </nav>
 
-    <section class="vh-200" style="background-color: #726165">
+    <section class="vh-200">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col col-xl-10">
             <div class="card" style="border-radius: 1rem">
               <div class="row g-0">
                 <div class="col-md-6 col-lg-5 d-none d-md-block">
-                  <img
-                    src="./resources/images/Rosie.jpeg"
-                    alt="login form"
-                    class="img-fluid"
-                    style="border-radius: 1rem 0 0 1rem"
-                  />
+                  <div style="text-align: center">
+                    <img
+                      src="./resources/images/Logo.png"
+                      alt="Logo"
+                      style="
+                        display: block;
+                        padding-top: 50%;
+                        margin: auto;
+                        max-width: 100%;
+                        height: auto;
+                      "
+                    />
+                  </div>
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-                    <form id="signupForm">
+                    <form
+                      id="signupForm"
+                      class="bg-white p-6 rounded shadow-md"
+                      onsubmit="submitForm(); return false;"
+                    >
                       <!-- Existing content above... -->
                       <div class="form-outline mb-4">
-                          <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder="John" required />
-                          <label class="form-label" for="firstName">First Name</label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          class="form-control form-control-lg"
+                          placeholder="John"
+                          required
+                        />
+                        <label class="form-label" for="firstName"
+                          >First Name</label
+                        >
                       </div>
-                  
+
                       <div class="form-outline mb-4">
-                          <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" placeholder="Doe" required />
-                          <label class="form-label" for="lastName">Last Name</label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          class="form-control form-control-lg"
+                          placeholder="Doe"
+                          required
+                        />
+                        <label class="form-label" for="lastName"
+                          >Last Name</label
+                        >
                       </div>
-                  
+
                       <div class="form-outline mb-4">
-                          <input type="email" id="userEmail" name="email" class="form-control form-control-lg" placeholder="JohnDoe1@gmail.com" required />
-                          <label class="form-label" for="userEmail">Email address</label>
+                        <input
+                          type="email"
+                          id="userEmail"
+                          name="email"
+                          class="form-control form-control-lg"
+                          placeholder="JohnDoe1@gmail.com"
+                          required
+                        />
+                        <label class="form-label" for="userEmail"
+                          >Email address</label
+                        >
                       </div>
-                  
+
                       <div class="form-outline mb-4">
-                          <input type="password" id="userPassword" name="password" class="form-control form-control-lg" placeholder="***********" required />
-                          <label class="form-label" for="userPassword">Password</label>
+                        <input
+                          type="password"
+                          id="userPassword"
+                          name="password"
+                          class="form-control form-control-lg"
+                          placeholder="***********"
+                          required
+                        />
+                        <label class="form-label" for="userPassword"
+                          >Password</label
+                        >
                       </div>
-                  
+
                       <div class="dropdown-container">
-                          <select id="accountType" name="accountType">
-                              <option value="choose">Choose</option>
-                              <option value="adopter">Adopter</option>
-                              <option value="shelter">Shelter</option>
-                          </select>
+                        <select id="accountType" name="accountType" required>
+                          <option value="" disabled selected hidden>
+                            Choose
+                          </option>
+                          <option value="adopter">Adopter</option>
+                          <option value="shelter">Shelter</option>
+                        </select>
+                        <label class="form-label" for="accountType"
+                          >Account Type</label
+                        >
                       </div>
-                  
+
                       <div class="pt-1 mb-4">
-                          <button id="registerButton" class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
+                        <button
+                          id="registerButton"
+                          class="btn btn-dark btn-lg btn-block"
+                          type="submit"
+                        >
+                          Register
+                        </button>
                       </div>
                       <!-- Existing content below... -->
-                  </form>
-                  
+                    </form>
+
+                    <!-- 
+                      test form below for testing hardcoded data inside signup.js 
+                      receiving errors currently regarding sending the data through C# to DB 
+                    -->
+                    <form
+                      class="bg-white p-6 rounded shadow-md"
+                      onsubmit="submitForm(); return false;"
+                    >
+                      <button
+                        class="btn btn-dark btn-lg btn-block"
+                        type="submit"
+                      >
+                        Register
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>

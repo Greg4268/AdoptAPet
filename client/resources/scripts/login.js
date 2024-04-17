@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var userEmail = document.getElementById("userEmail").value;
       var userPassword = document.getElementById("userPassword").value;
 
+      console.log(userEmail);
+      console.log(userPassword);
+
       // Validate input fields if necessary
       if (!userEmail || !userPassword) {
         alert("Please enter both email and password.");
@@ -34,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "./index.html"; // Redirect to the homepage
           } else {
             alert("Invalid credentials, please try again.");
+            localStorage.removeItem("userToken"); // Remove the token if login is not successful, so dashboard option is not available 
           }
         })
         .catch((error) => {
@@ -42,4 +46,41 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
+});
+
+// event listener to update profile icon dropdown once logged in
+document.addEventListener("DOMContentLoaded", function () {
+  var profileDropdown = document.getElementById("profileDropdownMenu");
+  var dropdownMenu = profileDropdown.nextElementSibling;
+
+  // Check for user authentication (e.g., checking local storage for a token)
+  var isAuthenticated = localStorage.getItem("userToken") !== null;
+
+  if (isAuthenticated) {
+      // User is signed in, populate the dropdown menu
+      var dashboardLink = '<a class="dropdown-item" href="./adminDash.html">Dashboard</a>';
+      var logoutLink = '<a class="dropdown-item" href="./logout.html">Logout</a>'; // update 
+      dropdownMenu.innerHTML = dashboardLink + logoutLink;
+      profileDropdown.style.display = "block";  // Ensure the dropdown is visible
+
+      // Attach onclick event to show/hide the dropdown
+      profileDropdown.onclick = function (event) {
+          dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+      };
+  } else {
+      // User is not signed in, hide the dropdown
+      profileDropdown.style.display = "none";  // Hide the dropdown
+
+      // Optionally, prevent clicking on the dropdown
+      profileDropdown.onclick = function (event) {
+          event.preventDefault(); // Prevents any attached link actions if accidentally used in <a> tags
+      };
+  }
+
+  // Handle clicking outside the dropdown to close it
+  window.onclick = function (event) {
+      if (!event.target.matches("#profileDropdownMenu") && dropdownMenu.style.display === "block") {
+          dropdownMenu.style.display = "none";
+      }
+  };
 });

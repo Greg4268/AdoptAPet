@@ -17,6 +17,7 @@ namespace api.Models
         public bool favorited { get; set; }
         public bool deleted { get; set; }
         public int ShelterId { get; set; }
+        public string Image { get; set; }
 
         public static List<Pets> GetAllPets() // method to retrieve pet from database
         {
@@ -45,6 +46,7 @@ namespace api.Models
                     favorited = rdr.GetBoolean("deleted"),
                     deleted = rdr.GetBoolean("favorited"),
                     Age = rdr.GetInt32("Age"),
+                    Image = rdr.GetString("ImageUrl")
                 });
             }
             con.Close();
@@ -94,6 +96,20 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Availability", Availability ? 1 : 0);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.ExecuteNonQuery(); // execute sql command
+        }
+
+        public void FavoritePet(Pets value) {
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
+            con.Open(); // open db connection
+
+            using var cmd = new MySqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE Pet_Profile SET favorited = @favorited WHERE PetProfileId = @PetProfileId";
+            cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
+            cmd.Parameters.AddWithValue("@favorited", value.favorited);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
             con.Close();
         }
 
@@ -107,21 +123,6 @@ namespace api.Models
             cmd.CommandText = "UPDATE Pet_Profile SET deleted = @deleted WHERE PetProfileId = @PetProfileId";
             cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
             cmd.Parameters.AddWithValue("@deleted", value.deleted);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            con.Close();
-        }
-
-        public void FavoritePet(Pets value) {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open db connection
-
-            using var cmd = new MySqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = "UPDATE Pet_Profile SET favorited = @favorited WHERE PetProfileId = @PetProfileId";
-            cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
-            cmd.Parameters.AddWithValue("@favorited", value.favorited);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
