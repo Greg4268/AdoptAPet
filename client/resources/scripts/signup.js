@@ -1,16 +1,19 @@
 const profURL = "http://localhost:5292/api/UserAccounts";
 
-async function fetchProfiles(profURL) {
-  try {
-    const response = await fetch(profURL);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const profiles = await response.json();
-    displayPets(profiles);
-    console.log("Profiles Objects: ", profiles);
-  } catch (error) {
-    console.error("Error fetching pets:", error);
+function updateFormFields() {
+  var accountType = document.getElementById('accountType').value;
+  var adopterFields = document.getElementById('adopterFields');
+  var shelterFields = document.getElementById('shelterFields');
+
+  // Initially hide all specific fields
+  if (adopterFields) adopterFields.style.display = 'none';
+  if (shelterFields) shelterFields.style.display = 'none';
+
+  // Display fields based on account type
+  if (accountType === 'adopter' && adopterFields) {
+    adopterFields.style.display = 'block';
+  } else if (accountType === 'shelter' && shelterFields) {
+    shelterFields.style.display = 'block';
   }
 }
 

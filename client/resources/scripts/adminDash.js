@@ -48,7 +48,6 @@ async function displayShelters(shelters) {
   shelterContainer.innerHTML = ""; // Clear existing content
 
   for (const shelter of shelters) {
-    //const imageUrl = await fetchImage(); // Fetch image for each pet
     const sheltersCard = `
         <tr>
             <td>${shelter.shelterUsername}</td>
