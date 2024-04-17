@@ -9944,7 +9944,7 @@
     ]
   },
   "packageFolders": {
-  "/Users/joshlyon/.nuget/packages/": {}
+    "/Users/joshlyon/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
@@ -10023,13 +10023,5 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /Users/joshlyon/AdoptAPet/api/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

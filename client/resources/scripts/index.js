@@ -71,3 +71,6 @@ document.getElementById('clearSearch').addEventListener('click', function() {
   document.getElementById('searchInput').value = '';  // Clear the search input
   displayPets(allPets);  // Display all pets
 });
+
+
+// test test test test test test test test test test test test test test test test test test test test test test test
