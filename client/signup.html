@@ -75,74 +75,191 @@
             <div class="card" style="border-radius: 1rem">
               <div class="row g-0">
                 <div class="col-md-6 col-lg-5 d-none d-md-block">
-                  <img src="./resources/images/Logo.png" alt="Logo" style="display: block; padding-top: 50%; margin: auto; max-width: 100%; height: auto;" />
+                  <img
+                    src="./resources/images/Logo.png"
+                    alt="Logo"
+                    style="
+                      display: block;
+                      padding-top: 50%;
+                      margin: auto;
+                      max-width: 100%;
+                      height: auto;
+                    "
+                  />
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-                    <form id="signupForm" class="bg-white p-6 rounded shadow-md" onsubmit="submitForm(); return false;">
+                    <form
+                      id="signupForm"
+                      class="bg-white p-6 rounded shadow-md"
+                      onsubmit="submitForm(); return false;"
+                    >
                       <div class="dropdown-container">
-                        <select id="accountType" name="accountType" required onchange="updateFormFields()">
-                          <option value="" disabled selected hidden>Choose</option>
+                        <select
+                          id="accountType"
+                          name="accountType"
+                          required
+                          onchange="updateFormFields()"
+                        >
+                          <option value="" disabled selected hidden>
+                            Choose
+                          </option>
                           <option value="adopter">Adopter</option>
                           <option value="shelter">Shelter</option>
                         </select>
-                        <label class="form-label" for="accountType">Account Type</label>
+                        <label class="form-label" for="accountType"
+                          >Account Type</label
+                        >
                       </div>
-  
+
                       <!-- Shelter-specific Fields -->
                       <div id="shelterFields" style="display: none">
                         <div class="form-outline mb-4">
-                          <input type="text" id="shelterName" name="shelterName" class="form-control form-control-lg" placeholder="Shelter Name" required />
-                          <label class="form-label" for="shelterName">Shelter Name</label>
+                          <input
+                            type="text"
+                            id="shelterName"
+                            name="shelterName"
+                            class="form-control form-control-lg"
+                            placeholder="Shelter Name"
+                            required
+                          />
+                          <label class="form-label" for="shelterName"
+                            >Shelter Name</label
+                          >
                         </div>
                         <div class="form-outline mb-4">
-                          <input type="email" id="shelterEmail" name="email" class="form-control form-control-lg" placeholder="info@shelter.com" required />
-                          <label class="form-label" for="shelterEmail">Email Address</label>
+                          <input
+                            type="email"
+                            id="shelterEmail"
+                            name="email"
+                            class="form-control form-control-lg"
+                            placeholder="info@shelter.com"
+                            required
+                          />
+                          <label class="form-label" for="shelterEmail"
+                            >Email Address</label
+                          >
                         </div>
                         <div class="form-outline mb-4">
-                          <input type="password" id="shelterPassword" name="password" class="form-control form-control-lg" placeholder="********" required />
-                          <label class="form-label" for="shelterPassword">Password</label>
+                          <input
+                            type="password"
+                            id="shelterPassword"
+                            name="password"
+                            class="form-control form-control-lg"
+                            placeholder="********"
+                            required
+                          />
+                          <label class="form-label" for="shelterPassword"
+                            >Password</label
+                          >
                         </div>
                         <div class="form-outline mb-4">
-                          <input type="text" id="shelterAddress" name="address" class="form-control form-control-lg" placeholder="1234 Street, City" required />
-                          <label class="form-label" for="shelterAddress">Address</label>
+                          <input
+                            type="text"
+                            id="shelterAddress"
+                            name="address"
+                            class="form-control form-control-lg"
+                            placeholder="1234 Street, City"
+                            required
+                          />
+                          <label class="form-label" for="shelterAddress"
+                            >Address</label
+                          >
                         </div>
                         <div class="form-outline mb-4">
-                          <input type="text" id="shelterHours" name="hours" class="form-control form-control-lg" placeholder="9AM - 5PM" required />
-                          <label class="form-label" for="shelterHours">Hours of Operation</label>
+                          <input
+                            type="text"
+                            id="shelterHours"
+                            name="hours"
+                            class="form-control form-control-lg"
+                            placeholder="9AM - 5PM"
+                            required
+                          />
+                          <label class="form-label" for="shelterHours"
+                            >Hours of Operation</label
+                          >
                         </div>
                       </div>
 
                       <div id="adopterFields" style="display: none">
-                        <!-- Common Fields -->
+                        <!-- Adopter Fields -->
                         <div class="form-outline mb-4">
-                          <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder="John" required />
-                          <label class="form-label" for="firstName">First Name</label>
+                          <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            class="form-control form-control-lg"
+                            placeholder="John"
+                            required
+                          />
+                          <label class="form-label" for="firstName"
+                            >First Name</label
+                          >
                         </div>
-                        
+
                         <div class="form-outline mb-4">
-                          <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" placeholder="Doe" required />
-                          <label class="form-label" for="lastName">Last Name</label>
+                          <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            class="form-control form-control-lg"
+                            placeholder="Doe"
+                            required
+                          />
+                          <label class="form-label" for="lastName"
+                            >Last Name</label
+                          >
                         </div>
-                        
+
                         <div class="form-outline mb-4">
-                          <input type="text" id="age" name="age" class="form-control form-control-lg" placeholder="30" required />
+                          <input
+                            type="text"
+                            id="age"
+                            name="age"
+                            class="form-control form-control-lg"
+                            placeholder="30"
+                            required
+                          />
                           <label class="form-label" for="age">Age</label>
                         </div>
-                      
+
                         <div class="form-outline mb-4">
-                          <input type="email" id="adopterEmail" name="email" class="form-control form-control-lg" placeholder="john.doe@example.com" required />
-                          <label class="form-label" for="adopterEmail">Email Address</label>
+                          <input
+                            type="email"
+                            id="adopterEmail"
+                            name="email"
+                            class="form-control form-control-lg"
+                            placeholder="john.doe@example.com"
+                            required
+                          />
+                          <label class="form-label" for="adopterEmail"
+                            >Email Address</label
+                          >
                         </div>
-                      
+
                         <div class="form-outline mb-4">
-                          <input type="password" id="adopterPassword" name="password" class="form-control form-control-lg" placeholder="********" required />
-                          <label class="form-label" for="adopterPassword">Password</label>
+                          <input
+                            type="password"
+                            id="adopterPassword"
+                            name="password"
+                            class="form-control form-control-lg"
+                            placeholder="********"
+                            required
+                          />
+                          <label class="form-label" for="adopterPassword"
+                            >Password</label
+                          >
                         </div>
                       </div>
-  
+
                       <div class="pt-1 mb-4">
-                        <button id="registerButton" class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
+                        <button
+                          id="registerButton"
+                          class="btn btn-dark btn-lg btn-block"
+                          type="submit"
+                        >
+                          Register
+                        </button>
                       </div>
                     </form>
                   </div>
