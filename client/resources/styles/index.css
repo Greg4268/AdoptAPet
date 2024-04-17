@@ -37,6 +37,10 @@ select option {
   cursor: pointer;
 }
 
+#main-banner {
+  border: 4px solid rgb(85, 69, 69);
+}
+
 .dropdown-menu {
   position: absolute;
   right: 0;
