@@ -133,5 +133,39 @@ namespace api.Models
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+        public List<Pets> GetPetsByShelter(int shelterId)
+        {
+            var pets = new List<Pets>();
+            GetPublicConnection cs = new GetPublicConnection();
+            using (var con = new MySqlConnection(cs.cs))
+            {
+                con.Open();
+
+                using (var cmd = new MySqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Availability FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @shelterId ORDER BY p.PetProfileId";
+                    cmd.Parameters.AddWithValue("@shelterId", shelterId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var pet = new Pets
+                            {
+                                PetProfileId = reader.GetInt32("PetProfileId"),
+                                Name = reader.GetString("Name"),
+                                Breed = reader.GetString("Breed"),
+                                Species = reader.GetString("Species"),
+                                Availability = reader.GetBoolean("Availability")
+                            };
+                            pets.Add(pet);
+                        }
+                    }
+                }
+            }
+            return pets;
+        }
     }
 }
