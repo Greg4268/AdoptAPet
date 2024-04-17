@@ -25,7 +25,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
-            string stm = "Select * from Pet_Profile"; // sql statement to select everything from the pet table
+            string stm = "SELECT * FROM Pet_Profile"; // sql statement to select everything from the pet table
             MySqlCommand cmd = new MySqlCommand(stm, con); 
 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
@@ -70,6 +70,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ReturnedCount", ReturnedCount);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
         public void UpdateToDB() // method to update existing pet in database
@@ -156,6 +157,7 @@ namespace api.Models
                     Age = rdr.GetInt32("Age"),
                 };
             }
+            con.Close();
             return null; // if no pet is found
         }
     }

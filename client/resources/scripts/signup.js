@@ -28,24 +28,24 @@ function submitForm() {
 
   // Hardcoded test data
   const formData = {
-    UserID: "1",
     FirstName: "John",
     LastName: "Doe",
-    Age: "13",
+    Age: 13,
     Email: "johndoe@example.com",
     Password: "password123",
-    PrimaryPhone: "555-555-5555",
-    isAdmin: "false",
+    deleted: false,
     Address: "123 Orchard Ave",
-    YardSize: "123",
-    Fenced: "false",
-    BirthDate: "2020-08-04",
+    YardSize: 123,
+    Fenced: false,
+    AccountType: "Adopter",
+    // BirthDate: Date.parse("1984-12-11T00:00:00"),
   };
   //accountType = "adopter";
 
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {
+      "Accept": 'application/json',
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
@@ -54,11 +54,13 @@ function submitForm() {
       if (!response.ok) {
         // Extracting error message from response body
         return response.json().then(errorData => {
+          
           console.error("Server responded with error:", errorData);
           alert(`Error signing up: ${errorData.title || "Unknown error"}`);
           throw new Error(`HTTP error, status = ${response.status}`);
         });
       }
+      alert("response ok")
       return response.json();
     })
     .then((data) => {
