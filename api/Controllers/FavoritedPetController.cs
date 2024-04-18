@@ -16,13 +16,13 @@ namespace api.Controllers
     {
         // GET: api/Favorite
         [HttpGet]
-        public List<FavoritedPet> GetFavorites(int user)
+        public List<Pets> GetFavorites(int user)
         {
             return FavoritedPet.GetFavoritePets(user);
         }
 
         // GET: api/Favorite/5
-        [HttpGet("{user}, {pet}", Name = "GetFavoriteInstance")]
+        [HttpGet("{user}, {pet}")]
         public string GetFavoriteInstance(int user, int pet)
         {
             return "value";
@@ -42,7 +42,7 @@ namespace api.Controllers
         }
 
         // DELETE: api/Favorite/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{user}, {pet}")]
         public void StraightDelete(int user, int pet)
         {
             FavoritedPet.UpdateUnfavorite(user, pet);
