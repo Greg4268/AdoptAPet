@@ -35,33 +35,29 @@ function updateFormFields() {
   }
 }
 
-// Call updateFormFields on page load to set the correct initial state
-// document.addEventListener("DOMContentLoaded", updateFormFields);
-
-// form submission for sign up page
+// determine which account type is selected to call the correct form the register 
 function submitForm(event) {
 
   let formData;
-  let accountType = document.getElementById("accountType").value;
+  let accountType = document.getElementById("accountType").value.toLowerCase(); // Normalize input
+  alert(accountType); // Debugging to check account type
 
   if (accountType === "adopter") {
-
-    const formData = {
+    formData = {  // Use the already declared formData
       FirstName: document.getElementById("firstName").value.trim(),
       LastName: document.getElementById("lastName").value.trim(),
       Age: document.getElementById("age").value.trim(),
-      Email: document.getElementById("email").value.trim(),
-      Password: document.getElementById("password").value,
+      Email: document.getElementById("adopterEmail").value.trim(),
+      Password: document.getElementById("adopterPassword").value,
       deleted: false,
       Address: "N/A",
       YardSize: 0,
       Fenced: false,
-      AccountType: accountType,
+      AccountType: "adopter",
     };
     registerAdopter(formData);
   } else if (accountType === "shelter") {
-
-    const formData = {
+    formData = {  // Use the already declared formData
       ShelterUsername: document.getElementById("shelterName").value.trim(),
       ShelterEmail: document.getElementById("shelterEmail").value.trim(),
       ShelterPassword: document.getElementById("shelterPassword").value.trim(),
@@ -75,15 +71,15 @@ function submitForm(event) {
   } else {
     alert("Please select a valid account type");
   }
-  //if (event) event.preventDefault();
 }
+
 
 function registerAdopter(formData) {
   alert("register adopter called")
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
@@ -91,17 +87,32 @@ function registerAdopter(formData) {
     .then((response) => {
       if (!response.ok) {
         // Extracting error message from response body
-        return response.json().then((errorData) => {
-          console.error("Server responded with error:", errorData);
-          alert(`Error signing up: ${errorData.title || "Unknown error"}`);
+        return response.text().then((text) => {
+          try {
+            // Try to parse it as JSON
+            const data = JSON.parse(text);
+            console.error("Server responded with error:", data);
+            alert(`Error signing up: ${data.title || "Unknown error"}`);
+          } catch {
+            // If not JSON, use the text directly
+            alert(`Error signing up: ${text}`);
+          }
           throw new Error(`HTTP error, status = ${response.status}`);
         });
       }
-      return response.json();
+      // Handle no content
+      if (
+        response.headers.get("Content-Length") === "0" ||
+        response.status === 204
+      ) {
+        console.log("No content to parse");
+        return {};
+      } else {
+        return response.json();
+      }
     })
     .then((data) => {
       console.log("Server response data:", data);
-      alert("Signup successful!");
     })
     .catch((error) => {
       console.error("Error during sign up:", error);
