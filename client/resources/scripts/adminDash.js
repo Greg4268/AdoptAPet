@@ -51,11 +51,11 @@ async function displayShelters(shelters) {
     const sheltersCard = `
         <tr>
             <td>${shelter.shelterUsername}</td>
-            <td>[email add holder]</td>
+            <td>${shelter.email}</td>
             <td>${shelter.shelterID}</td>
             <td>[pet count holder]</td>
             <td>${shelter.address}</td>
-            <td>[approval status holder]</td>
+            <td>${shelter.approved}</td>
           </tr>
       `;
     shelterContainer.innerHTML += sheltersCard; // Append the new card
