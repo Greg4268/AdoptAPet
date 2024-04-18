@@ -40,13 +40,11 @@ function updateFormFields() {
 
 // form submission for sign up page
 function submitForm(event) {
-  alert("submitForm() has been called");
 
   let formData;
   let accountType = document.getElementById("accountType").value;
 
   if (accountType === "adopter") {
-    alert("Adopter signup data being sent");
 
     const formData = {
       FirstName: document.getElementById("firstName").value.trim(),
@@ -58,19 +56,20 @@ function submitForm(event) {
       Address: "N/A",
       YardSize: 0,
       Fenced: false,
-      AccountType: document.getElementById("accountType").value,
+      AccountType: accountType,
     };
     registerAdopter(formData);
   } else if (accountType === "shelter") {
-    alert("Shelter signup data being sent");
 
     const formData = {
-      ShelterName: document.getElementById("shelterName").value.trim(),
+      ShelterUsername: document.getElementById("shelterName").value.trim(),
       ShelterEmail: document.getElementById("shelterEmail").value.trim(),
       ShelterPassword: document.getElementById("shelterPassword").value.trim(),
-      ShelterAddress: document.getElementById("shelterAddress").value.trim(),
-      AccountType: document.getElementById("accountType").value,
+      Address: document.getElementById("shelterAddress").value.trim(),
+      AccountType: accountType,
       HoursOfOperation: document.getElementById("shelterHours").value.trim(),
+      deleted: false,
+      approved: false,
     };
     registerShelter(formData);
   } else {
@@ -80,7 +79,6 @@ function submitForm(event) {
 }
 
 function registerAdopter(formData) {
-  alert("registerAdopter() has been called");
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {
@@ -98,7 +96,6 @@ function registerAdopter(formData) {
           throw new Error(`HTTP error, status = ${response.status}`);
         });
       }
-      alert("response ok");
       return response.json();
     })
     .then((data) => {
@@ -112,7 +109,6 @@ function registerAdopter(formData) {
 }
 
 function registerShelter(formData) {
-  alert("registerShelter() has been called");
   fetch("http://localhost:5292/api/shelters", {
     method: "POST",
     headers: {
@@ -124,21 +120,38 @@ function registerShelter(formData) {
     .then((response) => {
       if (!response.ok) {
         // Extracting error message from response body
-        return response.json().then((errorData) => {
-          console.error("Server responded with error:", errorData);
-          alert(`Error signing up: ${errorData.title || "Unknown error"}`);
+        return response.text().then((text) => {
+          try {
+            // Try to parse it as JSON
+            const data = JSON.parse(text);
+            console.error("Server responded with error:", data);
+            alert(`Error signing up: ${data.title || "Unknown error"}`);
+          } catch {
+            // If not JSON, use the text directly
+            alert(`Error signing up: ${text}`);
+          }
           throw new Error(`HTTP error, status = ${response.status}`);
         });
       }
-      alert("response ok");
-      return response.json();
+      // Handle no content
+      if (
+        response.headers.get("Content-Length") === "0" ||
+        response.status === 204
+      ) {
+        console.log("No content to parse");
+        return {};
+      } else {
+        return response.json();
+      }
     })
     .then((data) => {
       console.log("Server response data:", data);
-      alert("Signup successful!");
     })
     .catch((error) => {
       console.error("Error during sign up:", error);
       alert(`Error during sign up: ${error.message}`);
     });
+
+    // document.getElementById('signupForm').reset();
+    // updateFormFields();
 }

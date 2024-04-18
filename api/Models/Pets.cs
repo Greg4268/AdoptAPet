@@ -37,7 +37,7 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     BirthDate = rdr.GetDateTime("BirthDate"),
-                    Availability = rdr.GetInt32("Availability") == 1, // convert tinyint to boolean, if 1 then it is true
+                    Availability = rdr.GetBoolean("Availability"), // convert tinyint to boolean, if 1 then it is true
                     Species = rdr.GetString("Species"),
                     CanVisit = rdr.GetInt32("CanVisit") == 1,
                     ReturnedCount = rdr.GetInt32("ReturnedCount"),
@@ -64,9 +64,9 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Age", Age);
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@Availability", Availability ? 1 : 0);
+            cmd.Parameters.AddWithValue("@Availability", Availability);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@CanVisit", CanVisit? 1 : 0);
+            cmd.Parameters.AddWithValue("@CanVisit", CanVisit);
             cmd.Parameters.AddWithValue("@ReturnedCount", ReturnedCount);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.ExecuteNonQuery(); // execute sql command
@@ -146,9 +146,9 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     BirthDate = rdr.GetDateTime("BirthDate"),
-                    Availability = rdr.GetInt32("Availability") == 1, // convert tinyint to boolean, if 1 then it is true
+                    Availability = rdr.GetBoolean("Availability"), // convert tinyint to boolean, if 1 then it is true
                     Species = rdr.GetString("Species"),
-                    CanVisit = rdr.GetInt32("CanVisit") == 1,
+                    CanVisit = rdr.GetBoolean("CanVisit"),
                     ReturnedCount = rdr.GetInt32("ReturnedCount"),
                     FavoriteCount = rdr.GetInt32("FavoriteCount"),
                     ShelterId = rdr.GetInt32("ShelterId"),
