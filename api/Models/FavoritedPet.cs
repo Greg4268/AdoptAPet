@@ -73,48 +73,24 @@ namespace api.Models
             using (var con = new MySqlConnection(cs.cs))
             {
                 con.Open(); // open db connection
-
-                // Start a transaction
-                using (var transaction = con.BeginTransaction())
+                using (var transaction = con.BeginTransaction()) // Start a transaction
                 {
-                    try
+                    // Delete the favorite entry
+                    using (var deleteCmd = new MySqlCommand("DELETE FROM FavoritePets WHERE UserId = @user AND PetProfileId = @pet", con, transaction))
                     {
-                        // Delete the favorite entry
-                        using (var deleteCmd = new MySqlCommand())
-                        {
-                            deleteCmd.Connection = con;
-                            deleteCmd.Transaction = transaction; // Assign transaction to command
-                            deleteCmd.CommandText = "DELETE FROM FavoritePets WHERE UserId = @user AND PetProfileId = @pet";
-                            deleteCmd.Parameters.AddWithValue("@user", user);
-                            deleteCmd.Parameters.AddWithValue("@pet", pet);
-                            int result = deleteCmd.ExecuteNonQuery();
-                            if (result == 0)
-                            {
-                                throw new Exception("No favorite found to unfavorite.");
-                            }
-                        }
-
-                        // Decrease favorite count in Pet_Profile
-                        using (var updateCmd = new MySqlCommand())
-                        {
-                            updateCmd.Connection = con;
-                            updateCmd.Transaction = transaction; // Assign transaction to command
-                            updateCmd.CommandText = "UPDATE Pet_Profile SET FavoriteCount = FavoriteCount - 1 WHERE PetProfileId = @pet AND FavoriteCount > 0";
-                            updateCmd.Parameters.AddWithValue("@pet", pet);
-                            updateCmd.ExecuteNonQuery();
-                        }
-
-                        // Commit transaction
-                        transaction.Commit();
+                        deleteCmd.Parameters.AddWithValue("@user", user);
+                        deleteCmd.Parameters.AddWithValue("@pet", pet);
+                        deleteCmd.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
+                    // Decrease favorite count in Pet_Profile
+                    using (var updateCmd = new MySqlCommand("UPDATE Pet_Profile SET FavoriteCount = FavoriteCount - 1 WHERE PetProfileId = @pet AND FavoriteCount > 0", con, transaction))
                     {
-                        transaction.Rollback();
-                        Console.WriteLine("An error occurred: " + ex.Message);
+                        updateCmd.Parameters.AddWithValue("@pet", pet);
+                        updateCmd.ExecuteNonQuery();
                     }
+                    transaction.Commit(); // Commit transaction
                 }
             }
         }
-
     }
 }
