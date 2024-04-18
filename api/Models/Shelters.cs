@@ -10,7 +10,7 @@ namespace api.Models
         public string Address { get; set; }
         public string HoursOfOperation { get; set; }
         public bool deleted { get; set; }
-        public string ShelterEmail { get; set; }
+        public string Email { get; set; }
         public bool Approved { get; set; }
         public string AccountType { get; set; }
 
@@ -35,7 +35,7 @@ namespace api.Models
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
                     deleted = rdr.GetBoolean("deleted"),
                     Approved = rdr.GetBoolean("Approved"),
-                    ShelterEmail = rdr.GetString("Email"),
+                    Email = rdr.GetString("Email"),
                     AccountType = rdr.GetString("AccountType")
                 });
             }
@@ -56,9 +56,10 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.Parameters.AddWithValue("@deleted", deleted);
-            cmd.Parameters.AddWithValue("@Email", ShelterEmail);
+            cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
+
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -78,7 +79,7 @@ namespace api.Models
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@HoursOfOperation: " + HoursOfOperation);
             Console.WriteLine("@deleted" + deleted);
-            Console.WriteLine("@Email" + ShelterEmail);
+            Console.WriteLine("@Email" + Email);
             Console.WriteLine("@Approved" + Approved);
             Console.WriteLine("@AccountType" + AccountType);
 
@@ -90,7 +91,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.Parameters.AddWithValue("@deleted", deleted);
-            cmd.Parameters.AddWithValue("@Email", ShelterEmail);
+            cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
             cmd.ExecuteNonQuery(); // execute sql command
@@ -117,7 +118,7 @@ namespace api.Models
                     Address = rdr.GetString("Address"),
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
                     deleted = rdr.GetBoolean("deleted"),
-                    ShelterEmail = rdr.GetString("Email"),
+                    Email = rdr.GetString("Email"),
                     Approved = rdr.GetBoolean("Approved"),
                     AccountType = rdr.GetString("AccountType")
                 };
@@ -165,7 +166,6 @@ namespace api.Models
                                 Name = reader.GetString("Name"),
                                 Breed = reader.GetString("Breed"),
                                 Species = reader.GetString("Species"),
-                                Availability = reader.GetBoolean("Availability")
                             };
                             pets.Add(pet);
                         }
