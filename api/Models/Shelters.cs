@@ -10,8 +10,10 @@ namespace api.Models
         public string Address { get; set; }
         public string HoursOfOperation { get; set; }
         public bool deleted { get; set; }
-        public string Email { get; set; }
+        public string ShelterEmail { get; set; }
         public bool Approved { get; set; }
+        public string AccountType { get; set; }
+
         public static List<Shelters> GetAllShelters() // method to retrieve shelter from database
         {
             List<Shelters> myShelters = new List<Shelters>(); // initialize array to hold shelter
@@ -33,7 +35,8 @@ namespace api.Models
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
                     deleted = rdr.GetBoolean("deleted"),
                     Approved = rdr.GetBoolean("Approved"),
-                    Email = rdr.GetString("Email"),
+                    ShelterEmail = rdr.GetString("Email"),
+                    AccountType = rdr.GetString("AccountType")
                 });
             }
             con.Close();
@@ -45,7 +48,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved) VALUES (@ShelterId, @Username, @Password, @Address, @HoursOfOperation, @deleted, @Email, @Approved)"; // sql command to insert a new shelter
+            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) VALUES (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @ShelterEmail, @Approved, @AccountType)"; // sql command to insert a new shelter
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
@@ -55,6 +58,8 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
+            cmd.Parameters.AddWithValue("@AccountType", AccountType);
+
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -65,7 +70,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "UPDATE Shelter SET ShelterId = @ShelterId, Username = @Username, Password = @Password, Address = @Address, HoursOfOperation = @HoursOfOperation, deleted = @deleted, Email = @Email, Approved = @Approved WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
+            string stm = "UPDATE Shelter SET ShelterId = @ShelterId, Username = @ShelterUsername, Password = @ShelterPassword, Address = @Address, HoursOfOperation = @HoursOfOperation, deleted = @deleted, ShelterEmail = @Email, Approved = @Approved, AccountType = @AccountType WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@ShelterId: " + ShelterId);
@@ -74,8 +79,9 @@ namespace api.Models
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@HoursOfOperation: " + HoursOfOperation);
             Console.WriteLine("@deleted" + deleted);
-            Console.WriteLine("@Email" + Email);
+            Console.WriteLine("@Email" + ShelterEmail);
             Console.WriteLine("@Approved" + Approved);
+            Console.WriteLine("@AccountType" + AccountType);
 
     
             using var cmd = new MySqlCommand(stm, con); 
@@ -85,8 +91,9 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.Parameters.AddWithValue("@deleted", deleted);
-            cmd.Parameters.AddWithValue("@Email", Email);
+            cmd.Parameters.AddWithValue("@Email", ShelterEmail);
             cmd.Parameters.AddWithValue("@Approved", Approved);
+            cmd.Parameters.AddWithValue("@AccountType", AccountType);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -111,8 +118,9 @@ namespace api.Models
                     Address = rdr.GetString("Address"),
                     HoursOfOperation = rdr.GetString("HoursOfOperation"),
                     deleted = rdr.GetBoolean("deleted"),
-                    Email = rdr.GetString("Email"),
+                    ShelterEmail = rdr.GetString("Email"),
                     Approved = rdr.GetBoolean("Approved"),
+                    AccountType = rdr.GetString("AccountType")
                 };
             }
             con.Close();

@@ -67,7 +67,6 @@ namespace api.Models
 
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@FirstName", FirstName);
             cmd.Parameters.AddWithValue("@LastName", LastName);
             cmd.Parameters.AddWithValue("@Age", Age);
