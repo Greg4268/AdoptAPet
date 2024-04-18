@@ -1,26 +1,51 @@
 const profURL = "http://localhost:5292/api/UserAccounts";
+const shelterURL = "http://localhost:5292/api/Shelters";
 
 function updateFormFields() {
+  console.log("Updating form fields displayed");
   var accountType = document.getElementById("accountType").value;
   var adopterFields = document.getElementById("adopterFields");
   var shelterFields = document.getElementById("shelterFields");
 
-  // Initially hide all specific fields
-  if (adopterFields) adopterFields.style.display = "none";
-  if (shelterFields) shelterFields.style.display = "none";
+  // Select all input fields within adopterFields and shelterFields
+  var adopterInputs = adopterFields.querySelectorAll("input");
+  var shelterInputs = shelterFields.querySelectorAll("input");
 
-  // Display fields based on account type
-  if (accountType === "adopter" && adopterFields) {
+  // Disable all input fields initially
+  adopterInputs.forEach((input) => {
+    input.disabled = true;
+  });
+  shelterInputs.forEach((input) => {
+    input.disabled = true;
+  });
+
+  // Enable and show only the fields relevant to the selected account type
+  if (accountType === "adopter") {
+    adopterInputs.forEach((input) => {
+      input.disabled = false;
+    });
     adopterFields.style.display = "block";
-  } else if (accountType === "shelter" && shelterFields) {
+    shelterFields.style.display = "none";
+  } else if (accountType === "shelter") {
+    shelterInputs.forEach((input) => {
+      input.disabled = false;
+    });
     shelterFields.style.display = "block";
+    adopterFields.style.display = "none";
   }
 }
 
+// Call updateFormFields on page load to set the correct initial state
+// document.addEventListener("DOMContentLoaded", updateFormFields);
+
 // form submission for sign up page
-function submitForm() {
-  if (document.getElementById("accountType").value === "Adopter") {
-    Alert("Adopter signup data being sent")
+function submitForm(event) {
+
+  let formData;
+  let accountType = document.getElementById("accountType").value;
+
+  if (accountType === "adopter") {
+
     const formData = {
       FirstName: document.getElementById("firstName").value.trim(),
       LastName: document.getElementById("lastName").value.trim(),
@@ -31,24 +56,34 @@ function submitForm() {
       Address: "N/A",
       YardSize: 0,
       Fenced: false,
-      AccountType: document.getElementById("accountType").value,
+      AccountType: accountType,
     };
-  } else if (document.getElementById("accountType").value === "Shelter") {
-    Alert("Shelter signup data being sent")
+    registerAdopter(formData);
+  } else if (accountType === "shelter") {
+
     const formData = {
-      ShelterName: document.getElementById("shelterName").value.trim(),
+      ShelterUsername: document.getElementById("shelterName").value.trim(),
       ShelterEmail: document.getElementById("shelterEmail").value.trim(),
       ShelterPassword: document.getElementById("shelterPassword").value.trim(),
-      ShelterAddress: document.getElementById("shelterAddress").value.trim(),
-      AccountType: document.getElementById("accountType").value,
+      Address: document.getElementById("shelterAddress").value.trim(),
+      AccountType: accountType,
       HoursOfOperation: document.getElementById("shelterHours").value.trim(),
+      deleted: false,
+      approved: false,
     };
+    registerShelter(formData);
+  } else {
+    alert("Please select a valid account type");
   }
+  //if (event) event.preventDefault();
+}
 
+function registerAdopter(formData) {
+  alert("register adopter called")
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
@@ -62,7 +97,6 @@ function submitForm() {
           throw new Error(`HTTP error, status = ${response.status}`);
         });
       }
-      alert("response ok");
       return response.json();
     })
     .then((data) => {
@@ -73,4 +107,52 @@ function submitForm() {
       console.error("Error during sign up:", error);
       alert(`Error during sign up: ${error.message}`);
     });
+}
+
+function registerShelter(formData) {
+  fetch("http://localhost:5292/api/shelters", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // Extracting error message from response body
+        return response.text().then((text) => {
+          try {
+            // Try to parse it as JSON
+            const data = JSON.parse(text);
+            console.error("Server responded with error:", data);
+            alert(`Error signing up: ${data.title || "Unknown error"}`);
+          } catch {
+            // If not JSON, use the text directly
+            alert(`Error signing up: ${text}`);
+          }
+          throw new Error(`HTTP error, status = ${response.status}`);
+        });
+      }
+      // Handle no content
+      if (
+        response.headers.get("Content-Length") === "0" ||
+        response.status === 204
+      ) {
+        console.log("No content to parse");
+        return {};
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      console.log("Server response data:", data);
+    })
+    .catch((error) => {
+      console.error("Error during sign up:", error);
+      alert(`Error during sign up: ${error.message}`);
+    });
+
+    // document.getElementById('signupForm').reset();
+    // updateFormFields();
 }
