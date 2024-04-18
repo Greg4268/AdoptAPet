@@ -22,8 +22,8 @@ namespace api.Controllers
         }
 
         // GET: api/Favorite/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{user}, {pet}", Name = "GetFavoriteInstance")]
+        public string GetFavoriteInstance(int user, int pet)
         {
             return "value";
         }
@@ -36,15 +36,16 @@ namespace api.Controllers
 
         // PUT: api/Favorite/5
         [HttpPut("{id}")]
-        public void Put(int user, int pet, [FromBody] string value)
+        public void ToggleFavorite(int user, int pet)
         {
-
+            FavoritedPet.FavoritePet(user, pet);
         }
 
         // DELETE: api/Favorite/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void StraightDelete(int user, int pet)
         {
+            FavoritedPet.UpdateUnfavorite(user, pet);
         }
     }
 }
