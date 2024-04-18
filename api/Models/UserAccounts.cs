@@ -61,13 +61,13 @@ namespace api.Models
                 deleted, Address, YardSize, Fenced, AccountType) 
             VALUES (
                 @UserId, @FirstName, @LastName, @Age, @Email, @Password, 
-                @deleted, @Address, @YardSize, @Fenced, @AccountType)";
+                @deleted, @Address, @YardSize, @Fenced, @AccountType)"; // sql command to insert a new pet
 
             System.Console.WriteLine("test");
 
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
+            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@FirstName", FirstName);
             cmd.Parameters.AddWithValue("@LastName", LastName);
             cmd.Parameters.AddWithValue("@Age", Age);

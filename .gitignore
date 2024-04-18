@@ -11,3 +11,4 @@ project.nuget.cache
 *api.dll
 *api.pdb
 *api.assets.cache
+*api/bin/Debug/net7.0/api.dll
