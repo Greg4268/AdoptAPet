@@ -15,8 +15,32 @@ function getParsedUserToken() {
   return tokenString ? JSON.parse(tokenString) : null;
 }
 
-function handleOnLoadCommon() {
-  loginValDropDown();
+document.addEventListener('DOMContentLoaded', function () {
+  loginValDropDown(); // This will adjust the display settings of dashboard and logout links correctly.
+});
+
+function toggleDropdownMenu() {
+  const dropdownMenu = document.querySelector(".dropdown-menu");
+  if (!dropdownMenu) return;
+  loginValDropDown(); // Ensure visibility states are correct based on login before toggling
+  dropdownMenu.style.display =
+    dropdownMenu.style.display === "block" ? "none" : "block";
+}
+
+function loginValDropDown() {
+  const dashboardLink = document.getElementById("dashboardLink");
+  const logoutLink = document.getElementById("logoutLink");
+
+  const userToken = getParsedUserToken();
+  if (userToken) {
+    dashboardLink.style.display = "block";
+    logoutLink.style.display = "block";
+  } else {
+    dashboardLink.style.display = "none";
+    logoutLink.style.display = "none";
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    if (dropdownMenu) dropdownMenu.style.display = "none"; // Hide dropdown if not logged in
+  }
 }
 
 function loginValidationForm() {
@@ -51,23 +75,6 @@ function loginValidationSignUp() {
     window.location.href = "./signup.html";
   }
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  loginValDropDown(); // Check token and adjust UI on page load
-});
-
-function loginValDropDown() {
-  const userData = getParsedUserToken();
-
-  if (userData) {
-    document.getElementById("dashboardLink").style.display = "block";
-    document.getElementById("logoutLink").style.display = "block";
-  } else {
-    document.getElementById("dashboardLink").style.display = "none";
-    document.getElementById("logoutLink").style.display = "none";
-  }
-}
-
 
 function logout() {
   localStorage.removeItem("userToken"); // Remove token from local storage
