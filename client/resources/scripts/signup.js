@@ -75,14 +75,15 @@ function submitForm(event) {
   } else {
     alert("Please select a valid account type");
   }
-  if (event) event.preventDefault();
+  //if (event) event.preventDefault();
 }
 
 function registerAdopter(formData) {
+  alert("register adopter called")
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
