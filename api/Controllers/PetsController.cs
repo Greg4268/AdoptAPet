@@ -45,9 +45,9 @@ namespace api.Controllers
 
         // DELETE: api/Pets/5
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] Pets value)
+        public void Delete(int id)
         {
-            value.FavoritePet(value);
+            Pets.DeletePet(id);
         }
     }
 
