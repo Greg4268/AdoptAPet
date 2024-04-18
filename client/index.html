@@ -43,7 +43,10 @@
           <!-- Right-aligned links -->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" href="./adoptForm.html"
+              <a
+                class="nav-link active"
+                onclick="loginValidationForm()"
+                href="#"
                 >Adoption Form</a
               >
             </li>
@@ -51,16 +54,18 @@
               <a class="nav-link active" href="./shelters.html">Shelters</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="./login.html">Login / Sign Up</a>
+              <a
+                class="nav-link active"
+                onclick="loginValidationLogin()"
+                href="#"
+                >Login / Sign Up</a
+              >
             </li>
             <div class="profile-dropdown">
-              <img
-                src="./resources/images/profile_icon.png"
-                alt="Profile"
-                id="profileDropdownMenu"
-              />
+              <img src="./resources/images/profile_icon.png" alt="Profile" id="profileDropdownMenu" style="cursor: pointer;" />
               <div class="dropdown-menu" aria-labelledby="profileDropdownMenu">
-                <!-- Links will be dynamically inserted here -->
+                <a href="#" id="dashboardLink" class="dropdown-item" style="display: none;" onclick="switchDash();">Dashboard</a>
+                <a href="#" id="logoutLink" class="dropdown-item" style="display: none;" onclick="logout();">Logout</a>
               </div>
             </div>
           </ul>
@@ -69,7 +74,10 @@
     </nav>
 
     <div class="container py-4" id="card-container">
-      <div class="p-2 mb-4 bg-body-tertiary rounded-3 background-image" id="main-banner">
+      <div
+        class="p-2 mb-4 bg-body-tertiary rounded-3 background-image"
+        id="main-banner"
+      >
         <!-- div for big container background image -->
         <div class="container-fluid py-5 px-5">
           <h1 class="display-5 fw-bold" id="main-page-text">
@@ -93,7 +101,14 @@
           id="searchInput"
         />
         <button class="btn btn-primary" type="submit">Search</button>
-        <button class="btn btn-light px-3" type="button" id="clearSearch" style="margin-left: 10px;">Clear</button>
+        <button
+          class="btn btn-light px-3"
+          type="button"
+          id="clearSearch"
+          style="margin-left: 10px"
+        >
+          Clear
+        </button>
       </form>
 
       <!-- use the cards below as the templates loaded when the page is being loaded (done in js) -->
@@ -123,5 +138,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="./resources/scripts/index.js"></script>
+    <script src="./resources/scripts/common.js"></script>
   </body>
 </html>
