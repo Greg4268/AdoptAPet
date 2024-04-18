@@ -1,14 +1,23 @@
-# Exclude the obj directory
+# Ignore directories
 obj/
+bin/
+**/obj/
+**/bin/
 
-# Exclude other generated files that are specific to your environment
-*.csproj.nuget.dgspec.json
-*.csproj.nuget.g.targets
-project.assets.json
-project.nuget.cache
+# Ignore specific file patterns
+*.dgspec.json
+*.g.targets
+*.g.props
 *.assets.cache
 *.AssemblyReference.cache
-*api.dll
-*api.pdb
-*api.assets.cache
-*api/bin/Debug/net7.0/api.dll
+*.dll
+*.pdb
+*.cache
+
+# General ignore for NuGet generated files
+project.assets.json
+project.nuget.cache
+*.nuget.cache
+
+# Specific file paths (if needed specifically)
+api/obj/Debug/net7.0/api.GeneratedMSBuildEditorConfig.editorconfig
