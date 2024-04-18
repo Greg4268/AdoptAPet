@@ -17,11 +17,15 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      
+
       // Construct the query string
-      var queryString = `email=${encodeURIComponent(userEmail)}&password=${encodeURIComponent(userPassword)}`;
+      var queryString = `${userPassword}?email=${userEmail}`;
+
+      alert(queryString)
 
       // Send login data to the C# controller
-      fetch(`http://localhost:5292/api/UserAccounts?${queryString}`, {
+      fetch(`http://localhost:5292/api/UserAccounts/${queryString}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((response) => response.json())
       .then((data) => {
-        if (data.isValid) {
+        alert(JSON.stringify(data));
+        if (data) {
           localStorage.setItem("userToken", data.token); // Save the token if login is successful
           window.location.href = "./index.html"; // Redirect to the homepage
         } else {
@@ -38,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch((error) => {
-        console.error("Error during login:", error);
+        console.error("Invalid credentials, please try again.");
         alert("Error logging in, please try again later.");
       });
     });
