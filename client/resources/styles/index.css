@@ -1,6 +1,21 @@
-.dropdown-container {
-  padding: 10px;
-  margin: 10px 0;
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none; /* Ensure it's not visible by default */
+  position: absolute;
+  background-color: #ffffff; /* Adjust as necessary */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  border-radius: 0.25rem; /* Rounded corners */
+  padding: 0.5rem 0;
+  z-index: 1000;
+  width: 200px;
+}
+
+.profile-dropdown:hover .dropdown-menu {
+  display: block; /* This is crucial for showing the menu on hover */
 }
 
 select {

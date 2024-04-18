@@ -17,35 +17,36 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      
-
       // Construct the query string
       var queryString = `${userPassword}?email=${userEmail}`;
 
-      alert(queryString)
+      // alert(queryString) // check string content before fetch
 
       // Send login data to the C# controller
       fetch(`http://localhost:5292/api/UserAccounts/${queryString}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(JSON.stringify(data));
-        if (data) {
-          localStorage.setItem("userToken", data.token); // Save the token if login is successful
-          window.location.href = "./index.html"; // Redirect to the homepage
-        } else {
-          alert("Invalid credentials, please try again.");
-          localStorage.removeItem("userToken"); // Remove the token if login is not successful, so dashboard option is not available 
-        }
-      })
-      .catch((error) => {
-        console.error("Invalid credentials, please try again.");
-        alert("Error logging in, please try again later.");
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          alert(JSON.stringify(data));
+          alert(JSON.stringify(data.userId));
+          if (data) {
+            const token = JSON.stringify({
+              userId: data.userId,
+              accountType: data.accountType,
+            });
+            localStorage.setItem("userToken", token);
+            window.location.href = './index.html' // Assuming you have a function to handle redirection
+          }
+        })
+        .catch((error) => {
+          localStorage.removeItem("userToken");
+          console.error("There was an error leading to the catch: ", error);
+          alert("Invalid credential, please try again.");
+        });
     });
   }
 });

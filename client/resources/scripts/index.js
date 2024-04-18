@@ -37,7 +37,7 @@ async function displayPets(pets) {
               <p>${pet.species}</p>
               <a class="btn btn-outline-secondary" role="button" href="./petProfile.html?petId=${pet.id}">See ${pet.name}</a>
             </div>
-            <img src="${pet.image}" class="ms-3">
+            <img src="${pet.imageUrl}" class="ms-3">
           </div>
         </div>
       </div>
@@ -46,29 +46,41 @@ async function displayPets(pets) {
   }
 }
 
-
-document.getElementById('searchForm').addEventListener('submit', function(event) {
-  event.preventDefault();
-  const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-  searchPets(searchQuery);
-});
+// index.js / html specific search function for pets
+// -------------------------------------------------
+document
+  .getElementById("searchForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    const searchQuery = document
+      .getElementById("searchInput")
+      .value.toLowerCase();
+    searchPets(searchQuery);
+  });
 
 function searchPets(query) {
-  const filteredPets = allPets.filter(pet => 
-      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query)
+  const filteredPets = allPets.filter(
+    (pet) =>
+      pet.name.toLowerCase().includes(query) ||
+      pet.breed.toLowerCase().includes(query)
   );
   displayPets(filteredPets);
 }
 
 function searchPets(query) {
-  const filteredPets = allPets.filter(pet => 
-      pet.name.toLowerCase().includes(query) || pet.breed.toLowerCase().includes(query) || pet.species.toLowerCase().includes(query)
+  const filteredPets = allPets.filter(
+    (pet) =>
+      pet.name.toLowerCase().includes(query) ||
+      pet.breed.toLowerCase().includes(query) ||
+      pet.species.toLowerCase().includes(query)
   );
   displayPets(filteredPets);
 }
 
-document.getElementById('clearSearch').addEventListener('click', function() {
-  document.getElementById('searchInput').value = '';  // Clear the search input
-  displayPets(allPets);  // Display all pets
+document.getElementById("clearSearch").addEventListener("click", function () {
+  document.getElementById("searchInput").value = ""; // Clear the search input
+  displayPets(allPets); // Display all pets
 });
+
+// -------------------------------------------------
 
