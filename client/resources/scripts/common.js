@@ -68,6 +68,7 @@ function loginValDropDown() {
   }
 }
 
+
 function logout() {
   localStorage.removeItem("userToken"); // Remove token from local storage
   loginValDropDown(); // Update link visibility
