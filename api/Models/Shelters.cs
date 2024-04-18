@@ -54,7 +54,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("Approved", Approved);
+            cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -158,7 +158,6 @@ namespace api.Models
                                 Name = reader.GetString("Name"),
                                 Breed = reader.GetString("Breed"),
                                 Species = reader.GetString("Species"),
-                                Availability = reader.GetBoolean("Availability")
                             };
                             pets.Add(pet);
                         }

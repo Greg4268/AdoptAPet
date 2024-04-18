@@ -9,12 +9,8 @@ namespace api.Models
         public DateTime BirthDate { get; set; } 
         public string Breed { get; set; }
         public string Name { get; set; }
-        public bool Availability { get; set; }
         public string Species { get; set; }
-        public bool CanVisit { get; set; }
-        public int ReturnedCount { get; set; }
-        public int FavoriteCount { get; set; }
-        public bool favorited { get; set; }
+        public bool CanVisit { get; set; }     
         public bool deleted { get; set; }
         public int ShelterId { get; set; }
         public string Image { get; set; }
@@ -34,19 +30,15 @@ namespace api.Models
                 myPets.Add(new Pets() // create pet object for each row
                 {
                     PetProfileId = rdr.GetInt32("PetProfileId"),
+                    Age = rdr.GetInt32("Age"),
+                    BirthDate = rdr.GetDateTime("BirthDate"),
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
-                    BirthDate = rdr.GetDateTime("BirthDate"),
-                    Availability = rdr.GetBoolean("Availability"), // convert tinyint to boolean, if 1 then it is true
                     Species = rdr.GetString("Species"),
-                    CanVisit = rdr.GetInt32("CanVisit") == 1,
-                    ReturnedCount = rdr.GetInt32("ReturnedCount"),
-                    FavoriteCount = rdr.GetInt32("FavoriteCount"),
+                    CanVisit = rdr.GetBoolean("CanVisit"),
+                    deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
-                    favorited = rdr.GetBoolean("deleted"),
-                    deleted = rdr.GetBoolean("favorited"),
-                    Age = rdr.GetInt32("Age"),
-                    Image = rdr.GetString("ImageUrl")
+                    Image = rdr.GetString("ImageUrl"),
                 });
             }
             con.Close();
@@ -58,17 +50,19 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, Breed, Name, Availability, Species, CanVisit, ReturnedCount, FavoriteCount) VALUES (@PetProfileId, @Age, @Breed, @Name, @Availability, @Species, @CanVisit, @ReturnedCount, @FavoriteCount)"; // sql command to insert a new pet
+            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, CanVisit, deleted, ShelterId, Image) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @CanVisit, @deleted, @ShelterId, @Image)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
+            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@Availability", Availability);
             cmd.Parameters.AddWithValue("@Species", Species);
             cmd.Parameters.AddWithValue("@CanVisit", CanVisit);
-            cmd.Parameters.AddWithValue("@ReturnedCount", ReturnedCount);
-            cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
+            cmd.Parameters.AddWithValue("@Image", Image);
+            cmd.Prepare();
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
         }
@@ -79,27 +73,26 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, Breed = @Breed, Name = @Name, Availability = @Availability WHERE PetProfileID = @PetProfileId"; // sql command for updating a pet
-            Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
-            Console.WriteLine("Parameters:"); // log parameters
-            Console.WriteLine("@PetProfileId: " + PetProfileId);
-            Console.WriteLine("@Age: " + Age);
-            Console.WriteLine("@Breed: " + Breed);
-            Console.WriteLine("@Name: " + Name);
-            Console.WriteLine("@Availability: " + (Availability ? 1 : 0));
+            string stm = "@UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, BirthDate = @BirthDate, Breed = @Breed, Name = @Name, Species = @Species, CanVisit = @CanVisit, deleted = @deleted, ShelterId = @ShelterId, Image = @Image WHERE PetProfileId = @PetProfileId"; // sql command for updating a pet
     
             using var cmd = new MySqlCommand(stm, con); 
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to sql command
+            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
+            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@Availability", Availability ? 1 : 0);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
+            cmd.Parameters.AddWithValue("@Species", Species);
+            cmd.Parameters.AddWithValue("@CanVisit", CanVisit);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
+            cmd.Parameters.AddWithValue("@Image", Image);
+            cmd.Prepare();
             cmd.ExecuteNonQuery(); // execute sql command
+            con.Close();
         }
 
-        public void FavoritePet(Pets value) {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+        public void FavoritePet(Pets value) { // fix to add to FavoritePets table
+            GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
 
@@ -107,7 +100,6 @@ namespace api.Models
             cmd.Connection = con;
             cmd.CommandText = "UPDATE Pet_Profile SET favorited = @favorited WHERE PetProfileId = @PetProfileId";
             cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
-            cmd.Parameters.AddWithValue("@favorited", value.favorited);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
@@ -134,7 +126,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open connection to db
-            string stm = "select * from Pet_Profile where PetProfileId = @PetProfileId"; // sql statement to retrieve specific pet
+            string stm = "SELECT * FROM Pet_Profile WHERE PetProfileId = @PetProfileId"; // sql statement to retrieve specific pet
             MySqlCommand cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add PetProfileID as parameter
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
@@ -143,18 +135,15 @@ namespace api.Models
                 return new Pets() // construct and initialize new pet object
                 {
                     PetProfileId = rdr.GetInt32("PetProfileId"),
+                    Age = rdr.GetInt32("Age"),
+                    BirthDate = rdr.GetDateTime("BirthDate"),
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
-                    BirthDate = rdr.GetDateTime("BirthDate"),
-                    Availability = rdr.GetBoolean("Availability"), // convert tinyint to boolean, if 1 then it is true
                     Species = rdr.GetString("Species"),
                     CanVisit = rdr.GetBoolean("CanVisit"),
-                    ReturnedCount = rdr.GetInt32("ReturnedCount"),
-                    FavoriteCount = rdr.GetInt32("FavoriteCount"),
+                    deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
-                    favorited = rdr.GetBoolean("deleted"),
-                    deleted = rdr.GetBoolean("favorited"),
-                    Age = rdr.GetInt32("Age"),
+                    Image = rdr.GetString("Image"),
                 };
             }
             con.Close();
