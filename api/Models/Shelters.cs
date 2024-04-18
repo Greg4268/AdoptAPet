@@ -48,7 +48,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) VALUES (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @ShelterEmail, @Approved, @AccountType)"; // sql command to insert a new shelter
+            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) VALUES (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @Email, @Approved, @AccountType)"; // sql command to insert a new shelter
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
