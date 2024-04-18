@@ -35,7 +35,7 @@ namespace api.Controllers
         }
 
         // PUT: api/Favorite/5
-        [HttpPut("{id}")]
+        [HttpPut("{user}, {pet}")]
         public void ToggleFavorite(int user, int pet)
         {
             FavoritedPet.FavoritePet(user, pet);
