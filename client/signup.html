@@ -13,7 +13,7 @@
     <title>Sign Up</title>
     <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
-  <body class="alt-background">
+  <body class="alt-background" onload="updateFormFields()">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="./index.html">Adopt-A-Pet</a>
@@ -131,7 +131,7 @@
                           <input
                             type="email"
                             id="shelterEmail"
-                            name="email"
+                            name="shelterEmail"
                             class="form-control form-control-lg"
                             placeholder="info@shelter.com"
                             required
@@ -144,7 +144,7 @@
                           <input
                             type="password"
                             id="shelterPassword"
-                            name="password"
+                            name="shelterPassword"
                             class="form-control form-control-lg"
                             placeholder="********"
                             required
@@ -157,7 +157,7 @@
                           <input
                             type="text"
                             id="shelterAddress"
-                            name="address"
+                            name="shelterAddress"
                             class="form-control form-control-lg"
                             placeholder="1234 Street, City"
                             required
@@ -170,7 +170,7 @@
                           <input
                             type="text"
                             id="shelterHours"
-                            name="hours"
+                            name="shelterHours"
                             class="form-control form-control-lg"
                             placeholder="9AM - 5PM"
                             required
@@ -182,7 +182,7 @@
                       </div>
 
                       <div id="adopterFields" style="display: none">
-                        <!-- Adopter Fields -->
+                        <!-- Adopter Fields    ------------------------------------------------->
                         <div class="form-outline mb-4">
                           <input
                             type="text"
