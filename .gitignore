@@ -1,6 +1,6 @@
 # Exclude the obj directory
 obj/
-
+bin/
 # Exclude other generated files that are specific to your environment
 *.csproj.nuget.dgspec.json
 *.csproj.nuget.g.targets
