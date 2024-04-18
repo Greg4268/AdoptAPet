@@ -37,7 +37,7 @@ async function displayPets(pets) {
               <p>${pet.species}</p>
               <a class="btn btn-outline-secondary" role="button" href="./petProfile.html?petId=${pet.id}">See ${pet.name}</a>
             </div>
-            <img src="${pet.image}" class="ms-3">
+            <img src="${pet.imageUrl}" class="ms-3">
           </div>
         </div>
       </div>
