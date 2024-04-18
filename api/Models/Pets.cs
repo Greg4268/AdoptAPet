@@ -14,6 +14,7 @@ namespace api.Models
         public bool deleted { get; set; }
         public int ShelterId { get; set; }
         public string Image { get; set; }
+        public int FavoriteCount { get; set;}
 
         public static List<Pets> GetAllPets() // method to retrieve pet from database
         {
@@ -39,6 +40,7 @@ namespace api.Models
                     deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
                     Image = rdr.GetString("ImageUrl"),
+                    FavoriteCount = rdr.GetInt32("FavoriteCount"),
                 });
             }
             con.Close();
@@ -50,7 +52,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, CanVisit, deleted, ShelterId, Image) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @CanVisit, @deleted, @ShelterId, @Image)"; // sql command to insert a new pet
+            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, CanVisit, deleted, ShelterId, Image, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @CanVisit, @deleted, @ShelterId, @Image, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -62,6 +64,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@Image", Image);
+            cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.Prepare();
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
@@ -73,7 +76,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "@UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, BirthDate = @BirthDate, Breed = @Breed, Name = @Name, Species = @Species, CanVisit = @CanVisit, deleted = @deleted, ShelterId = @ShelterId, Image = @Image WHERE PetProfileId = @PetProfileId"; // sql command for updating a pet
+            string stm = "@UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, BirthDate = @BirthDate, Breed = @Breed, Name = @Name, Species = @Species, CanVisit = @CanVisit, deleted = @deleted, ShelterId = @ShelterId, Image = @Image, FavoriteCount = @FavoriteCount WHERE PetProfileId = @PetProfileId"; // sql command for updating a pet
     
             using var cmd = new MySqlCommand(stm, con); 
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
@@ -86,6 +89,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@Image", Image);
+            cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.Prepare();
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
@@ -144,6 +148,7 @@ namespace api.Models
                     deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
                     Image = rdr.GetString("Image"),
+                    FavoriteCount = rdr.GetInt32("FavoriteCount"),
                 };
             }
             con.Close();
