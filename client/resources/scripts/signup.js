@@ -40,7 +40,7 @@ function submitForm(event) {
 
   let formData;
   let accountType = document.getElementById("accountType").value.toLowerCase(); // Normalize input
-  alert(accountType); // Debugging to check account type
+  // alert(accountType); // Debugging to check account type
 
   if (accountType === "adopter") {
     formData = {  // Use the already declared formData
@@ -75,7 +75,7 @@ function submitForm(event) {
 
 
 function registerAdopter(formData) {
-  alert("register adopter called")
+  //alert("register adopter called")
   fetch("http://localhost:5292/api/UserAccounts", {
     method: "POST",
     headers: {

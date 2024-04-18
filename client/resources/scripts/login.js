@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var loginButton = document.getElementById("loginButton");
-
-  // Listen for login form submission instead of button click for better practice
   var loginForm = document.getElementById("loginForm");
   if (loginForm) {
     loginForm.addEventListener("submit", function (event) {
@@ -10,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var userEmail = document.getElementById("userEmail").value;
       var userPassword = document.getElementById("userPassword").value;
 
+      // Log for debugging purposes
       console.log(userEmail);
       console.log(userPassword);
 
@@ -19,31 +17,30 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      // Construct the query string
+      var queryString = `email=${encodeURIComponent(userEmail)}&password=${encodeURIComponent(userPassword)}`;
+
       // Send login data to the C# controller
-      fetch("http://localhost:5292/api/login", {
-        method: "POST",
+      fetch(`http://localhost:5292/api/UserAccounts?${queryString}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          password: userPassword,
-        }),
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.isValid) {
-            localStorage.setItem("userToken", data.token); // Save the token if login is successful
-            window.location.href = "./index.html"; // Redirect to the homepage
-          } else {
-            alert("Invalid credentials, please try again.");
-            localStorage.removeItem("userToken"); // Remove the token if login is not successful, so dashboard option is not available 
-          }
-        })
-        .catch((error) => {
-          console.error("Error during login:", error);
-          alert("Error logging in, please try again later.");
-        });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.isValid) {
+          localStorage.setItem("userToken", data.token); // Save the token if login is successful
+          window.location.href = "./index.html"; // Redirect to the homepage
+        } else {
+          alert("Invalid credentials, please try again.");
+          localStorage.removeItem("userToken"); // Remove the token if login is not successful, so dashboard option is not available 
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+        alert("Error logging in, please try again later.");
+      });
     });
   }
 });

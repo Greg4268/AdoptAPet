@@ -61,13 +61,13 @@ namespace api.Models
                 deleted, Address, YardSize, Fenced, AccountType) 
             VALUES (
                 @UserId, @FirstName, @LastName, @Age, @Email, @Password, 
-                @deleted, @Address, @YardSize, @Fenced, @AccountType)"; 
-            
+                @deleted, @Address, @YardSize, @Fenced, @AccountType)"; // sql command to insert a new pet
+
             System.Console.WriteLine("test");
 
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
+            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@FirstName", FirstName);
             cmd.Parameters.AddWithValue("@LastName", LastName);
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -128,33 +128,44 @@ namespace api.Models
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open connection to db
-            string stm = "SELECT * FROM User_Profile where Email = @Email AND Password = @Password";
-            MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@Password", Password); 
-            using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            if (rdr.Read())
+            try
             {
-                return new UserAccounts()
+                con.Open(); // open connection to db
+                string stm = "SELECT * FROM User_Profile WHERE Email = @Email AND Password = @Password";
+                MySqlCommand cmd = new MySqlCommand(stm, con);
+                cmd.Parameters.AddWithValue("@Email", Email);
+                cmd.Parameters.AddWithValue("@Password", Password);
+                using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+                if (rdr.Read())
                 {
-                    UserId = rdr.GetInt32("UserId"),
-                    FirstName = rdr.GetString("FirstName"),
-                    LastName = rdr.GetString("LastName"),
-                    Age = rdr.GetInt32("Age"),
-                    Email = rdr.GetString("Email"),
-                    Password = rdr.GetString("Password"),
-                    deleted = rdr.GetBoolean("deleted"),
-                    Address = rdr.GetString("Address"),
-                    YardSize = rdr.GetInt32("YardSize"),
-                    Fenced = rdr.GetBoolean("Fenced"),
-                    AccountType = rdr.GetString("AccountType"),
-                    // BirthDate = rdr.GetDateTime("BirthDate")
-                };
+                    return new UserAccounts()
+                    {
+                        UserId = rdr.GetInt32("UserId"),
+                        FirstName = rdr.GetString("FirstName"),
+                        LastName = rdr.GetString("LastName"),
+                        Age = rdr.GetInt32("Age"),
+                        Email = rdr.GetString("Email"),
+                        Password = rdr.GetString("Password"),
+                        deleted = rdr.GetBoolean("deleted"),
+                        Address = rdr.GetString("Address"),
+                        YardSize = rdr.GetInt32("YardSize"),
+                        Fenced = rdr.GetBoolean("Fenced"),
+                        AccountType = rdr.GetString("AccountType"),
+                        // BirthDate = rdr.GetDateTime("BirthDate")
+                    };
+                }
             }
-            con.Close();
-            return null; // if no pet is found
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database access error: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return null; // if no user is found
         }
+
 
         public void DeleteUser(UserAccounts value)
         {
