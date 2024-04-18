@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(JSON.stringify(data));
-          alert(JSON.stringify(data.userId));
+          //alert(JSON.stringify(data));
+          //alert(JSON.stringify(data.userId));
           if (data) {
             const token = JSON.stringify({
               userId: data.userId,
