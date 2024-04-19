@@ -39,7 +39,7 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Pets value)
         {
-            value.FavoritePet(value);
+            value.OldFavoritePet(value);
             value.UpdateToDB();
         }
 

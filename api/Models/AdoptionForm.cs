@@ -11,7 +11,6 @@ namespace api.Models
     {
         public int FormId { get; set; }
         public int UserId { get; set; }
-        public int PetProfileId { get; set; }
         public DateTime FormDate { get; set; }
         public bool Approved { get; set; }
         public bool deleted { get; set; }
@@ -33,7 +32,6 @@ namespace api.Models
                 {
                     FormId = rdr.GetInt32("FormId"),
                     UserId = rdr.GetInt32("UserId"),
-                    PetProfileId = rdr.GetInt32("PetProfileId"),
                     FormDate = rdr.GetDateTime("FormDate"),
                     Approved = rdr.GetBoolean("Approved"),
                     deleted = rdr.GetBoolean("deleted"),
@@ -48,10 +46,9 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "INSERT INTO AdoptionForms (UserId, PetProfileId, FormDate, Approved, deleted) VALUES (@UserId, @PetProfileId, @FormDate, @Approved, @deleted)";
+            string stm = "INSERT INTO AdoptionForms (UserId, FormDate, Approved, deleted) VALUES (@UserId, @FormDate, @Approved, @deleted)";
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@UserId", UserId);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@deleted", deleted);
@@ -74,7 +71,6 @@ namespace api.Models
                 {
                     FormId = rdr.GetInt32("FormId"),
                     UserId = rdr.GetInt32("UserId"),
-                    PetProfileId = rdr.GetInt32("PetProfileId"),
                     FormDate = rdr.GetDateTime("FormDate"),
                     Approved = rdr.GetBoolean("Approved"),
                     deleted = rdr.GetBoolean("deleted"),
@@ -87,12 +83,11 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
-            string stm = "UPDATE Adoption_Forms SET FormId = @FormId, UserId = @UserId, PetProfileId = @PetProfileId, FormDate = @FormDate, Approved = @Approved, deleted = @deleted";
+            string stm = "UPDATE Adoption_Forms SET FormId = @FormId, UserId = @UserId, FormDate = @FormDate, Approved = @Approved, deleted = @deleted";
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@FormId", FormId);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.ExecuteNonQuery();

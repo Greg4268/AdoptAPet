@@ -9,8 +9,7 @@ namespace api.Models
         public DateTime BirthDate { get; set; } 
         public string Breed { get; set; }
         public string Name { get; set; }
-        public string Species { get; set; }
-        public bool CanVisit { get; set; }     
+        public string Species { get; set; }     
         public bool deleted { get; set; }
         public int ShelterId { get; set; }
         public string ImageUrl { get; set; }
@@ -22,7 +21,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
-            string stm = "SELECT * FROM Pet_Profile"; // sql statement to select everything from the pet table
+            string stm = "SELECT * FROM Pet_Profile where deleted = 0"; // sql statement to select everything from the pet table
             MySqlCommand cmd = new MySqlCommand(stm, con); 
 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
@@ -36,7 +35,6 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     Species = rdr.GetString("Species"),
-                    CanVisit = rdr.GetBoolean("CanVisit"),
                     deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
                     ImageUrl = rdr.GetString("ImageUrl"),
@@ -52,7 +50,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, CanVisit, deleted, ShelterId, Image, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @CanVisit, @deleted, @ShelterId, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
+            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, deleted, ShelterId, Image, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ShelterId, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -60,7 +58,6 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@CanVisit", CanVisit);
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
@@ -76,7 +73,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
     
-            string stm = "@UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, BirthDate = @BirthDate, Breed = @Breed, Name = @Name, Species = @Species, CanVisit = @CanVisit, deleted = @deleted, ShelterId = @ShelterId, Image = @Image, FavoriteCount = @FavoriteCount WHERE PetProfileId = @PetProfileId"; // sql command for updating a pet
+            string stm = "@UPDATE Pet_Profile set PetProfileId = @PetProfileId, Age = @Age, BirthDate = @BirthDate, Breed = @Breed, Name = @Name, Species = @Species, deleted = @deleted, ShelterId = @ShelterId, Image = @Image, FavoriteCount = @FavoriteCount WHERE PetProfileId = @PetProfileId"; // sql command for updating a pet
     
             using var cmd = new MySqlCommand(stm, con); 
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
@@ -85,7 +82,6 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@CanVisit", CanVisit);
             cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
@@ -95,7 +91,7 @@ namespace api.Models
             con.Close();
         }
 
-        public void FavoritePet(Pets value) { // fix to add to FavoritePets table
+        public void OldFavoritePet(Pets value) { // fix to add to FavoritePets table
             GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
@@ -142,7 +138,6 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     Species = rdr.GetString("Species"),
-                    CanVisit = rdr.GetBoolean("CanVisit"),
                     deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
                     ImageUrl = rdr.GetString("ImageUrl"),
