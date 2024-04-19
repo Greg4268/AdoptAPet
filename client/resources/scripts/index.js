@@ -13,7 +13,6 @@ async function fetchPets(petsURL) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const pets = await response.json();
-    allPets = pets;
     displayPets(pets);
     console.log("Pets Objects: ", pets);
   } catch (error) {
