@@ -50,7 +50,6 @@ namespace api.Models
                                     Breed = rdr.GetString("Breed"),
                                     Name = rdr.GetString("Name"),
                                     Species = rdr.GetString("Species"),
-                                    CanVisit = rdr.GetBoolean("CanVisit"),
                                     FavoriteCount = rdr.GetInt32("FavoriteCount"),
                                     ShelterId = rdr.GetInt32("ShelterId"),
                                     BirthDate = rdr.GetDateTime("BirthDate"),
