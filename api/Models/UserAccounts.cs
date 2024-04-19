@@ -84,45 +84,30 @@ namespace api.Models
             con.Close();
         }
 
-        public void UpdateToDB() // method to update existing pet in database
+        public void UpdateToDB(int UserId) // method to update existing user profile in database
         {
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
 
-            string stm = "UPDATE User_Profile set UserId = @UserId, FirstName = @FirstName, LastName = @LastName, Age = @Age, Email = @Email, Password = @Password, PrimaryPhone = @PrimaryPhone, IsAdmin = @IsAdmin, deleted = @deleted, Address = @Address, YardSize = @YardSize, Fenced = @Fenced, BirthDate = @BirthDate WHERE UserID = @UserId"; // sql command for updating a pet
+            string stm = "UPDATE User_Profile set Address = @Address, YardSize = @YardSize, Fenced = @Fenced WHERE UserId = @UserId"; // sql command for updating a pet
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@UserId: " + UserId);
-            Console.WriteLine("@FirstName: " + FirstName);
-            Console.WriteLine("@LastName: " + LastName);
-            Console.WriteLine("@Age: " + Age);
-            Console.WriteLine("@Email: " + Email);
-            Console.WriteLine("@Password: " + Password);
-            Console.WriteLine("@deleted: " + deleted);
             Console.WriteLine("@Address: " + Address);
             Console.WriteLine("@YardSize: " + YardSize);
             Console.WriteLine("@Fenced: " + Fenced);
-            Console.WriteLine("@AccountType: " + AccountType);
-            // Console.WriteLine("@BirthDate: " + BirthDate);
 
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId); // add parameters to sql command
-            cmd.Parameters.AddWithValue("@FirstName", FirstName);
-            cmd.Parameters.AddWithValue("@LastName", LastName);
-            cmd.Parameters.AddWithValue("@Age", Age);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@Password", Password);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@YardSize", YardSize);
             cmd.Parameters.AddWithValue("@Fenced", Fenced);
-            cmd.Parameters.AddWithValue("@AccountType", AccountType);
-            // cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
-        }
 
+            Console.WriteLine($"Updating database for UserId: {UserId}");
+        }
 
         public static UserAccounts GetUserById(string Email, string Password)
         {
@@ -166,6 +151,48 @@ namespace api.Models
             return null; // if no user is found
         }
 
+        public static UserAccounts GetUserByIdd(int UserId)
+        {
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
+            try
+            {
+                con.Open(); // open connection to db
+                string stm = "SELECT * FROM User_Profile WHERE UserId = @UserId";
+                MySqlCommand cmd = new MySqlCommand(stm, con);
+                cmd.Parameters.AddWithValue("@UserId", UserId);
+                using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+                if (rdr.Read())
+                {
+                    return new UserAccounts()
+                    {
+                        UserId = rdr.GetInt32("UserId"),
+                        FirstName = rdr.GetString("FirstName"),
+                        LastName = rdr.GetString("LastName"),
+                        Age = rdr.GetInt32("Age"),
+                        Email = rdr.GetString("Email"),
+                        Password = rdr.GetString("Password"),
+                        deleted = rdr.GetBoolean("deleted"),
+                        Address = rdr.GetString("Address"),
+                        YardSize = rdr.GetInt32("YardSize"),
+                        Fenced = rdr.GetBoolean("Fenced"),
+                        AccountType = rdr.GetString("AccountType"),
+                        // BirthDate = rdr.GetDateTime("BirthDate")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database access error: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return null; // if no user is found
+
+
+        }
 
         public void DeleteUser(UserAccounts value)
         {

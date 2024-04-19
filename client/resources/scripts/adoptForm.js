@@ -19,54 +19,83 @@ const userURL = "http://localhost:5292/api/UserAccounts";
 // });
 
 function SubmitForm() {
-  alert("Adoption form submitting process begun");
+  const userToken = localStorage.getItem("userToken");
+  const tokenData = JSON.parse(userToken);
+  const userId = tokenData.userId;
 
-  const userToken = localStorage.getItem("userToken"); // get userToken
-  const tokenData = JSON.parse(userToken); // parse userToken
-  const UserId = tokenData.userId; // get userId from token 
-
-  if (!UserId) {
-    alert("User not properly authenticated.");
-    return;
+  if (!userId) {
+      alert("User not properly authenticated.");
+      return;
   }
 
-  const formData = {
-    UserId: UserId,
-    YardSize: parseFloat(document.getElementById("yardSize").value.trim()), // Convert to double
-    Fenced: document.getElementById("fencedIn").value.trim().toLowerCase() === 'true', // Ensure boolean
-    Address: document.getElementById("address").value.trim(),
-  };
+  FetchUserData(userId).then(existingUserData => {
+      if (!existingUserData) {
+          console.error("No user data received");
+          alert("Failed to fetch user data.");
+          return;
+      }
 
-  console.log("Form Data:", formData); // Confirm the formData before sending
+      const formData = {
+          UserId: userId,
+          FirstName: existingUserData.FirstName,
+          LastName: existingUserData.LastName,
+          Email: existingUserData.Email,
+          Password: existingUserData.Password,
+          AccountType: existingUserData.AccountType,
+          Address: document.getElementById("address").value.trim(),
+          YardSize: parseFloat(document.getElementById("yardSize").value.trim()),
+          Fenced: document.getElementById("fencedIn").value.trim().toLowerCase() === 'true'
+      };
 
+      console.log("Form Data with existing user data:", formData);
 
-  console.log(`Sending update for UserId: ${UserId}`); // Confirm the UserId
-
-  fetch(`http://localhost:5292/api/UserAccounts/${UserId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
-  .then(response => {
-    if (!response.ok) {
-      return response.json().then(errorData => {
-        console.error("Server responded with error:", errorData);
-        console.error("Validation errors:", errorData.errors); // Log detailed errors
-        alert(`Error during update: ${errorData.title || "Unknown error"}`);
-        throw new Error(`HTTP error, status = ${response.status}`);
+      fetch(`http://localhost:5292/api/UserAccounts/${userId}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+      })
+      .then(response => {
+          if (!response.ok) {
+              return response.json().then(errorData => {
+                  console.error("Server responded with error:", errorData);
+                  alert(`Error during update: ${errorData.title || "Unknown error"}`);
+                  throw new Error(`HTTP error, status = ${response.status}`);
+              });
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log("Update successful:", data);
+          alert("Update successful!");
+      })
+      .catch(error => {
+          console.error("Error during update:", error);
+          alert(`Error during update: ${error.message}`);
       });
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log("Server response data:", data);
-    alert("Update successful!");
-  })
-  .catch(error => {
-    console.error("Error during update:", error);
-    alert(`Error during update: ${error.message}`);
+  }).catch(error => {
+      console.error("Error fetching user data:", error);
+      alert("Failed to fetch user data.");
   });
 }
 
+
+function FetchUserData(userId) {
+  return fetch(`http://localhost:5292/api/UserAccounts/by-id/${userId}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json'
+      }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json(); // Parse and return the data so it can be used by the caller
+  })
+  .catch(error => {
+      console.error("Failed to fetch user data:", error);
+      throw error; // Rethrow the error to be handled by the caller
+  });
+}

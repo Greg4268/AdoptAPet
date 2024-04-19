@@ -15,19 +15,34 @@ namespace api.Controllers
     public class UserAccountsController : ControllerBase
     {
         // GET: api/UserAccounts
-        [HttpGet]
-        public List<UserAccounts> GetUserAccounts()
-        {
-            return UserAccounts.GetAllUsers();
-        }
+    [HttpGet]
+    public ActionResult<List<UserAccounts>> GetUserAccounts()
+    {
+        return Ok(UserAccounts.GetAllUsers());
+    }
 
-        // GET: api/UserAccounts/5
-        [HttpGet("{password}", Name = "Get")]
-        public UserAccounts GetUser(string email, string password)
-        {
-            return UserAccounts.GetUserById(email, password);
-        }
+    // GET: api/UserAccounts/by-id/5
+    [HttpGet("by-id/{UserId:int}", Name = "GetUserById")]
+    public ActionResult<UserAccounts> GetUserById(int UserId)
+    {
+        var user = UserAccounts.GetUserByIdd(UserId);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
 
+    // GET: api/UserAccounts/by-credentials
+    // Note: Adjusting to pass email as a query parameter for better design, assuming password remains
+    [HttpGet("by-credentials")]
+    public ActionResult<UserAccounts> GetUser([FromQuery] string email, [FromQuery] string password)
+    {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            return BadRequest("Email and password are required.");
+        }
+        var user = UserAccounts.GetUserById(email, password);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
         // POST: api/UserAccounts
         [HttpPost]
         public void Post([FromBody] UserAccounts value)
@@ -37,9 +52,16 @@ namespace api.Controllers
 
         // PUT: api/UserAccounts/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UserAccounts value)
+        public IActionResult Put(int id, [FromBody] UserAccounts value)
         {
-            value.UpdateToDB();
+            Console.WriteLine($"Received for update - UserId: {id}, Address: {value.Address}, YardSize: {value.YardSize}, Fenced: {value.Fenced}");
+            if (value == null || id != value.UserId)
+            {
+                return BadRequest("Invalid user data");
+            }
+
+            value.UpdateToDB(id);  // Ensure this method correctly uses the passed 'id'
+            return Ok();
         }
 
         // DELETE: api/UserAccounts/5
