@@ -27,17 +27,42 @@ function toggleDropdownMenu() {
     dropdownMenu.style.display === "block" ? "none" : "block";
 }
 
+// function loginValDropDown() {
+//   const dashboardLink = document.getElementById("dashboardLink");
+//   const logoutLink = document.getElementById("logoutLink");
+
+//   const userToken = getParsedUserToken();
+//   if (userToken) {
+//     dashboardLink.style.display = "block";
+//     logoutLink.style.display = "block";
+//   } else {
+//     dashboardLink.style.display = "none";
+//     logoutLink.style.display = "none";
+//     const dropdownMenu = document.querySelector(".dropdown-menu");
+//     if (dropdownMenu) dropdownMenu.style.display = "none"; // Hide dropdown if not logged in
+//   }
+// }
+
 function loginValDropDown() {
   const dashboardLink = document.getElementById("dashboardLink");
   const logoutLink = document.getElementById("logoutLink");
 
-  const userToken = getParsedUserToken();
+  // Ensure getParsedUserToken() is called and the result is stored in userToken
+  const userToken = getParsedUserToken(); // This should fetch and parse the user token
+
+  // Ensure userToken is defined before using it
   if (userToken) {
-    dashboardLink.style.display = "block";
-    logoutLink.style.display = "block";
+    if (dashboardLink && logoutLink) {
+      // Also check if the elements exist
+      dashboardLink.style.display = "block";
+      logoutLink.style.display = "block";
+    }
   } else {
-    dashboardLink.style.display = "none";
-    logoutLink.style.display = "none";
+    if (dashboardLink && logoutLink) {
+      // Check elements exist before accessing
+      dashboardLink.style.display = "none";
+      logoutLink.style.display = "none";
+    }
     const dropdownMenu = document.querySelector(".dropdown-menu");
     if (dropdownMenu) dropdownMenu.style.display = "none"; // Hide dropdown if not logged in
   }
@@ -103,7 +128,7 @@ function switchDash() {
     return;
   }
 
-  switch (userData.accountType) {
+  switch (userData.accountType || shelterToken.accountType) {
     case "admin":
       window.location.href = "./adminDash.html";
       break;
