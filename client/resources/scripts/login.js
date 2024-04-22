@@ -56,18 +56,16 @@ function loginUser() {
 }
 
 function loginShelter() {
-  var userEmail = document.getElementById("userEmail").value;
-  var userPassword = document.getElementById("userPassword").value;
+  var email = document.getElementById("userEmail").value;
+  var password = document.getElementById("userPassword").value;
 
-  if (!userEmail || !userPassword) {
+  if (!email || !password) {
     alert("Please enter both email and password.");
     return;
   }
 
   fetch(
-    `http://localhost:5292/api/Shelters/by-credentials?email=${encodeURIComponent(
-      userEmail
-    )}&password=${encodeURIComponent(userPassword)}`,
+    `http://localhost:5292/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
     {
       method: "GET",
       headers: {
@@ -84,10 +82,11 @@ function loginShelter() {
         const token = JSON.stringify({
           shelterId: data.shelterId,
           accountType: "shelter",
-          hasForm: data.hasForm,
+          deleted: data.deleted,
+          approved: data.approved,
         });
-        localStorage.setItem("shelterToken", token);
-        window.location.href = "./shelter-dashboard.html"; // Redirect to a different dashboard for shelters
+        localStorage.setItem("userToken", token);
+        window.location.href = "./shelterDash.html"; 
       }
     })
     .catch((error) => {
