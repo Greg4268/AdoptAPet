@@ -142,7 +142,7 @@ namespace api.Models
             con.Close();
         }
 
-        public List<Pets> GetPetsByShelter(int shelterId)
+        public static List<Pets> GetPetsByShelter(int shelterId)
         {
             var pets = new List<Pets>();
             GetPublicConnection cs = new GetPublicConnection();
