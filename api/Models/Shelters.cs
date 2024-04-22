@@ -153,7 +153,7 @@ namespace api.Models
                 using (var cmd = new MySqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Availability FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @ShelterId ORDER BY p.PetProfileId";
+                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @ShelterId ORDER BY p.PetProfileId";
                     cmd.Parameters.AddWithValue("@shelterId", shelterId);
 
                     using (var reader = cmd.ExecuteReader())
