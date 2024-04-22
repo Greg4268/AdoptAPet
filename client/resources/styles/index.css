@@ -126,3 +126,25 @@ select option {
 #card-container {
   padding: 1rem; /* Adds padding around the entire container of cards */
 }
+
+.col {
+  width: 100%;
+  text-align: center;
+  font-size: 16;
+
+}
+
+.infoTable {
+  width: 100%;
+  text-align: center;
+}
+
+.apptTable {
+  width: 100%;
+  text-align: center;
+}
+
+.favPetsTable {
+  text-align: center;
+  width: 100%;
+}
