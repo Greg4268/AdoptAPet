@@ -7,6 +7,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace api.Controllers
 {
@@ -27,6 +28,20 @@ namespace api.Controllers
         public Appointment GetAppointment(int id)
         {
             return Appointment.GetAppointmentById(id);
+        }
+
+        // GET: api/Appointment/Pet/5
+        [HttpGet("ByUser/{user}")]
+        public List<Appointment> GetAppointmentsByUser(int user)
+        {
+            return Appointment.GetAppointmentsByUserId(user);
+        }
+
+        // GET: api/Appointment/Pet/5
+        [HttpGet("ByPet/{pet}")]
+        public List<Appointment> GetAppointmentsByPet(int pet)
+        {
+            return Appointment.GetAppointmentByPet(pet);
         }
 
         // POST: api/Appointment

@@ -77,28 +77,71 @@ namespace api.Models
         public static Appointment GetAppointmentById(int appointmentId)
         {
             Data.GetPublicConnection cs = new Data.GetPublicConnection();
-            using var con = new MySqlConnection(cs.cs);
-            con.Open();
-            string stm = "SELECT * FROM Appointments WHERE AppointmentId = @AppointmentId";
-            MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
-            using MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.Read())
+            using (var con = new MySqlConnection(cs.cs))
             {
-                return new Appointment()
+                con.Open();
+                string query = "SELECT * FROM Appointments WHERE AppointmentId = @AppointmentId AND deleted = 0"; // Added logical delete check
+                using (var cmd = new MySqlCommand(query, con))
                 {
-                    AppointmentId = rdr.GetInt32("AppointmentId"),
-                    AppointmentDate = rdr.GetDateTime("AppointmentDate"),
-                    UserId = rdr.GetInt32("UserId"),
-                    PetProfileId = rdr.GetInt32("PetProfileId"),
-                    deleted = rdr.GetInt32("deleted") == 1
-                };
+                    cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Appointment()
+                            {
+                                AppointmentId = reader.GetInt32("AppointmentId"),
+                                AppointmentDate = reader.GetDateTime("AppointmentDate"),
+                                UserId = reader.GetInt32("UserId"),
+                                PetProfileId = reader.GetInt32("PetProfileId"),
+                                deleted = reader.GetBoolean("deleted")
+                            };
+                        }
+                    }
+                }
+                con.Close();
             }
             return null;
         }
 
+        public static List<Appointment> GetAppointmentsByUserId(int userId)
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            Data.GetPublicConnection cs = new Data.GetPublicConnection();
+            using (var con = new MySqlConnection(cs.cs))
+            {
+                con.Open();
+                string query = "SELECT * FROM Appointments WHERE UserId = @UserId AND deleted = 0"; 
+
+                using (var cmd = new MySqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@UserId", userId); 
+
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read()) 
+                        {
+                            var appointment = new Appointment()
+                            {
+                                AppointmentId = rdr.GetInt32("AppointmentId"),
+                                AppointmentDate = rdr.GetDateTime("AppointmentDate"),
+                                UserId = rdr.GetInt32("UserId"),
+                                PetProfileId = rdr.GetInt32("PetProfileId"),
+                                deleted = rdr.GetBoolean("deleted") 
+                            };
+                            appointments.Add(appointment);
+                        }
+                    }
+                }
+                con.Close();
+            }
+            return appointments;
+        }
+
+
         // method to delete appt
-        public void DeleteAppointment(Appointment value) {
+        public void DeleteAppointment(Appointment value)
+        {
             GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
@@ -112,5 +155,42 @@ namespace api.Models
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+        public static List<Appointment> GetAppointmentByPet(int petId)
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            GetPublicConnection cs = new GetPublicConnection();
+            using (var con = new MySqlConnection(cs.cs))
+            {
+                con.Open();
+                string query = @"SELECT AppointmentId, AppointmentDate, UserId, PetProfileId, deleted 
+                         FROM Appointments 
+                         WHERE PetProfileId = @PetProfileId AND deleted = 0";
+
+                using (var cmd = new MySqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@PetProfileId", petId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var appointment = new Appointment
+                            {
+                                AppointmentId = reader.GetInt32("AppointmentId"),
+                                AppointmentDate = reader.GetDateTime("AppointmentDate"),
+                                UserId = reader.GetInt32("UserId"),
+                                PetProfileId = reader.GetInt32("PetProfileId"),
+                                deleted = reader.GetBoolean("deleted")
+                            };
+                            appointments.Add(appointment);
+                        }
+                    }
+                }
+                con.Close();
+            }
+            return appointments;
+        }
+
     }
 }
