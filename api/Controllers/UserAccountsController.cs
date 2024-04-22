@@ -6,6 +6,7 @@ using api.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 
 namespace api.Controllers
 {
@@ -65,11 +66,26 @@ namespace api.Controllers
             return Ok();
         }
 
-        // DELETE: api/UserAccounts/5
-        [HttpDelete("{id}")]
-        public void Delete(UserAccounts value)
+        [HttpPut("{userId}/toggle-delete")]
+        public IActionResult ToggleUserDeletion(int userId, bool deleted)
         {
-            value.DeleteUser(value);
+            try
+            {
+                new UserAccounts().DeleteUser(userId, deleted);
+                return Ok(new { success = true, message = "User deletion status toggled." });
+            }
+            catch (MySqlException sqlEx)
+            {
+                return StatusCode(500, new { success = false, message = sqlEx.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
         }
+
+
+
+
     }
 }

@@ -9,7 +9,6 @@ $(document).ready(function () {
   $("#table2").DataTable();
 });
 
-
 function handleOnLoad() {
   fetchShelters(shelterURL);
   fetchUsers(usersURL);
@@ -52,10 +51,11 @@ async function displayShelters(shelters) {
         <tr>
             <td>${shelter.shelterUsername}</td>
             <td>${shelter.email}</td>
-            <td>${shelter.shelterID}</td>
-            <td>[pet count holder]</td>
+            <td>${shelter.shelterId}</td>
+            <td>${shelter.hoursOfOperation}</td>
             <td>${shelter.address}</td>
             <td>${shelter.approved}</td>
+            <td><button onclick="AltShelterApproval(${shelter.shelterId})">Approve/Revoke Approval</button></td>
           </tr>
       `;
     shelterContainer.innerHTML += sheltersCard; // Append the new card
@@ -73,11 +73,59 @@ async function displayUsers(users) {
               <td>${user.userId}</td>
               <td>${user.firstName + " " + user.lastName}</td>
               <td>${user.email}</td>
-              <td>[placeholder]</td>
+              <td>${user.hasForm}</td>
               <td>${user.accountType}</td>
-              <td>[Action buttons column?]</td>
+              <td>${user.deleted}</td>
+              <td><button onclick="softDeleteUser(${user.userId},${
+      user.deleted
+    })">Revoke Access</td>
             </tr>
       `;
     usersContainer.innerHTML += usersCard; // Append the new card
   }
+}
+
+function AltShelterApproval(shelterId) {
+  console.log("Modifying shelter approval of shelter ID: ", shelterId);
+  let deleted = !deleted;
+
+  // displayShelters(shelterId);
+}
+
+function softDeleteUser(userId, currentDeletedStatus) {
+  console.log("Toggling deletion status for user ID:", userId);
+
+  // Toggle the current deleted status
+  let newDeletedStatus = !currentDeletedStatus;
+
+  console.log("Current status:", currentDeletedStatus);
+  console.log("New status after toggle:", newDeletedStatus);
+
+  fetch(`http://localhost:5292/api/UserAccounts/${userId}/toggle-delete`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      UserId: userId,
+      deleted: newDeletedStatus,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
+        return response.json().then((data) => {
+          throw new Error(
+            data.message || "Failed to toggle user deletion status"
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Deletion status toggled successfully", data);
+    })
+    .catch((error) => {
+      console.error("Error toggling deletion status:", error);
+    });
 }
