@@ -14,7 +14,7 @@ async function fetchPets(petsURL) {
     }
     const pets = await response.json();
     displayPets(pets);
-    console.log("Pets Objects: ", pets);
+    console.table(pets);
   } catch (error) {
     console.error("Error fetching pets:", error);
   }
