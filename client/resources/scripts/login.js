@@ -7,45 +7,46 @@ document.addEventListener("DOMContentLoaded", function () {
       var userEmail = document.getElementById("userEmail").value;
       var userPassword = document.getElementById("userPassword").value;
 
-      // Log for debugging purposes
       console.log(userEmail);
       console.log(userPassword);
 
-      // Validate input fields if necessary
       if (!userEmail || !userPassword) {
         alert("Please enter both email and password.");
         return;
       }
 
-      // Construct the query string
-      var queryString = `${userPassword}?email=${userEmail}`;
+      var queryString = `email=${encodeURIComponent(
+        userEmail
+      )}&password=${encodeURIComponent(userPassword)}`;
 
-      // alert(queryString) // check string content before fetch
-
-      // Send login data to the C# controller
-      fetch(`http://localhost:5292/api/UserAccounts/${queryString}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
+      fetch(
+        `http://localhost:5292/api/UserAccounts/by-credentials?email=${userEmail}&password=${userPassword}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.ok) throw new Error("Invalid credentials");
+          return response.json();
+        })
         .then((data) => {
-          //alert(JSON.stringify(data));
-          //alert(JSON.stringify(data.userId));
           if (data) {
             const token = JSON.stringify({
               userId: data.userId,
               accountType: data.accountType,
+              hasForm: data.hasForm,
             });
             localStorage.setItem("userToken", token);
-            window.location.href = './index.html' // Assuming you have a function to handle redirection
+            window.location.href = "./index.html";
           }
         })
         .catch((error) => {
           localStorage.removeItem("userToken");
-          console.error("There was an error leading to the catch: ", error);
-          alert("Invalid credential, please try again.");
+          console.error("There was an error: ", error);
+          alert("Invalid credentials, please try again.");
         });
     });
   }

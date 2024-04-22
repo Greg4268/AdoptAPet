@@ -18,15 +18,11 @@ const userURL = "http://localhost:5292/api/UserAccounts";
 //   }
 // });
 
-function SubmitForm() {
-  const userToken = localStorage.getItem("userToken");
-  const tokenData = JSON.parse(userToken);
-  const userId = tokenData.userId;
-
-  if (!userId) {
-      alert("User not properly authenticated.");
-      return;
-  }
+async function SubmitForm() {
+  const userToken = localStorage.getItem("userToken"); // get user token at form submission 
+  const tokenData = JSON.parse(userToken); // parse user token
+  const userId = parseInt(tokenData.userId); // get user id from token 
+  console.log("User Id: ", userId);
 
   FetchUserData(userId).then(existingUserData => {
       if (!existingUserData) {
@@ -35,16 +31,22 @@ function SubmitForm() {
           return;
       }
 
+      console.log("Existing user data:", existingUserData);
+
+      let Address = document.getElementById("address").value.trim();
+      let YardSize = parseInt(document.getElementById("yardSize").value.trim());
+      let Fenced = document.getElementById("fencedIn").value.trim().toLowerCase() === 'true'
+
       const formData = {
-          UserId: userId,
-          FirstName: existingUserData.FirstName,
-          LastName: existingUserData.LastName,
-          Email: existingUserData.Email,
-          Password: existingUserData.Password,
-          AccountType: existingUserData.AccountType,
-          Address: document.getElementById("address").value.trim(),
-          YardSize: parseFloat(document.getElementById("yardSize").value.trim()),
-          Fenced: document.getElementById("fencedIn").value.trim().toLowerCase() === 'true'
+          UserId: existingUserData.userId,
+          FirstName: existingUserData.firstName,
+          LastName: existingUserData.lastName,
+          Email: existingUserData.email,
+          Password: existingUserData.password,
+          AccountType: existingUserData.accountType,
+          Address: Address,
+          YardSize: YardSize,
+          Fenced: Fenced
       };
 
       console.log("Form Data with existing user data:", formData);
@@ -81,11 +83,13 @@ function SubmitForm() {
 }
 
 
-function FetchUserData(userId) {
+async function FetchUserData(userId) {
+    console.log(userId);
+
   return fetch(`http://localhost:5292/api/UserAccounts/by-id/${userId}`, {
       method: 'GET',
       headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": 'application/json'
       }
   })
   .then(response => {

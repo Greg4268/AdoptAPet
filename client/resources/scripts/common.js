@@ -15,7 +15,7 @@ function getParsedUserToken() {
   return tokenString ? JSON.parse(tokenString) : null;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   loginValDropDown(); // This will adjust the display settings of dashboard and logout links correctly.
 });
 
@@ -46,13 +46,24 @@ function loginValDropDown() {
 function loginValidationForm() {
   const userData = getParsedUserToken();
 
-  if (userData && userData.accountType == "adopter") {
+  if (
+    userData &&
+    userData.accountType == "adopter" &&
+    userData.hasForm == false
+  ) {
     window.location.href = "./adoptForm.html";
   } else if (!userData) {
     alert("Please login first.");
     window.location.href = "./login.html";
+  } else if (userData.hasForm == true) {
+    alert("You already completed the adoption form!");
+  } else if (
+    userData.accountType == "shelter" ||
+    userData.accountType == "admin"
+  ) {
+    alert("Adoption forms are only available for adopter profiles.");
   } else {
-    alert("Adopter profiles only have access to this page.");
+    alert("There was an error, please try again later.");
   }
 }
 

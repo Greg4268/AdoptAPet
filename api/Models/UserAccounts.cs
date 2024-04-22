@@ -16,6 +16,7 @@ namespace api.Models
         public string Address { get; set; }
         public double YardSize { get; set; }
         public bool Fenced { get; set; }
+        public bool HasForm { get; set; }
 
         public static List<UserAccounts> GetAllUsers() // method to retrieve pet from database
         {
@@ -90,7 +91,7 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
 
-            string stm = "UPDATE User_Profile set Address = @Address, YardSize = @YardSize, Fenced = @Fenced WHERE UserId = @UserId"; // sql command for updating a pet
+            string stm = "UPDATE User_Profile set Address = @Address, YardSize = @YardSize, Fenced = @Fenced, HasForm = 1 WHERE UserId = @UserId"; // sql command for updating a pet
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
             Console.WriteLine("@UserId: " + UserId);
@@ -103,6 +104,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@YardSize", YardSize);
             cmd.Parameters.AddWithValue("@Fenced", Fenced);
+            cmd.Parameters.AddWithValue("@HasForm", HasForm);
             cmd.ExecuteNonQuery(); // execute sql command
             con.Close();
 
@@ -136,6 +138,7 @@ namespace api.Models
                         YardSize = rdr.GetInt32("YardSize"),
                         Fenced = rdr.GetBoolean("Fenced"),
                         AccountType = rdr.GetString("AccountType"),
+                        HasForm = rdr.GetBoolean("HasForm"),
                         // BirthDate = rdr.GetDateTime("BirthDate")
                     };
                 }
@@ -153,6 +156,7 @@ namespace api.Models
 
         public static UserAccounts GetUserByIdd(int UserId)
         {
+            System.Console.WriteLine("GetUserByIdd called");
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             try
