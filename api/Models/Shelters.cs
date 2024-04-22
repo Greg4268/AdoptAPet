@@ -174,5 +174,44 @@ namespace api.Models
             }
             return pets;
         }
+
+        public static Shelters GetUserLogin(string email, string password)
+        {
+            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
+            using var con = new MySqlConnection(cs.cs);
+            try
+            {
+                con.Open(); // open connection to db
+                string stm = "SELECT * FROM Shelter WHERE Email = @Email AND Password = @Password";
+                MySqlCommand cmd = new MySqlCommand(stm, con);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Password", password);
+                using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+                if (rdr.Read())
+                {
+                    return new Shelters()
+                    {
+                        ShelterId = rdr.GetInt32("ShelterId"),
+                        ShelterUsername = rdr.GetString("ShelterUsername"),
+                        ShelterPassword = rdr.GetString("ShelterPassword"),
+                        Address = rdr.GetString("Address"),
+                        HoursOfOperation = rdr.GetString("HoursOfOperation"),
+                        Email = rdr.GetString("Email"),
+                        deleted = rdr.GetBoolean("deleted"),
+                        Approved = rdr.GetBoolean("Approved"),
+                        AccountType = rdr.GetString("AccountType"),
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database access error: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return null;
+        }
     }
 }
