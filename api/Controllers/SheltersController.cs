@@ -29,6 +29,19 @@ namespace api.Controllers
             return Shelters.GetShelterById(id);
         }
 
+        // GET: api/Shelters/5/Pets
+        [HttpGet("{shelterId}/Pets")]
+        public ActionResult<List<Pets>> GetPetsByShelterId(int shelterId)
+        {
+            var pets = Shelters.GetPetsByShelter(shelterId);
+            if (pets == null || pets.Count == 0)
+            {
+                return NotFound("No pets found for this shelter.");
+            }
+            return Ok(pets);
+        }
+
+
         // POST: api/Shelters
         [HttpPost]
         public void Post([FromBody] Shelters value)
