@@ -41,6 +41,18 @@ namespace api.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("by-credentials")]
+        public ActionResult<Shelters> GetUser([FromQuery] string email, [FromQuery] string password)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return BadRequest("Email and password are required.");
+            }
+            var user = Shelters.GetUserLogin(email, password);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+
 
         // POST: api/Shelters
         [HttpPost]
