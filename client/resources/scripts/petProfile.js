@@ -11,14 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchPetDetails(petId) {
   try {
-    // Fetch pet details
     const petResponse = await fetch(`http://localhost:5292/api/Pets/${petId}`);
     if (!petResponse.ok) {
       throw new Error("Failed to fetch pet details");
     }
     const pet = await petResponse.json();
-
-    // Fetch shelter details using the pet's shelterId
     const shelterResponse = await fetch(
       `http://localhost:5292/api/Shelters/${pet.shelterId}`
     );
@@ -26,7 +23,6 @@ async function fetchPetDetails(petId) {
       throw new Error("Failed to fetch shelter details");
     }
     const shelter = await shelterResponse.json();
-    const shelterUsername = shelter.shelterUsername;
 
     // Update DOM with pet and shelter details
     document.getElementById("petDescription").textContent =
@@ -42,10 +38,61 @@ async function fetchPetDetails(petId) {
       "Species: " + pet.species;
     document.getElementById("petAge").textContent = "Age: " + pet.age;
     document.getElementById("shelterName").textContent =
-      "Shelter: " + shelterUsername;
-    // Populate other elements as needed
+      "Shelter: " + shelter.shelterUsername;
+
+    // Update button onclick attributes to include only petId since userId will be fetched in the function
+    document
+      .querySelector("button[onclick='FavoritePet();']")
+      .setAttribute("onclick", `FavoritePet('${petId}');`);
+    document
+      .querySelector("button[onclick='MakeAppointment();']")
+      .setAttribute("onclick", `MakeAppointment('${petId}');`);
   } catch (error) {
     console.error("Error loading pet and shelter details:", error);
     alert("Error loading pet and shelter details.");
   }
 }
+
+function FavoritePet(petId) {
+  const tokenString = localStorage.getItem("userToken");
+  const userToken = JSON.parse(tokenString); // Assuming userToken is a JSON string that includes userId
+  let userId = userToken.userId;
+
+  userId = parseInt(userId);
+  petId = parseInt(petId);
+
+  console.log("User ID: ", userId);
+  console.log("Pet ID: ", petId);
+
+  fetch(`http://localhost:5292/api/Favorite/${userId},${petId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to toggle favorite");
+      }
+      return response.text(); // Assuming no body is returned
+    })
+    .then((result) => {
+      console.log("Favorite toggled successfully:", result);
+    })
+    .catch((error) => {
+      console.error("Error toggling favorite:", error);
+    });
+}
+
+function MakeAppointment(petId) {
+  console.log("Making appointment for Pet ID: ", petId);
+  const tokenString = localStorage.getItem("userToken");
+  const userToken = JSON.parse(tokenString); // Assuming userToken is a JSON string that includes userId
+  let userId = userToken.userId;
+
+  userId = parseInt(userId);
+  petId = parseInt(petId);
+
+  console.log("User ID: ", userId);
+}
+

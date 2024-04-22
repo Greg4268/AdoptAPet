@@ -11,7 +11,7 @@
     />
     <link href="./resources/styles/index.css" rel="stylesheet" />
     <title>Login</title>
-    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png">
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
   <body class="alt-background">
     <div id="navbar-container"></div>
@@ -74,15 +74,28 @@
                         >
                       </div>
 
-                      <div class="pt-1 mb-4">
-                        <button
-                          id="loginButton"
-                          class="btn btn-dark btn-lg btn-block"
-                          type="submit"
-                        >
-                          Login
-                        </button>
+                      <div class="form-outline mb-4">
+                        <div class="d-flex justify-content-between">
+                          <!-- Using `me-2` for margin right on the first button -->
+                          <button
+                            id="loginButton"
+                            class="btn btn-dark btn-lg"
+                            type="submit"
+                            style="flex-grow: 1; margin-right: 8px"
+                          >
+                            User Login
+                          </button>
+                          <button
+                            id="loginShelterButton"
+                            class="btn btn-dark btn-lg"
+                            type="ShelterSubmit"
+                            style="flex-grow: 1"
+                          >
+                            Shelter Login
+                          </button>
+                        </div>
                       </div>
+
 
                       <p class="mb-5 pb-lg-2" style="color: #393f81">
                         Don't have an account?

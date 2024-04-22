@@ -35,10 +35,18 @@ namespace api.Controllers
         }
 
         // PUT: api/Favorite/5
-        [HttpPut("{user}, {pet}")]
-        public void ToggleFavorite(int user, int pet)
+        [HttpPut("{user:int},{pet:int}")]
+        public IActionResult ToggleFavorite(int user, int pet)
         {
-            FavoritedPet.FavoritePet(user, pet);
+            try
+            {
+                FavoritedPet.FavoritePet(user, pet);  // Assume this toggles the favorite status
+                return Ok(new { Message = "Favorite status toggled successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Error toggling favorite status", Error = ex.Message });
+            }
         }
 
         // DELETE: api/Favorite/5
