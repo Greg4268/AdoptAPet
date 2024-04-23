@@ -129,29 +129,19 @@ namespace api.Models
 
         public void ApprovalOfShelter(int ShelterId, bool Approved)
         {
-            System.Console.WriteLine("Deleted = " + Approved);
-            Approved = !Approved;
-            System.Console.WriteLine("New Deleted = " + Approved);
-            try
+
+            GetPublicConnection cs = new GetPublicConnection();
+            using (var con = new MySqlConnection(cs.cs))
             {
-                GetPublicConnection cs = new GetPublicConnection();
-                using (var con = new MySqlConnection(cs.cs))
+                Console.WriteLine("Opening connection...");
+                con.Open();
+                using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = @Approved WHERE ShelterId = @ShelterId", con))
                 {
-                    Console.WriteLine("Opening connection...");
-                    con.Open();
-                    using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = @Approved WHERE ShelterId = @ShelterId", con))
-                    {
-                        Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {Approved}");
-                        cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-                        cmd.Parameters.AddWithValue("@Approved", Approved);
-                        cmd.ExecuteNonQuery();
-                    }
+                    Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {!Approved}");
+                    cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
+                    cmd.Parameters.AddWithValue("@Approved", !Approved);
+                    cmd.ExecuteNonQuery();
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error in DeleteUser: " + ex.Message);
-                throw; // Rethrow to preserve stack details
             }
         }
 
