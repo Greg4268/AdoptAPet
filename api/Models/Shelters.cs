@@ -135,11 +135,11 @@ namespace api.Models
             {
                 Console.WriteLine("Opening connection...");
                 con.Open();
-                using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = @Approved WHERE ShelterId = @ShelterId", con))
+                using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = !Approved WHERE ShelterId = @ShelterId", con))
                 {
-                    Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {!Approved}");
+                    Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {Approved}");
                     cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-                    cmd.Parameters.AddWithValue("@Approved", !Approved);
+                    cmd.Parameters.AddWithValue("@Approved", Approved);
                     cmd.ExecuteNonQuery();
                 }
             }
