@@ -58,7 +58,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
             cmd.Parameters.AddWithValue("@deleted", deleted);
-            // cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // can't add shelter id because it is a foreign key
+            cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // can't add shelter id because it is a foreign key
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.Prepare();
