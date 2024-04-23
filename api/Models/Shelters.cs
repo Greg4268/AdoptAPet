@@ -21,10 +21,10 @@ namespace api.Models
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open databse connection
             string stm = "SELECT * FROM Shelter"; // sql statement to select everything from the shelter table
-            MySqlCommand cmd = new MySqlCommand(stm, con); 
+            MySqlCommand cmd = new MySqlCommand(stm, con);
 
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            while(rdr.Read()) // iterate through table rows
+            while (rdr.Read()) // iterate through table rows
             {
                 myShelters.Add(new Shelters() // create shelter object for each row
                 {
@@ -69,7 +69,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open db connection
-    
+
             string stm = "UPDATE Shelter SET ShelterId = @ShelterId, Username = @ShelterUsername, Password = @ShelterPassword, Address = @Address, HoursOfOperation = @HoursOfOperation, deleted = @deleted, ShelterEmail = @Email, Approved = @Approved, AccountType = @AccountType WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
             Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
             Console.WriteLine("Parameters:"); // log parameters
@@ -83,8 +83,8 @@ namespace api.Models
             Console.WriteLine("@Approved" + Approved);
             Console.WriteLine("@AccountType" + AccountType);
 
-    
-            using var cmd = new MySqlCommand(stm, con); 
+
+            using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to sql command
             cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
@@ -108,7 +108,7 @@ namespace api.Models
             MySqlCommand cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add ShelterID as parameter
             using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            if(rdr.Read()) // check if shelter is found
+            if (rdr.Read()) // check if shelter is found
             {
                 return new Shelters() // construct and initialize new shelter object
                 {
@@ -166,19 +166,25 @@ namespace api.Models
                 using (var cmd = new MySqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @ShelterId ORDER BY p.PetProfileId";
+                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount, p.BirthDate, p.deleted, p.ShelterId, p.ImageUrl FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @ShelterId ORDER BY p.PetProfileId";
                     cmd.Parameters.AddWithValue("@shelterId", shelterId);
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var rdr = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (rdr.Read())
                         {
                             var pet = new Pets
                             {
-                                PetProfileId = reader.GetInt32("PetProfileId"),
-                                Name = reader.GetString("Name"),
-                                Breed = reader.GetString("Breed"),
-                                Species = reader.GetString("Species"),
+                                PetProfileId = rdr.GetInt32("PetProfileId"),
+                                Age = rdr.GetInt32("Age"),
+                                BirthDate = rdr.GetDateTime("BirthDate"),
+                                Breed = rdr.GetString("Breed"),
+                                Name = rdr.GetString("Name"),
+                                Species = rdr.GetString("Species"),
+                                deleted = rdr.GetBoolean("deleted"),
+                                ShelterId = rdr.GetInt32("ShelterId"),
+                                ImageUrl = rdr.GetString("ImageUrl"),
+                                FavoriteCount = rdr.GetInt32("FavoriteCount"),
                             };
                             pets.Add(pet);
                         }

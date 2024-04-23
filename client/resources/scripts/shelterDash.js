@@ -1,8 +1,9 @@
-const petsUrl = "http://localhost:5292/api/Shelters";
+const petsUrl = "http://localhost:5292/api/Pets";
+const shelterUrl = "http://localhost:5292/api/Shelters";
 
 const userToken = localStorage.getItem("userToken");
 const tokenData = JSON.parse(userToken);
-const shelterId = parseInt(tokenData.userId);
+const shelterId = parseInt(tokenData.shelterId);
 console.log("Shelter ID: ", shelterId);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function fetchAndDisplayPets(shelterId) {
-  fetch(`${petsUrl}/${shelterId}/Pets`, {
+  fetch(`${shelterUrl}/${shelterId}/Pets`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${userToken}`,
@@ -31,15 +32,31 @@ function fetchAndDisplayPets(shelterId) {
 
       pets.forEach((pet) => {
         const row = tableBody.insertRow();
-        row.insertCell(0).textContent = pet.Name;
-        row.insertCell(1).textContent = pet.Breed;
-        row.insertCell(2).textContent = pet.Species;
-        row.insertCell(3).textContent = pet.Age;
-        row.insertCell(4).textContent = pet.FavoriteCount;
+
+        let cell = row.insertCell(0);
+        cell.textContent = pet.name;
+        cell.className = "text-center";
+
+        cell = row.insertCell(1);
+        cell.textContent = pet.breed;
+        cell.className = "text-center";
+
+        cell = row.insertCell(2);
+        cell.textContent = pet.species;
+        cell.className = "text-center";
+
+        cell = row.insertCell(3);
+        cell.textContent = pet.age;
+        cell.className = "text-center";
+
+        cell = row.insertCell(4);
+        cell.textContent = pet.favoriteCount;
+        cell.className = "text-center";
 
         const actionsCell = row.insertCell(5);
-        actionsCell.innerHTML = `<button onclick="editPet(${pet.PetProfileId})" class="btn btn-primary">Edit</button>
-                                 <button onclick="deletePet(${pet.PetProfileId})" class="btn btn-danger">Delete</button>`;
+        actionsCell.innerHTML = `<button onclick="editPet(${pet.petProfileId})" class="btn btn-primary">Edit</button>
+                                 <button onclick="deletePet(${pet.petProfileId})" class="btn btn-danger">Delete</button>`;
+        actionsCell.className = "text-center";
       });
     })
     .catch((error) => {
@@ -57,13 +74,15 @@ function editPet(petId) {
       let newBreed = prompt("Enter new breed for the pet:", pet.Breed);
       if (newBreed === null || newBreed.trim() === "") return;
 
-      let newAge = prompt("Enter new name for the pet:", pet.Age);
+      let newAge = prompt("Enter new age for the pet:", pet.Age);
       if (newAge === null || newAge.trim() === "") return;
 
       const updatedPet = {
         Name: newName,
         Breed: newBreed,
         Age: newAge,
+        Species: pet.species,
+        ImageUrl: pet.imageUrl
       };
       updatePet(petId, updatedPet);
     })
@@ -95,13 +114,13 @@ function updatePet(petId, updatedPet) {
 
 function deletePet(petId) {
   if (!confirm("Are you sure you want to delete this pet?")) {
-    return; 
+    return;
   }
-  const token = localStorage.getItem("userToken"); 
+  const token = localStorage.getItem("userToken");
   fetch(`${petsUrl}/${petId}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   })
