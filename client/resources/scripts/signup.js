@@ -59,13 +59,13 @@ function submitForm(event) {
   } else if (accountType === "shelter") {
     formData = {  // Use the already declared formData
       ShelterUsername: document.getElementById("shelterName").value.trim(),
-      ShelterEmail: document.getElementById("shelterEmail").value.trim(),
+      Email: document.getElementById("shelterEmail").value.trim(),
       ShelterPassword: document.getElementById("shelterPassword").value.trim(),
       Address: document.getElementById("shelterAddress").value.trim(),
       AccountType: accountType,
       HoursOfOperation: document.getElementById("shelterHours").value.trim(),
       deleted: false,
-      approved: false,
+      Approved: false,
     };
     registerShelter(formData);
   } else {
@@ -113,6 +113,8 @@ function registerAdopter(formData) {
     })
     .then((data) => {
       console.log("Server response data:", data);
+      alert("Registration successful!");
+      window.location.href = "index.html";
     })
     .catch((error) => {
       console.error("Error during sign up:", error);
@@ -158,6 +160,8 @@ function registerShelter(formData) {
     })
     .then((data) => {
       console.log("Server response data:", data);
+      alert("Registration successful!");
+      window.location.href = "index.html";
     })
     .catch((error) => {
       console.error("Error during sign up:", error);
