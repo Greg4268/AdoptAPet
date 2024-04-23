@@ -122,7 +122,7 @@ function DisplayAppointmentForm(petId) {
   submitButton.textContent = "Schedule Appointment";
   submitButton.className = "btn btn-primary"; // Bootstrap button styling
   submitButton.onclick = function () {
-    scheduleAppointment(petId);
+    scheduleAppointment(petId, today);
   };
 
   // Append the date input and submit button to the apt-container
@@ -130,10 +130,13 @@ function DisplayAppointmentForm(petId) {
   aptContainer.appendChild(submitButton);
 }
 
-function scheduleAppointment(petId) {
+function scheduleAppointment(petId, today) {
   const appointmentDate = document.getElementById("appointmentDate").value;
   if (!appointmentDate) {
     alert("Please select a date for the appointment.");
+    return;
+  } else if (appointmentDate < today.toISOString().substring(0, 10)) {
+    alert("Please select a future date for the appointment.");
     return;
   }
 
@@ -144,16 +147,16 @@ function scheduleAppointment(petId) {
     appointmentDate
   );
 
-  // Example of sending appointment data to server
+
   fetch(`http://localhost:5292/api/Appointments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      petId: petId,
-      userId: parseInt(localStorage.getItem("userToken").userId), // assuming userId is stored directly in token
-      date: appointmentDate,
+      petProfileId: petId,
+      userId: parseInt(localStorage.getItem("userToken").userId), 
+      appointmentDate: appointmentDate,
     }),
   })
     .then((response) => {
