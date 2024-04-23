@@ -69,22 +69,12 @@ namespace api.Controllers
             value.UpdateToDB();
         }
 
-        [HttpPut("{userId}/toggle-delete")]
-        public IActionResult ToggleShelterDeletion(int userId, bool deleted)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id, bool Approved, [FromBody] Shelters value)
         {
-            try
-            {
-                new Shelters().ApprovalOfShelter(userId, deleted);
-                return Ok(new { success = true, message = "User deletion status toggled." });
-            }
-            catch (MySqlException sqlEx)
-            {
-                return StatusCode(500, new { success = false, message = sqlEx.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = ex.Message });
-            }
+            value.ApprovalOfShelter(id, Approved);
+            return NoContent();
+
         }
     }
 }
