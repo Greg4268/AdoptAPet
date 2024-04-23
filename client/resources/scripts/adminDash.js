@@ -90,13 +90,13 @@ async function displayShelters(shelters) {
             <td><button onclick="AltShelterApproval(${shelter.shelterId}, ${shelter.approved})">Approve/Revoke Approval</button></td>
           </tr>
       `;
-    shelterContainer.innerHTML += sheltersCard; // Append the new card
+    shelterContainer.innerHTML += sheltersCard; 
   }
 }
 
 async function displayUsers(users) {
   const usersContainer = document.querySelector(".users-container");
-  usersContainer.innerHTML = ""; // Clear existing content
+  usersContainer.innerHTML = ""; 
 
   for (const user of users) {
     //const imageUrl = await fetchImage(); // Fetch image for each pet
@@ -113,7 +113,7 @@ async function displayUsers(users) {
     })">delete / undelete </td>
             </tr>
       `;
-    usersContainer.innerHTML += usersCard; // Append the new card
+    usersContainer.innerHTML += usersCard; 
   }
 }
 
@@ -128,6 +128,7 @@ async function displayPets(pets) {
               <td>${pet.petProfileId}</td>
               <td>${pet.name}</td>
               <td>${pet.species}</td>
+              <td>${pet.breed}</td>
               <td>${pet.favoriteCount}</td>
               <td>${pet.deleted}</td>
               <td>${pet.shelterId}</td>
@@ -151,10 +152,10 @@ async function displayAppointments(appointments) {
               <td>${appointment.userId}</td>
               <td>${appointment.petProfileId}</td>
               <td>${appointment.deleted}</td>
-              <td><button onclick="softDeleteAppointment(${appointment.appointmentId},${appointment.deleted})">delete</td>
+              <td><button onclick="deleteAppointment(${appointment.appointmentId})">delete</td>
             </tr>
       `;
-    aptsContainer.innerHTML += aptCard; // Append the new card
+    aptsContainer.innerHTML += aptCard; 
   }
 }
 
@@ -174,7 +175,6 @@ function AltShelterApproval(shelterId, approved) {
   })
     .then((response) => {
       if (!response.ok) {
-        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
         return response.json().then((data) => {
           throw new Error(
             data.message || "Failed to toggle user deletion status"
@@ -193,7 +193,7 @@ function AltShelterApproval(shelterId, approved) {
     });
 }
 
-// soft delete user is not successfully updating the information on the table post changing deleted status
+/* soft delete user is not successfully updating the information on the table post changing deleted status
 function softDeleteUser(userId, deleted) {
   console.log("Toggling deletion status for user ID:", userId);
 
@@ -227,6 +227,23 @@ function softDeleteUser(userId, deleted) {
       console.error("Error toggling deletion status:", error);
     });
 }
+*/
+async function deleteAppointment(appointmentId) {
+  try {
+    const response = await fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        AppointmentId: appointmentId,
+        deleted: true,
+      }),
+    });
+  } catch (error) {
+    console.error('Error deleting appointment:', error.message);
+  }
+}
 
 function softDeletePet(petProfileId, deleted) {
   console.log("Toggling deletion status for pet ID:", petProfileId);
@@ -243,7 +260,6 @@ function softDeletePet(petProfileId, deleted) {
   })
     .then((response) => {
       if (!response.ok) {
-        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
         return response.json().then((data) => {
           throw new Error(
             data.message || "Failed to toggle user deletion status"
@@ -254,7 +270,6 @@ function softDeletePet(petProfileId, deleted) {
     })
     .then((data) => {
       console.log("Deletion status toggled successfully", data);
-      // Call fetchUsers to update the table with the current information
       fetchUsers(usersURL);
     })
     .catch((error) => {
@@ -277,7 +292,6 @@ function softDeleteAppointment(appointmentId, deleted) {
   })
     .then((response) => {
       if (!response.ok) {
-        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
         return response.json().then((data) => {
           throw new Error(
             data.message || "Failed to toggle user deletion status"
@@ -288,7 +302,6 @@ function softDeleteAppointment(appointmentId, deleted) {
     })
     .then((data) => {
       console.log("Deletion status toggled successfully", data);
-      // Call fetchUsers to update the table with the current information
       fetchUsers(usersURL);
     })
     .catch((error) => {
