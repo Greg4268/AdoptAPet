@@ -44,7 +44,7 @@ namespace api.Models
         // Method to save the appointment to the database
         public void SaveToDB()
         {
-            Data.GetPublicConnection cs = new Data.GetPublicConnection();
+            GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
             con.Open();
             string stm = "INSERT INTO Appointments (AppointmentId, AppointmentDate, UserId, PetProfileId, deleted) VALUES (@AppointmentId, @AppointmentDate, @UserId, @PetProfileId, @deleted)";
@@ -53,7 +53,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@deleted", deleted ? 1 : 0);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.ExecuteNonQuery();
         }
 
