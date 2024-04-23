@@ -26,9 +26,38 @@
             <th class="text-center">Actions</th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </table>
+      <div class="d-flex justify-content-center mt-2">
+        <button class="btn btn-success mt-2" onclick="toggleAddPetForm()">
+          Add New Pet
+        </button>
+      </div>
+    </div>
+    <div id="add-pet-form" style="display: none">
+      <form onsubmit="addPet(event)">
+        <div class="mb-3">
+          <label for="petName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="petName" required />
+        </div>
+        <div class="mb-3">
+          <label for="petBreed" class="form-label">Breed</label>
+          <input type="text" class="form-control" id="petBreed" required />
+        </div>
+        <div class="mb-3">
+          <label for="petSpecies" class="form-label">Species</label>
+          <input type="text" class="form-control" id="petSpecies" required />
+        </div>
+        <div class="mb-3">
+          <label for="petAge" class="form-label">Age</label>
+          <input type="number" class="form-control" id="petAge" required />
+        </div>
+        <div class="mb-3">
+          <label for="petImageUrl" class="form-label">Image URL</label>
+          <input type="text" class="form-control" id="petImageUrl" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
     </div>
 
     <script

@@ -36,9 +36,10 @@ namespace api.Controllers
         }
 
         // PUT: api/Pets/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Pets value)
+        [HttpPut("{petId}")]
+        public void Put(int petId, [FromBody] Pets value)
         {
+            value.PetProfileId = petId;
             value.UpdateToDB();
         }
 
