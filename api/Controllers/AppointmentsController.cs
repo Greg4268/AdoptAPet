@@ -62,7 +62,6 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id, [FromBody] Appointment value)
         {
-            System.Console.WriteLine("Delete controller called");
             value.DeleteAppointment(id);
         }
     }
