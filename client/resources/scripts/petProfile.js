@@ -94,5 +94,79 @@ function MakeAppointment(petId) {
   petId = parseInt(petId);
 
   console.log("User ID: ", userId);
+
+  DisplayAppointmentForm(petId);
 }
 
+function DisplayAppointmentForm(petId) {
+  const aptContainer = document.querySelector(".apt-container"); // Ensure the class selector is correctly used.
+
+  // Clear any existing content in the appointment container
+  aptContainer.innerHTML = "";
+
+  // Create a new date input element for appointment date
+  const dateInput = document.createElement("input");
+  dateInput.type = "date";
+  dateInput.id = "appointmentDate";
+  dateInput.name = "appointmentDate";
+  dateInput.className = "form-control"; // Assuming Bootstrap or similar for styling
+
+  // Set the minimum date to today to ensure the date is in the future
+  const today = new Date();
+  const formattedDate = today.toISOString().substring(0, 10); // Format YYYY-MM-DD
+  dateInput.min = formattedDate;
+
+  // Create a button to submit the appointment
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Schedule Appointment";
+  submitButton.className = "btn btn-primary"; // Bootstrap button styling
+  submitButton.onclick = function () {
+    scheduleAppointment(petId);
+  };
+
+  // Append the date input and submit button to the apt-container
+  aptContainer.appendChild(dateInput);
+  aptContainer.appendChild(submitButton);
+}
+
+function scheduleAppointment(petId) {
+  const appointmentDate = document.getElementById("appointmentDate").value;
+  if (!appointmentDate) {
+    alert("Please select a date for the appointment.");
+    return;
+  }
+
+  console.log(
+    "Scheduling appointment for Pet ID:",
+    petId,
+    "on:",
+    appointmentDate
+  );
+
+  // Example of sending appointment data to server
+  fetch(`http://localhost:5292/api/Appointments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      petId: petId,
+      userId: parseInt(localStorage.getItem("userToken").userId), // assuming userId is stored directly in token
+      date: appointmentDate,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to schedule appointment");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Appointment scheduled successfully:", data);
+      alert("Appointment scheduled successfully!");
+    })
+    .catch((error) => {
+      console.error("Error scheduling appointment:", error);
+      alert("Failed to schedule appointment. Please try again.");
+    });
+}
