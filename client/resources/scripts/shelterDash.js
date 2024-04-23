@@ -6,6 +6,11 @@ const tokenData = JSON.parse(userToken);
 const shelterId = parseInt(tokenData.shelterId);
 console.log("Shelter ID: ", shelterId);
 
+function compareByFavCount(a, b)
+{
+  return b.favoriteCount - a.favoriteCount;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   fetchAndDisplayPets(shelterId);
 });
@@ -31,6 +36,7 @@ function fetchAndDisplayPets(shelterId)
         .getElementsByTagName("tbody")[0];
       tableBody.innerHTML = "";
 
+      pets.sort(compareByFavCount);
       pets.forEach((pet) => {
         const row = tableBody.insertRow();
 
@@ -153,7 +159,7 @@ function toggleAddPetForm()
   form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
-function addPet(event) {
+async function addPet(event) {
   event.preventDefault(); 
 
   const name = document.getElementById("petName").value;
@@ -162,7 +168,11 @@ function addPet(event) {
   const age = document.getElementById("petAge").value;
   const imageUrl = document.getElementById("petImageUrl").value;
   var currentDateTime = new Date();
-
+  if(!name || !breed || !species || isNaN(age))
+  {
+    alert("Invalid Input: Please enter valid information for each field.");
+    return;
+  }
   const pet = {
     Name: name,
     Breed: breed,
@@ -176,19 +186,13 @@ function addPet(event) {
   };
   console.log(JSON.stringify(pet));
 
-  fetch(petsUrl, {
+  const response =  await fetch(petsUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("userToken")}`,
     },
-    body: JSON.stringify(pet),
+    body: JSON.stringify(pet)
   })
-    .then((response) => response.json())
-    .then(() => {
-      alert("Pet added successfully!");
-      toggleAddPetForm();
-      fetchAndDisplayPets(shelterId); 
-    })
-    .catch((error) => console.error("Error adding pet:", error));
+  fetchAndDisplayPets(shelterId);
 }

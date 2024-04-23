@@ -34,7 +34,7 @@
         </button>
       </div>
     </div>
-    <div id="add-pet-form" style="display: none">
+    <div id="add-pet-form" style="display: none; padding: 44px">
       <form onsubmit="addPet(event)">
         <div class="mb-3">
           <label for="petName" class="form-label">Name</label>
@@ -56,7 +56,9 @@
           <label for="petImageUrl" class="form-label">Image URL</label>
           <input type="text" class="form-control" id="petImageUrl" required />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="d-flex justify-content-center mt-2">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
       </form>
     </div>
 
