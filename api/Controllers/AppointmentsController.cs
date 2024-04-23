@@ -60,9 +60,9 @@ namespace api.Controllers
 
         // DELETE: api/Appointment/5
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] Appointment value)
+        public void Delete(int id)
         {
-            value.DeleteAppointment(value);
+            DeleteAppointment(id);
         }
     }
 }
