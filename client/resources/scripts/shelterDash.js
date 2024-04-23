@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAndDisplayPets(shelterId);
 });
 
-function fetchAndDisplayPets(shelterId) {
+function fetchAndDisplayPets(shelterId) 
+{
   fetch(`${shelterUrl}/${shelterId}/Pets`, {
     method: "GET",
     headers: {
@@ -64,7 +65,8 @@ function fetchAndDisplayPets(shelterId) {
     });
 }
 
-function editPet(petId) {
+function editPet(petId) 
+{
   fetch(`${petsUrl}/${petId}`)
     .then((response) => response.json())
     .then((pet) => {
@@ -86,7 +88,7 @@ function editPet(petId) {
         BirthDate: pet.birthDate,
         deleted: pet.deleted,
         ShelterId: pet.shelterId,
-        favoriteCount: pet.favoriteCount
+        favoriteCount: pet.favoriteCount,
       };
       updatePet(petId, updatedPet);
     })
@@ -95,7 +97,8 @@ function editPet(petId) {
     });
 }
 
-function updatePet(petId, updatedPet) {
+function updatePet(petId, updatedPet) 
+{
   fetch(`${petsUrl}/${petId}`, {
     method: "PUT",
     headers: {
@@ -116,7 +119,8 @@ function updatePet(petId, updatedPet) {
     });
 }
 
-function deletePet(petId) {
+function deletePet(petId) 
+{
   if (!confirm("Are you sure you want to delete this pet?")) {
     return;
   }
@@ -141,4 +145,50 @@ function deletePet(petId) {
       console.error("Error deleting pet:", error);
       alert("Error deleting pet: " + error.message);
     });
+}
+
+function toggleAddPetForm() 
+{
+  const form = document.getElementById("add-pet-form");
+  form.style.display = form.style.display === "none" ? "block" : "none";
+}
+
+function addPet(event) {
+  event.preventDefault(); 
+
+  const name = document.getElementById("petName").value;
+  const breed = document.getElementById("petBreed").value;
+  const species = document.getElementById("petSpecies").value;
+  const age = document.getElementById("petAge").value;
+  const imageUrl = document.getElementById("petImageUrl").value;
+  var currentDateTime = new Date();
+
+  const pet = {
+    Name: name,
+    Breed: breed,
+    Species: species,
+    Age: parseInt(age, 10),
+    ImageUrl: imageUrl,
+    ShelterId: shelterId,
+    deleted: false,
+    FavoriteCount: 0,
+    BirthDate: currentDateTime
+  };
+  console.log(JSON.stringify(pet));
+
+  fetch(petsUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+    },
+    body: JSON.stringify(pet),
+  })
+    .then((response) => response.json())
+    .then(() => {
+      alert("Pet added successfully!");
+      toggleAddPetForm();
+      fetchAndDisplayPets(shelterId); 
+    })
+    .catch((error) => console.error("Error adding pet:", error));
 }
