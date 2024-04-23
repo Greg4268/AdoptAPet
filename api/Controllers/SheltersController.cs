@@ -70,9 +70,9 @@ namespace api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id, bool Approved, [FromBody] Shelters value)
+        public IActionResult Delete(int id, bool Approved)
         {
-            value.ApprovalOfShelter(id, Approved);
+            new Shelters().ApprovalOfShelter(id, Approved);
             return NoContent();
 
         }
