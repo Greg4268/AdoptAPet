@@ -51,16 +51,14 @@ async function fetchUserAppointments(userId){
 }
 
 async function displayFavPets(pets) {
-  const petsContainer = document.querySelector(".col:nth-child(3)"); // Selecting the third column (Favorite Pets)
-  petsContainer.innerHTML = ""; // Clear existing content
+  const petsContainer = document.querySelector(".col:nth-child(3)"); 
+  petsContainer.innerHTML = ""; 
 
-  // Add a single header above the pet cards
   const petsHeader = `
     <h2>Favorite Pets</h2>
   `;
   petsContainer.innerHTML += petsHeader;
 
-  // Generate pet cards
   for (const pet of pets) {
     const petCard = `
       <div class="h-100 p-5 bg-light border rounded-3 pet-card">
@@ -75,7 +73,7 @@ async function displayFavPets(pets) {
         </div>
       </div>
     `;
-    petsContainer.innerHTML += petCard; // Append the new card within the Favorite Pets column
+    petsContainer.innerHTML += petCard;
   }
 }
 
@@ -84,11 +82,9 @@ async function displayUserInfo(user) {
   const labelsContainer = document.querySelector('.labels');
   const dataContainer = document.querySelector('.data');
 
-  // Clear existing content
   labelsContainer.innerHTML = '';
   dataContainer.innerHTML = '';
 
-  // Populate labels and data sections with user information
   const userInfo = {
     "UserID": user.userId,
     "Full Name": user.firstName + " " + user.lastName,
@@ -122,44 +118,52 @@ function formatDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
-// Modify the appointment date format before displaying
 const formattedDate = formatDate(appointment.appointmentDate);
 
 async function displayAppointments(userId) {
   const appointmentsBody = document.getElementById("appointmentsBody");
-  appointmentsBody.innerHTML = ""; // Clear existing content
+  appointmentsBody.innerHTML = ""; 
 
-  // Fetch data from pet_profile table
   const petProfilesResponse = await fetch(`http://localhost:5292/api/Pets`);
   const petProfiles = await petProfilesResponse.json();
 
-  // Fetch data from appointments table
-  const appointmentsResponse = await fetch(`http://localhost:5292/api/Appointments/ByUser/${userId}`);
+  const appointmentsResponse = await fetch(`http://localhost:5292/api/Appointments/ByUser/${userId}?deleted=0`);  
   const appointments = await appointmentsResponse.json();
 
-  // Fetch data from shelter table
   const sheltersResponse = await fetch(`http://localhost:5292/api/Shelters`);
   const shelters = await sheltersResponse.json();
 
-  // Populate the appointments table
   appointments.forEach(appointment => {
-    // Find the corresponding pet profile
     const petProfile = petProfiles.find(pet => pet.petProfileId === appointment.petProfileId);
-    // Find the corresponding shelter
-
     const shelterId = petProfile.shelterId;
     const shelter = shelters.find(shelter => shelter.shelterId === shelterId);
 
-    // Create a table row for each appointment
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${petProfile ? petProfile.name : 'N/A'}</td>
       <td>${formatDate(appointment.appointmentDate)}</td>
       <td>${shelter ? shelter.shelterUsername : 'N/A'}</td>
-      <td><button class="deleteButton" data-appointment-id="${appointment.appointmentId}">Delete</button></td> <!-- Button to delete appointment -->
+      <td><button onclick="deleteAppointment(${appointment.appointmentId})"class="deleteButton" data-appointment-id="${appointment.appointmentId}">Delete</button></td> <!-- Button to delete appointment -->
     `;
     appointmentsBody.appendChild(row);
   });
+}
+
+async function deleteAppointment(appointmentId) {
+  try {
+    const response = await fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        AppointmentId: appointmentId,
+        deleted: true,
+      }),
+    });
+  } catch (error) {
+    console.error('Error deleting appointment:', error.message);
+  }
 }
 
 function redirectToPetProfile(petId) {
