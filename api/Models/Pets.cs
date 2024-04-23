@@ -50,9 +50,8 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, deleted, ImageUrl, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
+            string stm = "INSERT INTO Pet_Profile (Age, BirthDate, Breed, Name, Species, deleted, ShelterId, ImageUrl, FavoriteCount) VALUES (@Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ShelterId, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
             cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
             cmd.Parameters.AddWithValue("@Breed", Breed);
