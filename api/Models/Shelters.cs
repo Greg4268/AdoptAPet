@@ -127,20 +127,32 @@ namespace api.Models
             return null; // if no shelter is found
         }
 
-        public void DeleteShelter(Shelters value)
+        public void ApprovalOfShelter(int ShelterId, bool Approved)
         {
-            GetPublicConnection cs = new GetPublicConnection();
-            using var con = new MySqlConnection(cs.cs);
-            con.Open();
-
-            using var cmd = new MySqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = "UPDATE Shelters SET deleted = @deleted WHERE SheltersId = @SheltersId";
-            cmd.Parameters.AddWithValue("@ShelterId", value.ShelterId);
-            cmd.Parameters.AddWithValue("@deleted", value.deleted);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            con.Close();
+            System.Console.WriteLine("Deleted = " + Approved);
+            Approved = !Approved;
+            System.Console.WriteLine("New Deleted = " + Approved);
+            try
+            {
+                GetPublicConnection cs = new GetPublicConnection();
+                using (var con = new MySqlConnection(cs.cs))
+                {
+                    Console.WriteLine("Opening connection...");
+                    con.Open();
+                    using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = @Approved WHERE ShelterId = @ShelterId", con))
+                    {
+                        Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {Approved}");
+                        cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
+                        cmd.Parameters.AddWithValue("@Approved", Approved);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DeleteUser: " + ex.Message);
+                throw; // Rethrow to preserve stack details
+            }
         }
 
         public static List<Pets> GetPetsByShelter(int shelterId)
@@ -220,5 +232,7 @@ namespace api.Models
             }
             return null;
         }
+
+
     }
 }

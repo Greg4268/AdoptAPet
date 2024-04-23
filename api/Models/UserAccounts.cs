@@ -198,20 +198,33 @@ namespace api.Models
 
         }
 
-        public void DeleteUser(UserAccounts value)
+        public void DeleteUser(int UserId, bool deleted)
         {
-            GetPublicConnection cs = new GetPublicConnection();
-            using var con = new MySqlConnection(cs.cs);
-            con.Open();
-
-            using var cmd = new MySqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = "UPDATE User_Profile SET deleted = @deleted WHERE UserId = @UserId";
-            cmd.Parameters.AddWithValue("@UserId", value.UserId);
-            cmd.Parameters.AddWithValue("@deleted", value.deleted);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            con.Close();
+            System.Console.WriteLine("Deleted = " + deleted);
+            deleted = !deleted;
+            System.Console.WriteLine("New Deleted = " + deleted);
+            try
+            {
+                GetPublicConnection cs = new GetPublicConnection();
+                using (var con = new MySqlConnection(cs.cs))
+                {
+                    Console.WriteLine("Opening connection...");
+                    con.Open();
+                    using (var cmd = new MySqlCommand("UPDATE User_Profile SET deleted = @deleted WHERE UserId = @UserId", con))
+                    {
+                        Console.WriteLine($"Updating UserId: {UserId} to Deleted: {deleted}");
+                        cmd.Parameters.AddWithValue("@UserId", UserId);
+                        cmd.Parameters.AddWithValue("@deleted", deleted);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DeleteUser: " + ex.Message);
+                throw; // Rethrow to preserve stack details
+            }
         }
+
     }
 }

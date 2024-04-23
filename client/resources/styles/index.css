@@ -126,3 +126,98 @@ select option {
 #card-container {
   padding: 1rem; /* Adds padding around the entire container of cards */
 }
+
+.col {
+  width: 100%;
+  text-align: center;
+  font-size: 16;
+
+}
+
+.infoTable {
+  width: 100%;
+  text-align: center;
+}
+
+.apptTable {
+  width: 100%;
+  text-align: center;
+}
+
+.favPetsTable {
+  text-align: center;
+  width: 100%;
+}
+
+.vertical-table {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.labels {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+
+.label {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+
+}
+
+.data {
+  flex: 2;
+}
+
+.value {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.apptTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.apptTable thead {
+  flex: 1;
+  display: inline-table;
+  flex-direction: row;
+}
+
+.apptTable tbody {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.apptTable th {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  width: 100%;
+}
+
+.apptTable td {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  width: 100%;
+}
+
+.apptTable th,
+.apptTable td {
+  text-align: center;
+  width: 25%; /* Equal width for each column */
+}
