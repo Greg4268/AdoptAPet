@@ -43,9 +43,15 @@ function loginUser() {
           userId: data.userId,
           accountType: data.accountType,
           hasForm: data.hasForm,
+          deleted: data.deleted,
         });
         localStorage.setItem("userToken", token);
-        window.location.href = "./index.html"; // Adjust as needed
+        window.location.href = "./index.html"; 
+      }
+      if (data.deleted === true) {
+        alert("Your account has been deleted.");
+        localStorage.removeItem("userToken");
+        window.location.href = "./login.html"; 
       }
     })
     .catch((error) => {
@@ -87,6 +93,9 @@ function loginShelter() {
         });
         localStorage.setItem("userToken", token);
         window.location.href = "./shelterDash.html"; 
+      }
+      if (data.deleted === true) {
+        alert("Your account has been deleted.");
       }
     })
     .catch((error) => {
