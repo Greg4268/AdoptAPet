@@ -22,7 +22,7 @@ async function fetchShelters(shelterURL) {
     }
     const shelters = await response.json();
     displayShelters(shelters);
-    console.log("Shelters Objects: ", shelters);
+    // console.log("Shelters Objects: ", shelters);
   } catch (error) {
     console.error("Error fetching shelters:", error);
   }
@@ -36,7 +36,7 @@ async function fetchUsers(usersURL) {
     }
     const users = await response.json();
     displayUsers(users);
-    console.log("users Objects: ", users);
+    // console.log("users Objects: ", users);
   } catch (error) {
     console.error("Error fetching users:", error);
   }
@@ -55,7 +55,7 @@ async function displayShelters(shelters) {
             <td>${shelter.hoursOfOperation}</td>
             <td>${shelter.address}</td>
             <td>${shelter.approved}</td>
-            <td><button onclick="AltShelterApproval(${shelter.shelterId})">Approve/Revoke Approval</button></td>
+            <td><button onclick="AltShelterApproval(${shelter.shelterId}, ${shelter.approved})">Approve/Revoke Approval</button></td>
           </tr>
       `;
     shelterContainer.innerHTML += sheltersCard; // Append the new card
@@ -85,13 +85,43 @@ async function displayUsers(users) {
   }
 }
 
-function AltShelterApproval(shelterId) {
+function AltShelterApproval(shelterId, approved) {
   console.log("Modifying shelter approval of shelter ID: ", shelterId);
-  let deleted = !deleted;
+  let approved = !approved;
 
-  // displayShelters(shelterId);
+  fetch(`http://localhost:5292/api/Shelter/${userId}/toggle-delete`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      UserId: userId,
+      deleted: approved,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
+        return response.json().then((data) => {
+          throw new Error(
+            data.message || "Failed to toggle user deletion status"
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Deletion status toggled successfully", data);
+      // Call fetchUsers to update the table with the current information
+      fetchUsers(usersURL);
+    })
+    .catch((error) => {
+      console.error("Error toggling deletion status:", error);
+    });
 }
 
+
+// soft delete user is not successfully updating the information on the table post changing deleted status 
 function softDeleteUser(userId, currentDeletedStatus) {
   console.log("Toggling deletion status for user ID:", userId);
 
@@ -124,8 +154,11 @@ function softDeleteUser(userId, currentDeletedStatus) {
     })
     .then((data) => {
       console.log("Deletion status toggled successfully", data);
+      // Call fetchUsers to update the table with the current information
+      fetchUsers(usersURL);
     })
     .catch((error) => {
       console.error("Error toggling deletion status:", error);
     });
 }
+

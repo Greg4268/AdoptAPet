@@ -200,6 +200,9 @@ namespace api.Models
 
         public void DeleteUser(int UserId, bool deleted)
         {
+            System.Console.WriteLine("Deleted = " + deleted);
+            deleted = !deleted;
+            System.Console.WriteLine("New Deleted = " + deleted);
             try
             {
                 GetPublicConnection cs = new GetPublicConnection();
