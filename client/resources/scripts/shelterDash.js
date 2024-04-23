@@ -82,7 +82,11 @@ function editPet(petId) {
         Breed: newBreed,
         Age: newAge,
         Species: pet.species,
-        ImageUrl: pet.imageUrl
+        ImageUrl: pet.imageUrl,
+        BirthDate: pet.birthDate,
+        deleted: pet.deleted,
+        ShelterId: pet.shelterId,
+        favoriteCount: pet.favoriteCount
       };
       updatePet(petId, updatedPet);
     })
