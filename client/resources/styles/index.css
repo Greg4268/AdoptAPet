@@ -1,35 +1,232 @@
-.dropdown-container {
-    display: flex;
-    flex-direction: column; /* Change to 'row' to display the box to the right */
-    align-items: flex-start;
-}
-
 .profile-dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
-.profile-dropdown img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
+.apt-container {
+  width: 50%;          
+  margin: 0 auto;      
+  padding: 20px;       
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  border-radius: 8px; 
+  background-color: #fff; 
 }
 
 .dropdown-menu {
-    position: absolute;
-    right: 0;
-    display: none;
-    margin-top: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
+  display: none; /* Ensure it's not visible by default */
+  position: absolute;
+  background-color: #ffffff; /* Adjust as necessary */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  border-radius: 0.25rem; /* Rounded corners */
+  padding: 0.5rem 0;
+  z-index: 1000;
+  width: 200px;
+}
+
+.profile-dropdown:hover .dropdown-menu {
+  display: block; /* This is crucial for showing the menu on hover */
+}
+
+select {
+  width: 100%; /* Full width */
+  padding: 8px 16px;
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Rounded borders */
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-size: 16px; /* Increased font size for better readability */
+  color: #333; /* Dark grey text color for better contrast */
+}
+
+select:focus {
+  outline: none; /* Removes the default focus outline */
+  border-color: #665eff; /* Changes border color when focused */
+  box-shadow: 0 0 8px rgba(102, 94, 255, 0.6); /* More prominent shadow on focus */
+}
+
+/* Styling options within the select box */
+select option {
+  padding: 10px; /* Makes options easier to click */
+}
+
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-dropdown img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#main-banner {
+  border: 4px solid rgb(85, 69, 69);
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  display: none;
+  margin-top: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-menu .dropdown-item {
-    padding: 10px;
-    cursor: pointer;
+  padding: 10px;
+  cursor: pointer;
 }
 
-/* Display the dropdown menu on img click */
-.profile-dropdown:hover .dropdown-menu {
-    display: block;
+.background-image {
+  background-image: url("../images/dogs_running.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#main-page-text {
+  color: white;
+}
+
+.index-body {
+  background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/dog/Hero-DogSearch_DesktopTablet.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: auto;
+}
+
+.alt-background {
+  background-image: url(https://prod-assets.production.omega.aapdev.org/img/hero/image/desktop/shelter/Hero-ShelterRescueSearch_DesktopTablet.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: auto;
+}
+
+#searchForm {
+  width: 50%;
+  margin-top: 1rem; /* Adds space above the search bar */
+  margin-bottom: 1rem; /* Adds space below the search bar */
+}
+
+.pet-card .card-body {
+  display: flex;
+  flex-direction: row;
+}
+.pet-card .card-info {
+  flex: 1; /* Takes as much space as possible */
+}
+.pet-card img {
+  width: 120px; /* Fixed width for the image */
+  height: 120px; /* Fixed height for the image */
+  border-radius: 15px; /* Rounded corners instead of fully round */
+  align-self: center; /* Center the image vertically */
+  object-fit: cover; /* Ensures the image covers the area without distorting ratio */
+}
+
+#card-container .row .col-md-4 {
+  margin-bottom: 1rem; /* Adds space below each column */
+}
+
+#card-container {
+  padding: 1rem; /* Adds padding around the entire container of cards */
+}
+
+.col {
+  width: 100%;
+  text-align: center;
+  font-size: 16;
+
+}
+
+.infoTable {
+  width: 100%;
+  text-align: center;
+}
+
+.apptTable {
+  width: 100%;
+  text-align: center;
+}
+
+.favPetsTable {
+  text-align: center;
+  width: 100%;
+}
+
+.vertical-table {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.labels {
+  flex: 1;
+  border-right: 1px solid #ccc;
+}
+
+.label {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+
+}
+
+.data {
+  flex: 2;
+}
+
+.value {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.apptTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.apptTable thead {
+  flex: 1;
+  display: inline-table;
+  flex-direction: row;
+}
+
+.apptTable tbody {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.apptTable th {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  width: 100%;
+}
+
+.apptTable td {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  width: 100%;
+}
+
+.apptTable th,
+.apptTable td {
+  text-align: center;
+  width: 25%; /* Equal width for each column */
 }

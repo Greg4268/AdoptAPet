@@ -9,58 +9,33 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link href="./resources/styles/index.css" />
-    <title>Adopt-A-Pet</title>
+    <link href="./resources/styles/index.css" rel="stylesheet" />
+    <title>Pet Profile</title>
+    <link rel="icon" type="image/png" href="./resources/images/LogoTrans.png" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="./index.html">Adopt-A-Pet</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+    <div id="navbar-container"></div>
+
+    <br />
+    <div class="container">
+      <h5>
+        <a href="./index.html" style="color: black; font-size: 15px"
+          >Return to homepage</a
         >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!-- Left-aligned links -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="./about.html"
-                >About Us</a
-              >
-            </li>
-          </ul>
-          <!-- Right-aligned links -->
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="./shelters.html">Shelters</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./FAQ.html">FAQ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./login.html">Login / Sign Up</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+      </h5>
+    </div>
+
     <!-- About 1 - Bootstrap Brain Component -->
     <section class="py-3 py-md-5 py-xl-8">
       <div class="container">
         <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
           <div class="col-12 col-lg-6 col-xl-5">
             <img
+              id="petImage"
               class="img-fluid rounded"
               loading="lazy"
-              src="./resources/images/Spock.jpg"
-              alt=""
+              src=""
+              alt="Pet"
               height="400px"
               width="400px"
             />
@@ -68,55 +43,29 @@
           <div class="col-12 col-lg-6 col-xl-7">
             <div class="row justify-content-xl-center">
               <div class="col-12 col-xl-11">
-                <h2 class="h1 mb-3">Meet {pet.Name}</h2>
-                <p class="lead fs-4 text-secondary mb-3">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Facilis, nostrum dignissimos assumenda vero modi laudantium
-                  incidunt
+                <h2 class="h1 mb-3" id="petName">Meet {pet.Name}</h2>
+                <p class="lead fs-4 text-secondary mb-3" id="petDescription">
+                 <!-- pet description -->
                 </p>
-                <p class="mb-5">
-                  Nullam gravida orci ac luctus molestie. Fusce finibus congue
-                  erat, non aliquam magna tincidunt at.
-                </p>
-                <div class="row gy-4 gy-md-0 gx-xxl-5X">
-                  <div class="col-12 col-md-6">
+                <h5 id="petBreed"></h5>
+                <h5 id="petSpecies"></h5>
+                <h5 id="petAge"></h5>
+                <h5 id="shelterName"></h5>
+                <div class="row gy-4 gy-md-0 gx-xxl-5">
+                  <div class="col-12 col-md-3">
                     <div class="d-flex">
                       <div class="me-4 text-primary"></div>
+                      <button class="btn btn-outline-secondary" role="button" onclick="FavoritePet();">
+                        Favorite
+                      </button>
                     </div>
                   </div>
                   <div class="col-12 col-md-6">
                     <div class="d-flex">
-                      <div class="me-4 text-primary"></div>
-                    </div>
-                    <div>
-                      <!-- Google Calendar Appointment Scheduling begin -->
-                      <link
-                        href="https://calendar.google.com/calendar/scheduling-button-script.css"
-                        rel="stylesheet"
-                      />
-                      <script
-                        src="https://calendar.google.com/calendar/scheduling-button-script.js"
-                        async
-                      ></script>
-                      <script>
-                        (function () {
-                          var target = document.currentScript;
-                          window.addEventListener("load", function () {
-                            calendar.schedulingButton.load({
-                              url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2D2ULlPx1ltNi_I0H_G5g5SMzYFpy4RZAZ58_sySMT0i0g2bv-6N4fagSlmTTgKcfg7OlN9rxp?gv=true",
-                              color: "#039BE5",
-                              label: "Book an appointment",
-                              target,
-                            });
-                          });
-                        })();
-                      </script>
-                      <!-- end Google Calendar Appointment Scheduling -->
-                    </div>
-                    <div>
-                      <button class="btn btn-outline-secondary" role="button">
-                        Favorite
+                      <button class="btn btn-outline-secondary" role="button" onclick="MakeAppointment();">
+                        Make An Appointment
                       </button>
+                      <div class="me-4 text-primary"></div>
                     </div>
                   </div>
                 </div>
@@ -128,16 +77,18 @@
     </section>
 
     <section>
-      <div>
-        <h2>contain calendar for adoption below here</h2>
+      <div class="apt-container">
+        <!-- insert the date input in here -->
       </div>
     </section>
+     
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="./resources/scripts/index.js"></script>
+    <script src="./resources/scripts/petProfile.js"></script>
+    <script src="./resources/scripts/common.js"></script>
   </body>
 </html>
