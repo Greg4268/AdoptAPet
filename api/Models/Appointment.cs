@@ -140,7 +140,7 @@ namespace api.Models
 
 
         // method to delete appt
-        public void DeleteAppointment(Appointment value)
+        public void DeleteAppointment(int id)
         {
             GetPublicConnection cs = new GetPublicConnection();
             using var con = new MySqlConnection(cs.cs);
@@ -149,8 +149,8 @@ namespace api.Models
             using var cmd = new MySqlCommand();
             cmd.Connection = con;
             cmd.CommandText = "UPDATE Appointments SET deleted = @deleted WHERE AppointmentId = @AppointmentId";
-            cmd.Parameters.AddWithValue("@AppointmentId", value.AppointmentId);
-            cmd.Parameters.AddWithValue("@deleted", value.deleted);
+            cmd.Parameters.AddWithValue("@AppointmentId", id);
+            cmd.Parameters.AddWithValue("@deleted", deleted);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
