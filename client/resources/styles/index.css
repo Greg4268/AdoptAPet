@@ -3,6 +3,15 @@
   display: inline-block;
 }
 
+.apt-container {
+  width: 50%;          
+  margin: 0 auto;      
+  padding: 20px;       
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  border-radius: 8px; 
+  background-color: #fff; 
+}
+
 .dropdown-menu {
   display: none; /* Ensure it's not visible by default */
   position: absolute;

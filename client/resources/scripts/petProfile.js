@@ -78,6 +78,7 @@ function FavoritePet(petId) {
     })
     .then((result) => {
       console.log("Favorite toggled successfully:", result);
+      alert("Pet Favorited!");
     })
     .catch((error) => {
       console.error("Error toggling favorite:", error);
