@@ -1,5 +1,7 @@
 const shelterURL = "http://localhost:5292/api/Shelters";
 const usersURL = "http://localhost:5292/api/UserAccounts";
+const petsURL = "http://localhost:5292/api/Pets";
+const appointmentsURL = "http://localhost:5292/api/Appointments";
 
 $(document).ready(function () {
   $("#table1").DataTable();
@@ -12,6 +14,8 @@ $(document).ready(function () {
 function handleOnLoad() {
   fetchShelters(shelterURL);
   fetchUsers(usersURL);
+  fetchPets(petsURL);
+  fetchAppointments(appointmentsURL);
 }
 
 async function fetchShelters(shelterURL) {
@@ -22,7 +26,7 @@ async function fetchShelters(shelterURL) {
     }
     const shelters = await response.json();
     displayShelters(shelters);
-    // console.log("Shelters Objects: ", shelters);
+    console.log("Shelters Objects: ", shelters);
   } catch (error) {
     console.error("Error fetching shelters:", error);
   }
@@ -36,9 +40,37 @@ async function fetchUsers(usersURL) {
     }
     const users = await response.json();
     displayUsers(users);
-    // console.log("users Objects: ", users);
+    console.log("users Objects: ", users);
   } catch (error) {
     console.error("Error fetching users:", error);
+  }
+}
+
+async function fetchPets(petsURL) {
+  try {
+    const response = await fetch(petsURL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const pets = await response.json();
+    displayPets(pets);
+    console.log("Pets Objects: ", pets);
+  } catch (error) {
+    console.error("Error fetching pets:", error);
+  }
+}
+
+async function fetchAppointments(appointmentsURL) {
+  try {
+    const response = await fetch(appointmentsURL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const appointments = await response.json();
+    displayAppointments(appointments);
+    console.log("Appointments Objects: ", appointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
   }
 }
 
@@ -78,16 +110,57 @@ async function displayUsers(users) {
               <td>${user.deleted}</td>
               <td><button onclick="softDeleteUser(${user.userId},${
       user.deleted
-    })">Revoke Access</td>
+    })">delete / undelete </td>
             </tr>
       `;
     usersContainer.innerHTML += usersCard; // Append the new card
   }
 }
 
+async function displayPets(pets) {
+  const petsContainer = document.querySelector(".pet-container");
+  petsContainer.innerHTML = ""; // Clear existing content
+
+  for (const pet of pets) {
+    //const imageUrl = await fetchImage(); // Fetch image for each pet
+    const petsCard = `
+          <tr>
+              <td>${pet.petProfileId}</td>
+              <td>${pet.name}</td>
+              <td>${pet.species}</td>
+              <td>${pet.favoriteCount}</td>
+              <td>${pet.deleted}</td>
+              <td>${pet.shelterId}</td>
+              <td><button onclick="softDeletePet(${pet.petProfileId},${pet.deleted})">delete / undelete </td>
+            </tr>
+      `;
+    petsContainer.innerHTML += petsCard; // Append the new card
+  }
+}
+
+async function displayAppointments(appointments) {
+  const aptsContainer = document.querySelector(".apt-container");
+  aptsContainer.innerHTML = ""; // Clear existing content
+
+  for (const appointment of appointments) {
+    //const imageUrl = await fetchImage(); // Fetch image for each pet
+    const aptCard = `
+          <tr>
+              <td>${appointment.appointmentId}</td>
+              <td>${appointment.appointmentDate}</td>
+              <td>${appointment.userId}</td>
+              <td>${appointment.petProfileId}</td>
+              <td>${appointment.deleted}</td>
+              <td><button onclick="softDeleteAppointment(${appointment.appointmentId},${appointment.deleted})">delete</td>
+            </tr>
+      `;
+    aptsContainer.innerHTML += aptCard; // Append the new card
+  }
+}
+
 function AltShelterApproval(shelterId, approved) {
   console.log("Modifying shelter approval of shelter ID: ", shelterId);
-  let approved = !approved;
+  approved = !approved;
 
   fetch(`http://localhost:5292/api/Shelter/${userId}/toggle-delete`, {
     method: "PUT",
@@ -120,16 +193,9 @@ function AltShelterApproval(shelterId, approved) {
     });
 }
 
-
-// soft delete user is not successfully updating the information on the table post changing deleted status 
-function softDeleteUser(userId, currentDeletedStatus) {
+// soft delete user is not successfully updating the information on the table post changing deleted status
+function softDeleteUser(userId, deleted) {
   console.log("Toggling deletion status for user ID:", userId);
-
-  // Toggle the current deleted status
-  let newDeletedStatus = !currentDeletedStatus;
-
-  console.log("Current status:", currentDeletedStatus);
-  console.log("New status after toggle:", newDeletedStatus);
 
   fetch(`http://localhost:5292/api/UserAccounts/${userId}/toggle-delete`, {
     method: "PUT",
@@ -138,7 +204,7 @@ function softDeleteUser(userId, currentDeletedStatus) {
     },
     body: JSON.stringify({
       UserId: userId,
-      deleted: newDeletedStatus,
+      deleted: deleted,
     }),
   })
     .then((response) => {
@@ -162,3 +228,70 @@ function softDeleteUser(userId, currentDeletedStatus) {
     });
 }
 
+function softDeletePet(petProfileId, deleted) {
+  console.log("Toggling deletion status for pet ID:", petProfileId);
+
+  fetch(`http://localhost:5292/api/Pets/${petProfileId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      petProfileId: petProfileId,
+      deleted: deleted,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
+        return response.json().then((data) => {
+          throw new Error(
+            data.message || "Failed to toggle user deletion status"
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Deletion status toggled successfully", data);
+      // Call fetchUsers to update the table with the current information
+      fetchUsers(usersURL);
+    })
+    .catch((error) => {
+      console.error("Error toggling deletion status:", error);
+    });
+}
+
+function softDeleteAppointment(appointmentId, deleted) {
+  console.log("Toggling deletion for appointment: ", appointmentId);
+
+  fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      appointmentId: appointmentId,
+      deleted: deleted,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        // To handle non-2xx HTTP responses, we throw an Error here so it can be caught in the catch block
+        return response.json().then((data) => {
+          throw new Error(
+            data.message || "Failed to toggle user deletion status"
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Deletion status toggled successfully", data);
+      // Call fetchUsers to update the table with the current information
+      fetchUsers(usersURL);
+    })
+    .catch((error) => {
+      console.error("Error toggling deletion status:", error);
+    });
+}

@@ -36,7 +36,7 @@ namespace api.Models
                     Name = rdr.GetString("Name"),
                     Species = rdr.GetString("Species"),
                     deleted = rdr.GetBoolean("deleted"),
-                    ShelterId = rdr.GetInt32("ShelterId"),
+                    ShelterId = rdr.GetInt32("ShelterId"), // make sure new pets have a shelterId otherwise GET wont work on null values 
                     ImageUrl = rdr.GetString("ImageUrl"),
                     FavoriteCount = rdr.GetInt32("FavoriteCount"),
                 });
@@ -50,7 +50,7 @@ namespace api.Models
             GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
             using var con = new MySqlConnection(cs.cs);
             con.Open(); // open database connection
-            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, deleted, ShelterId, Image, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ShelterId, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
+            string stm = "INSERT INTO Pet_Profile (PetProfileId, Age, BirthDate, Breed, Name, Species, deleted, ImageUrl, FavoriteCount) VALUES (@PetProfileId, @Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ImageUrl, @FavoriteCount)"; // sql command to insert a new pet
             using var cmd = new MySqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId); // add parameters to the sql command
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -59,7 +59,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
             cmd.Parameters.AddWithValue("@deleted", deleted);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
+            // cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // can't add shelter id because it is a foreign key
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
             cmd.Prepare();
