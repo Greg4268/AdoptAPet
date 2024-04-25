@@ -129,6 +129,8 @@ namespace api.Models
 
         public void ApprovalOfShelter(int ShelterId, bool Approved)
         {
+            
+            System.Console.WriteLine("Approved: " + Approved + " ShelterId: " + ShelterId);
 
             GetPublicConnection cs = new GetPublicConnection();
             using (var con = new MySqlConnection(cs.cs))
