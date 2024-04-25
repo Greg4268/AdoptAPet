@@ -86,21 +86,22 @@ function FavoritePet(petId) {
 }
 
 function MakeAppointment(petId) {
-  console.log("Making appointment for Pet ID: ", petId);
+  console.log("MakeAppointment Function Called For Pet ID: ", petId);
   const tokenString = localStorage.getItem("userToken");
-  const userToken = JSON.parse(tokenString); // Assuming userToken is a JSON string that includes userId
+  const userToken = JSON.parse(tokenString);
+  // console.log(userToken);
+
   let userId = userToken.userId;
 
-  userId = parseInt(userId);
-  petId = parseInt(petId);
+  //console.log("User ID: ", userId, " Pet ID: ", petId);
 
-  console.log("User ID: ", userId);
-
-  DisplayAppointmentForm(petId);
+  DisplayAppointmentForm(petId, userId);
 }
 
-function DisplayAppointmentForm(petId) {
+function DisplayAppointmentForm(petId, userId) {
   const aptContainer = document.querySelector(".apt-container"); // Ensure the class selector is correctly used.
+
+  console.log("DisplayAppointmentForm Function Called"); // document path for error checking
 
   // Clear any existing content in the appointment container
   aptContainer.innerHTML = "";
@@ -110,19 +111,17 @@ function DisplayAppointmentForm(petId) {
   dateInput.type = "date";
   dateInput.id = "appointmentDate";
   dateInput.name = "appointmentDate";
-  dateInput.className = "form-control"; // Assuming Bootstrap or similar for styling
+  dateInput.className = "form-control";
 
-  // Set the minimum date to today to ensure the date is in the future
-  const today = new Date();
-  const formattedDate = today.toISOString().substring(0, 10); // Format YYYY-MM-DD
-  dateInput.min = formattedDate;
+  let today = new Date(); // Get current date
+  let formattedDate = today.toISOString().substring(0, 10); // Format YYYY-MM-DD
 
   // Create a button to submit the appointment
-  const submitButton = document.createElement("button");
+  let submitButton = document.createElement("button");
   submitButton.textContent = "Schedule Appointment";
-  submitButton.className = "btn btn-primary"; // Bootstrap button styling
+  submitButton.className = "btn btn-primary";
   submitButton.onclick = function () {
-    scheduleAppointment(petId, today);
+    scheduleAppointment(petId, formattedDate, userId);
   };
 
   // Append the date input and submit button to the apt-container
@@ -130,49 +129,35 @@ function DisplayAppointmentForm(petId) {
   aptContainer.appendChild(submitButton);
 }
 
-function scheduleAppointment(petId, today) {
-  const appointmentDate = document.getElementById("appointmentDate").value;
+function scheduleAppointment(petId, formattedDate, userId) {
+  console.log("scheduleAppointment Function Called"); // document path for error checking
+
+  let appointmentDate = document.getElementById("appointmentDate").value;
   if (!appointmentDate) {
     alert("Please select a date for the appointment.");
-    return;
-  } else if (appointmentDate < today.toISOString().substring(0, 10)) {
+  } else if (appointmentDate < formattedDate) {
     alert("Please select a future date for the appointment.");
-    return;
   }
-
-  console.log(
-    "Scheduling appointment for Pet ID:",
-    petId,
-    "on:",
-    appointmentDate
-  );
-
-
+  console.log("userId: ", userId, " petId: ", petId, " appointmentDate: ", appointmentDate);
+  petId = parseInt(petId)
+  userId = parseInt(userId)
+  // appointmentDate = new Date(appointmentDate)
+  console.log("userId: ", userId, " petId: ", petId, " appointmentDate: ", appointmentDate);
+  
   fetch(`http://localhost:5292/api/Appointments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      PetProfileId: parseInt(petId),
-      UserId: parseInt(localStorage.getItem("userToken").userId), 
+      PetProfileId: petId,
+      UserId: userId,
       AppointmentDate: appointmentDate,
-      deleted: false
+      Deleted: false,
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to schedule appointment");
-        
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Appointment scheduled successfully:", data);
-      alert("Appointment scheduled successfully!");
-    })
-    .catch((error) => {
-      console.error("Error scheduling appointment:", error);
-      alert("Failed to schedule appointment. Please try again.");
-    });
+    .then(
+      console.log("Appointment Scheduled Successfully"),
+      alert("Appointment Scheduled Successfully")
+    )
 }
