@@ -154,14 +154,16 @@ function scheduleAppointment(petId, today) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      petProfileId: petId,
-      userId: parseInt(localStorage.getItem("userToken").userId), 
-      appointmentDate: appointmentDate,
+      PetProfileId: parseInt(petId),
+      UserId: parseInt(localStorage.getItem("userToken").userId), 
+      AppointmentDate: appointmentDate,
+      deleted: false
     }),
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to schedule appointment");
+        
       }
       return response.json();
     })

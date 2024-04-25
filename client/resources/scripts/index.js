@@ -15,6 +15,7 @@ async function fetchPets(petsURL) {
     const pets = await response.json();
     displayPets(pets);
     console.table(pets);
+    allPets = pets
   } catch (error) {
     console.error("Error fetching pets:", error);
   }
@@ -77,15 +78,6 @@ function searchPets(query) {
   const filteredPets = allPets.filter(
     (pet) =>
       pet.name.toLowerCase().includes(query) ||
-      pet.breed.toLowerCase().includes(query)
-  );
-  displayPets(filteredPets);
-}
-
-function searchPets(query) {
-  const filteredPets = allPets.filter(
-    (pet) =>
-      pet.name.toLowerCase().includes(query) ||
       pet.breed.toLowerCase().includes(query) ||
       pet.species.toLowerCase().includes(query)
   );
@@ -93,7 +85,7 @@ function searchPets(query) {
 }
 
 document.getElementById("clearSearch").addEventListener("click", function () {
-  document.getElementById("searchInput").value = ""; // Clear the search input
+  document.getElementById("searchInput").value = ""; 
   displayPets(allPets); // Display all pets
 });
 

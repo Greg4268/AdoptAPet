@@ -161,19 +161,16 @@ async function displayAppointments(appointments) {
 
 function AltShelterApproval(shelterId, approved) {
   console.log("Modifying shelter approval of shelter ID: ", shelterId);
-  approved = !approved;
+  console.log(approved)
 
-  fetch(`http://localhost:5292/api/Shelter/${userId}/toggle-delete`, {
-    method: "PUT",
+  fetch(`http://localhost:5292/api/Shelters/${shelterId}`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      UserId: userId,
-      deleted: approved,
-    }),
   })
     .then((response) => {
+      alert("Shelter access switched")
       if (!response.ok) {
         return response.json().then((data) => {
           throw new Error(
