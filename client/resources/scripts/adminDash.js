@@ -160,22 +160,17 @@ async function displayAppointments(appointments) {
 }
 
 function AltShelterApproval(shelterId, approved) {
-  console.log("Shelter ID: ", shelterId, " Approved: ", approved);
-  approved = !approved;
-  ShelterId = parseInt(shelterId);
-  console.log("Shelter ID: ", shelterId, " Approved: ", approved);
+  console.log("Modifying shelter approval of shelter ID: ", shelterId);
+  console.log(approved)
 
-  fetch(`http://localhost:5292/api/Shelter/${ShelterId}/toggle-delete`, {
-    method: "PUT",
+  fetch(`http://localhost:5292/api/Shelters/${shelterId}`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      ShelterId: shelterId,
-      Approved: approved,
-    }),
   })
     .then((response) => {
+      alert("Shelter access switched")
       if (!response.ok) {
         return response.json().then((data) => {
           throw new Error(
