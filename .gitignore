@@ -3,6 +3,7 @@ obj/
 bin/
 **/obj/
 **/bin/
+Data/
 
 # Ignore specific file patterns
 *.dgspec.json
