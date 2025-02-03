@@ -86,13 +86,12 @@ async function displayUserInfo(user) {
   dataContainer.innerHTML = '';
 
   const userInfo = {
-    "UserID": user.userId,
     "Full Name": user.firstName + " " + user.lastName,
     "Email": user.email,
     "Age": user.age,
     "Address": user.address,
     "Account Type": user.accountType,
-    "Yard Size": user.yardSize,
+    "Yard Size": user.yardSize + " sq/ft",
     "Fenced In": user.fenced,
     "Adoption Form": user.hasForm
   };
@@ -136,6 +135,7 @@ async function displayAppointments(userId) {
   appointments.forEach(appointment => {
     const petProfile = petProfiles.find(pet => pet.petProfileId === appointment.petProfileId);
     const shelterId = petProfile.shelterId;
+    console.log(shelterId); // Cannot read properties of undefined (reading 'shelterId') 
     const shelter = shelters.find(shelter => shelter.shelterId === shelterId);
 
     const row = document.createElement("tr");
