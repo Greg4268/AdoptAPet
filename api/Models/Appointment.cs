@@ -14,7 +14,7 @@ namespace api.Models
         public DateTime AppointmentDate { get; set; }
         public int UserId { get; set; }
         public int PetProfileId { get; set; }
-        public bool deleted { get; set; }
+        public bool Deleted { get; set; }
 
         // Method to retrieve all appointments from the database
         public static List<Appointment> GetAllAppointments()
@@ -35,7 +35,7 @@ namespace api.Models
                     AppointmentDate = rdr.GetDateTime("AppointmentDate"),
                     UserId = rdr.GetInt32("UserId"),
                     PetProfileId = rdr.GetInt32("PetProfileId"),
-                    deleted = rdr.GetInt32("deleted") == 1
+                    Deleted = rdr.GetInt32("deleted") == 1
                 });
             }
             return appointments;
@@ -53,7 +53,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@deleted", Deleted);
             cmd.ExecuteNonQuery();
         }
 
@@ -69,7 +69,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@deleted", deleted ? 1 : 0);
+            cmd.Parameters.AddWithValue("@deleted", Deleted ? 1 : 0);
             cmd.ExecuteNonQuery();
         }
 
@@ -94,7 +94,7 @@ namespace api.Models
                                 AppointmentDate = reader.GetDateTime("AppointmentDate"),
                                 UserId = reader.GetInt32("UserId"),
                                 PetProfileId = reader.GetInt32("PetProfileId"),
-                                deleted = reader.GetBoolean("deleted")
+                                Deleted = reader.GetBoolean("deleted")
                             };
                         }
                     }
@@ -127,7 +127,7 @@ namespace api.Models
                                 AppointmentDate = rdr.GetDateTime("AppointmentDate"),
                                 UserId = rdr.GetInt32("UserId"),
                                 PetProfileId = rdr.GetInt32("PetProfileId"),
-                                deleted = rdr.GetBoolean("deleted") 
+                                Deleted = rdr.GetBoolean("deleted") 
                             };
                             appointments.Add(appointment);
                         }
@@ -151,7 +151,7 @@ namespace api.Models
             cmd.Connection = con;
             cmd.CommandText = "UPDATE Appointments SET deleted = @deleted WHERE AppointmentId = @AppointmentId";
             cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@deleted", Deleted);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             con.Close();
@@ -182,7 +182,7 @@ namespace api.Models
                                 AppointmentDate = reader.GetDateTime("AppointmentDate"),
                                 UserId = reader.GetInt32("UserId"),
                                 PetProfileId = reader.GetInt32("PetProfileId"),
-                                deleted = reader.GetBoolean("deleted")
+                                Deleted = reader.GetBoolean("deleted")
                             };
                             appointments.Add(appointment);
                         }

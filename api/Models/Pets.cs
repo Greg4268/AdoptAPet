@@ -7,12 +7,12 @@ namespace api.Models
         public int PetProfileId { get; set; }
         public int Age { get; set; }
         public DateTime BirthDate { get; set; }
-        public string Breed { get; set; }
-        public string Name { get; set; }
-        public string Species { get; set; }
-        public bool deleted { get; set; }
+        public string? Breed { get; set; }
+        public string? Name { get; set; }
+        public string? Species { get; set; }
+        public bool Deleted { get; set; }
         public int ShelterId { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public int FavoriteCount { get; set; }
 
         public static List<Pets> GetAllPets() // method to retrieve pet from database
@@ -35,7 +35,7 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     Species = rdr.GetString("Species"),
-                    deleted = rdr.GetBoolean("deleted"),
+                    Deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"), // make sure new pets have a shelterId otherwise GET wont work on null values 
                     ImageUrl = rdr.GetString("ImageUrl"),
                     FavoriteCount = rdr.GetInt32("FavoriteCount"),
@@ -57,7 +57,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@deleted", Deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // can't add shelter id because it is a foreign key
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
@@ -82,7 +82,7 @@ namespace api.Models
                     cmd.Parameters.AddWithValue("@Breed", Breed);
                     cmd.Parameters.AddWithValue("@Name", Name);
                     cmd.Parameters.AddWithValue("@Species", Species);
-                    cmd.Parameters.AddWithValue("@deleted", deleted);
+                    cmd.Parameters.AddWithValue("@deleted", Deleted);
                     cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
                     cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
                     cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
@@ -144,7 +144,7 @@ namespace api.Models
                     Breed = rdr.GetString("Breed"),
                     Name = rdr.GetString("Name"),
                     Species = rdr.GetString("Species"),
-                    deleted = rdr.GetBoolean("deleted"),
+                    Deleted = rdr.GetBoolean("deleted"),
                     ShelterId = rdr.GetInt32("ShelterId"),
                     ImageUrl = rdr.GetString("ImageUrl"),
                     FavoriteCount = rdr.GetInt32("FavoriteCount"),

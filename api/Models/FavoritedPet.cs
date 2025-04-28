@@ -53,7 +53,7 @@ namespace api.Models
                                     FavoriteCount = rdr.GetInt32("FavoriteCount"),
                                     ShelterId = rdr.GetInt32("ShelterId"),
                                     BirthDate = rdr.GetDateTime("BirthDate"),
-                                    deleted = rdr.GetBoolean("deleted"),
+                                    Deleted = rdr.GetBoolean("deleted"),
                                     Age = rdr.GetInt32("Age"),
                                     ImageUrl = rdr.GetString("ImageUrl")
                                 });

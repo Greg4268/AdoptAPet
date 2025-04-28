@@ -173,7 +173,7 @@ namespace api.Models
                                 Breed = rdr.GetString("Breed"),
                                 Name = rdr.GetString("Name"),
                                 Species = rdr.GetString("Species"),
-                                deleted = rdr.GetBoolean("deleted"),
+                                Deleted = rdr.GetBoolean("deleted"),
                                 ShelterId = rdr.GetInt32("ShelterId"),
                                 ImageUrl = rdr.GetString("ImageUrl"),
                                 FavoriteCount = rdr.GetInt32("FavoriteCount"),
