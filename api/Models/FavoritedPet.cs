@@ -1,130 +1,144 @@
-using MySql.Data.MySqlClient;
+using Npgsql;
 using api.Data;
 namespace api.Models
 {
     public class FavoritedPet
     {
-        public int UserId {get; set;}
-        public int PetProfileId {get; set;}
-        public bool Favorited {get; set;}
-        
-        public static List<Pets> GetFavoritePets(int user) // needs user id
-        {
-            List<int> favoritePets = new List<int>(); // Temp array to store PetProfileIds
-            List<Pets> myPets = new List<Pets>(); // Initialize array to hold Pets 
-            GetPublicConnection cs = new GetPublicConnection(); // Create new instance of database connection string
-            using (var con = new MySqlConnection(cs.cs))
-            {
-                con.Open(); // Open database connection
-                string stm = "SELECT PetProfileId FROM FavoritePets WHERE UserId = @user"; // SQL statement to select PetProfileIds
-                using (var cmd = new MySqlCommand(stm, con))
-                {
-                    cmd.Parameters.AddWithValue("@user", user); // add user id to the command
-                    using (var rdr = cmd.ExecuteReader()) // Execute command
-                    {
-                        while (rdr.Read()) // Iterate through table
-                        {
-                            favoritePets.Add(rdr.GetInt32("PetProfileId")); // Add each PetProfileId to the list
-                        }
-                    }
-                }
-                con.Close();
-            }
-            // Fetch each pet's details from the Pets table
-            using (var con = new MySqlConnection(cs.cs))
-            {
-                con.Open(); // Open database connection again
-                foreach (var petProfileId in favoritePets)
-                {
-                    string query = "SELECT * FROM Pet_Profile WHERE PetProfileId = @petProfileId";
-                    using (var cmd = new MySqlCommand(query, con))
-                    {
-                        cmd.Parameters.AddWithValue("@petProfileId", petProfileId);
-                        using (var rdr = cmd.ExecuteReader())
-                        {
-                            while(rdr.Read()) 
-                            {
-                                myPets.Add(new Pets
-                                {
-                                    PetProfileId = rdr.GetInt32("PetProfileId"),
-                                    Breed = rdr.GetString("Breed"),
-                                    Name = rdr.GetString("Name"),
-                                    Species = rdr.GetString("Species"),
-                                    FavoriteCount = rdr.GetInt32("FavoriteCount"),
-                                    ShelterId = rdr.GetInt32("ShelterId"),
-                                    BirthDate = rdr.GetDateTime("BirthDate"),
-                                    deleted = rdr.GetBoolean("deleted"),
-                                    Age = rdr.GetInt32("Age"),
-                                    ImageUrl = rdr.GetString("ImageUrl")
-                                });
-                            }
-                        }
-                    }
-                }
-                con.Close(); // Close the database connection
-            }
-            return myPets; // Return the list of Pets 
-        }
+        public int UserId { get; set; }
+        public int PetProfileId { get; set; }
+        public bool Favorited { get; set; }
 
+        public static List<Pets> GetFavoritePets(int user)
+        {
+            List<int> favoritePets = new();
+            List<Pets> myPets = new();
+            GetPublicConnection cs = new();
+
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+
+            // Get favorite pet IDs
+            string stm = "SELECT PetProfileId FROM FavoritePet WHERE UserId = @user";
+            using var cmd = new NpgsqlCommand(stm, con);
+            cmd.Parameters.AddWithValue("@user", user);
+
+            using var rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                favoritePets.Add(rdr.GetInt32(rdr.GetOrdinal("PetProfileId")));
+            }
+
+            // Fetch pet details for each favorite
+            foreach (var petProfileId in favoritePets)
+            {
+                string query = "SELECT * FROM Pet_Profile WHERE PetProfileId = @petProfileId";
+                using var petCmd = new NpgsqlCommand(query, con);
+                petCmd.Parameters.AddWithValue("@petProfileId", petProfileId);
+
+                using var petRdr = petCmd.ExecuteReader();
+                while (petRdr.Read())
+                {
+                    myPets.Add(new Pets
+                    {
+                        PetProfileId = petRdr.GetInt32(petRdr.GetOrdinal("PetProfileId")),
+                        Breed = petRdr.GetString(petRdr.GetOrdinal("Breed")),
+                        Name = petRdr.GetString(petRdr.GetOrdinal("Name")),
+                        Species = petRdr.GetString(petRdr.GetOrdinal("Species")),
+                        FavoriteCount = petRdr.GetInt32(petRdr.GetOrdinal("FavoriteCount")),
+                        ShelterId = petRdr.GetInt32(petRdr.GetOrdinal("ShelterId")),
+                        BirthDate = petRdr.GetDateTime(petRdr.GetOrdinal("BirthDate")),
+                        Deleted = petRdr.GetBoolean(petRdr.GetOrdinal("deleted")),
+                        Age = petRdr.GetInt32(petRdr.GetOrdinal("Age")),
+                        ImageUrl = petRdr.GetString(petRdr.GetOrdinal("ImageUrl"))
+                    });
+                }
+            }
+
+            return myPets;
+        }
 
         public static void FavoritePet(int user, int pet)
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database connection string
-            using (var con = new MySqlConnection(cs.cs))
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+
+            using var transaction = con.BeginTransaction();
+            try
             {
-                con.Open(); // open db connection
-                using (var checkCmd = new MySqlCommand("SELECT COUNT(*) FROM FavoritePets WHERE UserId = @user AND PetProfileId = @pet", con))
+                // Check if favorite exists
+                using var checkCmd = new NpgsqlCommand(
+                    "SELECT COUNT(*) FROM FavoritePet WHERE UserId = @user AND PetProfileId = @pet",
+                    con,
+                    transaction);
+                checkCmd.Parameters.AddWithValue("@user", user);
+                checkCmd.Parameters.AddWithValue("@pet", pet);
+
+                int exists = Convert.ToInt32(checkCmd.ExecuteScalar());
+                if (exists > 0)
                 {
-                    checkCmd.Parameters.AddWithValue("@user", user);
-                    checkCmd.Parameters.AddWithValue("@pet", pet);
-                    int exists = Convert.ToInt32(checkCmd.ExecuteScalar());
-                    if (exists > 0)
-                    {
-                        UpdateUnfavorite(user, pet);
-                        return;
-                    }
+                    UpdateUnfavorite(user, pet);
+                    return;
                 }
-                using (var cmd = new MySqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandText = "INSERT INTO FavoritePets (UserId, PetProfileId, favorited) VALUES (@user, @pet, 1)";
-                    cmd.Parameters.AddWithValue("@user", user);
-                    cmd.Parameters.AddWithValue("@pet", pet);
-                    cmd.ExecuteNonQuery(); 
-                }
-                using (var updateCmd = new MySqlCommand())
-                {
-                    updateCmd.Connection = con;
-                    updateCmd.CommandText = "UPDATE Pet_Profile SET FavoriteCount = FavoriteCount + 1 WHERE PetProfileId = @pet";
-                    updateCmd.Parameters.AddWithValue("@pet", pet);
-                    updateCmd.ExecuteNonQuery();
-                }
+
+                // Insert new favorite
+                using var insertCmd = new NpgsqlCommand(
+                    "INSERT INTO FavoritePet (UserId, PetProfileId, favorited) VALUES (@user, @pet, true)",
+                    con,
+                    transaction);
+                insertCmd.Parameters.AddWithValue("@user", user);
+                insertCmd.Parameters.AddWithValue("@pet", pet);
+                insertCmd.ExecuteNonQuery();
+
+                // Update favorite count
+                using var updateCmd = new NpgsqlCommand(
+                    "UPDATE Pet_Profile SET FavoriteCount = FavoriteCount + 1 WHERE PetProfileId = @pet",
+                    con,
+                    transaction);
+                updateCmd.Parameters.AddWithValue("@pet", pet);
+                updateCmd.ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
             }
         }
 
-        public static void UpdateUnfavorite(int user, int pet)
+        public static void UpdateUnfavorite(int userId, int petProfileId)
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database connection string
-            using (var con = new MySqlConnection(cs.cs))
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+
+            using var transaction = con.BeginTransaction();
+            try
             {
-                con.Open(); // open db connection
-                using (var transaction = con.BeginTransaction()) // Start a transaction
-                {
-                    // Delete the favorite entry
-                    using (var deleteCmd = new MySqlCommand("DELETE FROM FavoritePets WHERE UserId = @user AND PetProfileId = @pet", con, transaction))
-                    {
-                        deleteCmd.Parameters.AddWithValue("@user", user);
-                        deleteCmd.Parameters.AddWithValue("@pet", pet);
-                        deleteCmd.ExecuteNonQuery();
-                    }
-                    // Decrease favorite count in Pet_Profile
-                    using (var updateCmd = new MySqlCommand("UPDATE Pet_Profile SET FavoriteCount = FavoriteCount - 1 WHERE PetProfileId = @pet AND FavoriteCount > 0", con, transaction))
-                    {
-                        updateCmd.Parameters.AddWithValue("@pet", pet);
-                        updateCmd.ExecuteNonQuery();
-                    }
-                    transaction.Commit(); // Commit transaction
-                }
+                // Delete the favorite entry
+                using var deleteCmd = new NpgsqlCommand(
+                    "DELETE FROM FavoritePet WHERE UserId = @userId AND PetProfileId = @petProfileId",
+                    con,
+                    transaction);
+                deleteCmd.Parameters.AddWithValue("@userId", userId);
+                deleteCmd.Parameters.AddWithValue("@petProfileId", petProfileId);
+                deleteCmd.ExecuteNonQuery();
+
+                // Decrease favorite count in Pet_Profile
+                using var updateCmd = new NpgsqlCommand(
+                    "UPDATE Pets SET FavoriteCount = FavoriteCount - 1 WHERE PetProfileId = @pet AND FavoriteCount > 0",
+                    con,
+                    transaction);
+                updateCmd.Parameters.AddWithValue("@pet", petProfileId);
+                updateCmd.ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
             }
         }
     }

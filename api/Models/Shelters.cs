@@ -1,216 +1,205 @@
-using MySql.Data.MySqlClient;
+using Npgsql;
 using api.Data;
 namespace api.Models
 {
     public class Shelters
     {
         public int ShelterId { get; set; }
-        public string ShelterUsername { get; set; }
+        public string? ShelterUsername { get; set; }
         public string ShelterPassword { get; set; }
-        public string Address { get; set; }
-        public string HoursOfOperation { get; set; }
-        public bool deleted { get; set; }
+        public string? Address { get; set; }
+        public string? HoursOfOperation { get; set; }
+        public bool Deleted { get; set; }
         public string Email { get; set; }
         public bool Approved { get; set; }
         public string AccountType { get; set; }
 
-        public static List<Shelters> GetAllShelters() // method to retrieve shelter from database
+        public static List<Shelters> GetAllShelters()
         {
-            List<Shelters> myShelters = new List<Shelters>(); // initialize array to hold shelter
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open databse connection
-            string stm = "SELECT * FROM Shelter"; // sql statement to select everything from the shelter table
-            MySqlCommand cmd = new MySqlCommand(stm, con);
+            List<Shelters> myShelters = new();
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+            string stm = "SELECT * FROM Shelters";
+            using var cmd = new NpgsqlCommand(stm, con);
 
-            using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            while (rdr.Read()) // iterate through table rows
+            using var rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                myShelters.Add(new Shelters() // create shelter object for each row
+                myShelters.Add(new Shelters()
                 {
-                    ShelterId = rdr.GetInt32("ShelterId"),
-                    ShelterUsername = rdr.GetString("ShelterUsername"),
-                    ShelterPassword = rdr.GetString("ShelterPassword"),
-                    Address = rdr.GetString("Address"),
-                    HoursOfOperation = rdr.GetString("HoursOfOperation"),
-                    deleted = rdr.GetBoolean("deleted"),
-                    Approved = rdr.GetBoolean("Approved"),
-                    Email = rdr.GetString("Email"),
-                    AccountType = rdr.GetString("AccountType")
+                    ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
+                    ShelterUsername = rdr.GetString(rdr.GetOrdinal("ShelterUsername")),
+                    ShelterPassword = rdr.GetString(rdr.GetOrdinal("ShelterPassword")),
+                    Address = rdr.GetString(rdr.GetOrdinal("Address")),
+                    HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
+                    Email = rdr.GetString(rdr.GetOrdinal("Email")),
+                    AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
                 });
             }
-            con.Close();
-            return myShelters; // return populated list
+            return myShelters;
         }
 
-        public void SaveToDB() // method to save the shelters to the database
+        public void SaveToDB()
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open database connection
-            string stm = "INSERT INTO Shelter (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) VALUES (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @Email, @Approved, @AccountType)"; // sql command to insert a new shelter
-            using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to the sql command
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+            string stm = @"INSERT INTO Shelters 
+                (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) 
+                VALUES 
+                (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @Email, @Approved, @AccountType)";
+
+            using var cmd = new NpgsqlCommand(stm, con);
+            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@deleted", Deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
-
-            cmd.ExecuteNonQuery(); // execute sql command
-            con.Close();
+            cmd.ExecuteNonQuery();
         }
 
-        public void UpdateToDB() // method to update existing shelter in database
+        public void UpdateToDB()
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open db connection
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
 
-            string stm = "UPDATE Shelter SET ShelterId = @ShelterId, Username = @ShelterUsername, Password = @ShelterPassword, Address = @Address, HoursOfOperation = @HoursOfOperation, deleted = @deleted, ShelterEmail = @Email, Approved = @Approved, AccountType = @AccountType WHERE ShelterId = @ShelterId"; // sql command for updating a shelter
-            Console.WriteLine("SQL query: " + stm); // log the sql query to console for debugging
-            Console.WriteLine("Parameters:"); // log parameters
-            Console.WriteLine("@ShelterId: " + ShelterId);
-            Console.WriteLine("@ShelterUsername: " + ShelterUsername);
-            Console.WriteLine("@ShelterPassword: " + ShelterPassword);
-            Console.WriteLine("@Address: " + Address);
-            Console.WriteLine("@HoursOfOperation: " + HoursOfOperation);
-            Console.WriteLine("@deleted" + deleted);
-            Console.WriteLine("@Email" + Email);
-            Console.WriteLine("@Approved" + Approved);
-            Console.WriteLine("@AccountType" + AccountType);
+            string stm = @"UPDATE Shelters 
+                SET ShelterId = @ShelterId, 
+                    Username = @ShelterUsername, 
+                    Password = @ShelterPassword, 
+                    Address = @Address, 
+                    HoursOfOperation = @HoursOfOperation, 
+                    deleted = @deleted, 
+                    ShelterEmail = @Email, 
+                    Approved = @Approved, 
+                    AccountType = @AccountType 
+                WHERE ShelterId = @ShelterId";
 
-
-            using var cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add parameters to sql command
+            using var cmd = new NpgsqlCommand(stm, con);
+            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@deleted", deleted);
+            cmd.Parameters.AddWithValue("@deleted", Deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
-            cmd.ExecuteNonQuery(); // execute sql command
-            con.Close();
+            cmd.ExecuteNonQuery();
         }
 
-
-        public static Shelters GetShelterById(int ShelterId) // method to retrieve specific shelter
+        public static Shelters GetShelterById(int shelterId)
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
-            con.Open(); // open connection to db
-            string stm = "SELECT * FROM Shelter WHERE ShelterId = @ShelterId"; // sql statement to retrieve specific shelter
-            MySqlCommand cmd = new MySqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId); // add ShelterID as parameter
-            using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
-            if (rdr.Read()) // check if shelter is found
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+            string stm = "SELECT * FROM Shelters WHERE ShelterId = @ShelterId";
+            using var cmd = new NpgsqlCommand(stm, con);
+            cmd.Parameters.AddWithValue("@ShelterId", shelterId);
+
+            using var rdr = cmd.ExecuteReader();
+            if (rdr.Read())
             {
-                return new Shelters() // construct and initialize new shelter object
+                return new Shelters()
                 {
-                    ShelterId = rdr.GetInt32("ShelterId"),
-                    ShelterUsername = rdr.GetString("ShelterUsername"),
-                    ShelterPassword = rdr.GetString("ShelterPassword"),
-                    Address = rdr.GetString("Address"),
-                    HoursOfOperation = rdr.GetString("HoursOfOperation"),
-                    deleted = rdr.GetBoolean("deleted"),
-                    Email = rdr.GetString("Email"),
-                    Approved = rdr.GetBoolean("Approved"),
-                    AccountType = rdr.GetString("AccountType")
+                    ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
+                    ShelterUsername = rdr.GetString(rdr.GetOrdinal("ShelterUsername")),
+                    ShelterPassword = rdr.GetString(rdr.GetOrdinal("ShelterPassword")),
+                    Address = rdr.GetString(rdr.GetOrdinal("Address")),
+                    HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Email = rdr.GetString(rdr.GetOrdinal("Email")),
+                    Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
+                    AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
                 };
             }
-            con.Close();
-            return null; // if no shelter is found
+            return null;
         }
 
-        public void ApprovalOfShelter(int ShelterId, bool Approved)
+        public void ApprovalOfShelter(int shelterId, bool approved)
         {
-            
-            System.Console.WriteLine("Approved: " + Approved + " ShelterId: " + ShelterId);
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
 
-            GetPublicConnection cs = new GetPublicConnection();
-            using (var con = new MySqlConnection(cs.cs))
-            {
-                Console.WriteLine("Opening connection...");
-                con.Open();
-                using (var cmd = new MySqlCommand("UPDATE Shelter SET Approved = !Approved WHERE ShelterId = @ShelterId", con))
-                {
-                    Console.WriteLine($"Updating ShelterId: {ShelterId} to Approved: {Approved}");
-                    cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-                    cmd.Parameters.AddWithValue("@Approved", Approved);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            using var cmd = new NpgsqlCommand("UPDATE Shelters SET Approved = @Approved WHERE ShelterId = @ShelterId", con);
+            cmd.Parameters.AddWithValue("@ShelterId", shelterId);
+            cmd.Parameters.AddWithValue("@Approved", approved);
+            cmd.ExecuteNonQuery();
         }
 
         public static List<Pets> GetPetsByShelter(int shelterId)
         {
             var pets = new List<Pets>();
-            GetPublicConnection cs = new GetPublicConnection();
-            using (var con = new MySqlConnection(cs.cs))
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
+            con.Open();
+
+            string query = @"SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount, 
+                           p.BirthDate, p.deleted, p.ShelterId, p.ImageUrl 
+                           FROM Shelters s 
+                           JOIN Pets p ON s.ShelterId = p.ShelterId 
+                           WHERE p.deleted = false AND s.ShelterId = @ShelterId 
+                           ORDER BY p.PetProfileId";
+
+            using var cmd = new NpgsqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@ShelterId", shelterId);
+
+            using var rdr = cmd.ExecuteReader();
+            while (rdr.Read())
             {
-                con.Open();
-
-                using (var cmd = new MySqlCommand())
+                var pet = new Pets
                 {
-                    cmd.Connection = con;
-                    cmd.CommandText = "SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount, p.BirthDate, p.deleted, p.ShelterId, p.ImageUrl FROM Shelter s JOIN Pet_Profile p ON s.ShelterId = p.ShelterId WHERE p.deleted = 0 AND s.ShelterId = @ShelterId ORDER BY p.PetProfileId";
-                    cmd.Parameters.AddWithValue("@shelterId", shelterId);
-
-                    using (var rdr = cmd.ExecuteReader())
-                    {
-                        while (rdr.Read())
-                        {
-                            var pet = new Pets
-                            {
-                                PetProfileId = rdr.GetInt32("PetProfileId"),
-                                Age = rdr.GetInt32("Age"),
-                                BirthDate = rdr.GetDateTime("BirthDate"),
-                                Breed = rdr.GetString("Breed"),
-                                Name = rdr.GetString("Name"),
-                                Species = rdr.GetString("Species"),
-                                deleted = rdr.GetBoolean("deleted"),
-                                ShelterId = rdr.GetInt32("ShelterId"),
-                                ImageUrl = rdr.GetString("ImageUrl"),
-                                FavoriteCount = rdr.GetInt32("FavoriteCount"),
-                            };
-                            pets.Add(pet);
-                        }
-                    }
-                }
+                    PetProfileId = rdr.GetInt32(rdr.GetOrdinal("PetProfileId")),
+                    Age = rdr.GetInt32(rdr.GetOrdinal("Age")),
+                    BirthDate = rdr.GetDateTime(rdr.GetOrdinal("BirthDate")),
+                    Breed = rdr.GetString(rdr.GetOrdinal("Breed")),
+                    Name = rdr.GetString(rdr.GetOrdinal("Name")),
+                    Species = rdr.GetString(rdr.GetOrdinal("Species")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
+                    ImageUrl = rdr.GetString(rdr.GetOrdinal("ImageUrl")),
+                    FavoriteCount = rdr.GetInt32(rdr.GetOrdinal("FavoriteCount"))
+                };
+                pets.Add(pet);
             }
             return pets;
         }
 
-        public static Shelters GetUserLogin(string Email, string Password)
+        public static Shelters GetUserLogin(string email, string password)
         {
-            GetPublicConnection cs = new GetPublicConnection(); // create new instance of database
-            using var con = new MySqlConnection(cs.cs);
+            GetPublicConnection cs = new();
+            using var con = new NpgsqlConnection(cs.cs);
             try
             {
-                con.Open(); // open connection to db
-                string stm = "SELECT * FROM Shelter WHERE Email = @Email AND ShelterPassword = @ShelterPassword";
-                MySqlCommand cmd = new MySqlCommand(stm, con);
-                cmd.Parameters.AddWithValue("@Email", Email);
-                cmd.Parameters.AddWithValue("@ShelterPassword", Password);
-                using MySqlDataReader rdr = cmd.ExecuteReader(); // execute sql command
+                con.Open();
+                string stm = "SELECT * FROM Shelters WHERE Email = @Email AND ShelterPassword = @ShelterPassword";
+                using var cmd = new NpgsqlCommand(stm, con);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@ShelterPassword", password);
+
+                using var rdr = cmd.ExecuteReader();
                 if (rdr.Read())
                 {
                     return new Shelters()
                     {
-                        ShelterId = rdr.GetInt32("ShelterId"),
-                        ShelterUsername = rdr.GetString("ShelterUsername"),
-                        ShelterPassword = rdr.GetString("ShelterPassword"),
-                        Address = rdr.GetString("Address"),
-                        HoursOfOperation = rdr.GetString("HoursOfOperation"),
-                        Email = rdr.GetString("Email"),
-                        deleted = rdr.GetBoolean("deleted"),
-                        Approved = rdr.GetBoolean("Approved"),
-                        AccountType = rdr.GetString("AccountType"),
+                        ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
+                        ShelterUsername = rdr.GetString(rdr.GetOrdinal("ShelterUsername")),
+                        ShelterPassword = rdr.GetString(rdr.GetOrdinal("ShelterPassword")),
+                        Address = rdr.GetString(rdr.GetOrdinal("Address")),
+                        HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
+                        Email = rdr.GetString(rdr.GetOrdinal("Email")),
+                        Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                        Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
+                        AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
                     };
                 }
             }
@@ -218,13 +207,7 @@ namespace api.Models
             {
                 Console.WriteLine("Database access error: " + ex.Message);
             }
-            finally
-            {
-                con.Close();
-            }
             return null;
         }
-
-
     }
 }

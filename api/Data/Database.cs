@@ -1,4 +1,5 @@
-using MySql.Data.MySqlClient;
+using Npgsql;
+
 namespace api.Data
 {
     public class GetPublicConnection
@@ -7,13 +8,15 @@ namespace api.Data
 
         public GetPublicConnection()
         {
-            string server = "gtizpe105piw2gfq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
-            string port = "3306";
-            string username = "w5i4w7ekeyslpbjq";
-            string password = "ysuek5ioms9ei68f";
-            string schema = "nqotxt0k05q7gq87";
+            // TODO: Move these to environment variables or configuration file
+            string host = "aws-0-us-east-2.pooler.supabase.com";
+            string port = "6543";
+            string database = "postgres";
+            string username = "postgres.xbkryesjloyqafbhzhdk";
+            string password = "GreggorTravel762***";
 
-            cs = $@"Server={server};Port={port};Database={schema};Uid={username};Pwd={password};";
+            // Format the connection string according to Npgsql specifications
+            cs = $"Host={host};Port={port};Database={database};Username={username};Password={password};";
         }
     }
 }

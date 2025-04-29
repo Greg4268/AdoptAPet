@@ -22,3 +22,8 @@ project.nuget.cache
 
 # Specific file paths (if needed specifically)
 api/obj/Debug/net7.0/api.GeneratedMSBuildEditorConfig.editorconfig
+
+# ignore specific files 
+.DS_Store
+.env
+.appsettings.json
