@@ -20,7 +20,7 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Shelters";
+            string stm = "SELECT * FROM \"Shelters\"";
             using var cmd = new NpgsqlCommand(stm, con);
 
             using var rdr = cmd.ExecuteReader();
@@ -33,7 +33,7 @@ namespace api.Models
                     ShelterPassword = rdr.GetString(rdr.GetOrdinal("ShelterPassword")),
                     Address = rdr.GetString(rdr.GetOrdinal("Address")),
                     HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                     Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
                     Email = rdr.GetString(rdr.GetOrdinal("Email")),
                     AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
@@ -47,10 +47,10 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = @"INSERT INTO Shelters 
-                (ShelterId, ShelterUsername, ShelterPassword, Address, HoursOfOperation, deleted, Email, Approved, AccountType) 
+            string stm = @"INSERT INTO ""Shelters"" 
+                (""ShelterId"", ""ShelterUsername"", ""ShelterPassword"", ""Address"", ""HoursOfOperation"", ""Deleted"", ""Email"", ""Approved"", ""AccountType"") 
                 VALUES 
-                (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @deleted, @Email, @Approved, @AccountType)";
+                (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @Deleted, @Email, @Approved, @AccountType)";
 
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
@@ -58,7 +58,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
@@ -71,17 +71,17 @@ namespace api.Models
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
-            string stm = @"UPDATE Shelters 
-                SET ShelterId = @ShelterId, 
-                    Username = @ShelterUsername, 
-                    Password = @ShelterPassword, 
-                    Address = @Address, 
-                    HoursOfOperation = @HoursOfOperation, 
-                    deleted = @deleted, 
-                    ShelterEmail = @Email, 
-                    Approved = @Approved, 
-                    AccountType = @AccountType 
-                WHERE ShelterId = @ShelterId";
+            string stm = @"UPDATE ""Shelters"" 
+                SET ""ShelterId"" = @ShelterId, 
+                    ""Username"" = @ShelterUsername, 
+                    ""Password"" = @ShelterPassword, 
+                    ""Address"" = @Address, 
+                    ""HoursOfOperation"" = @HoursOfOperation, 
+                    ""Deleted"" = @Deleted, 
+                    ""ShelterEmail"" = @Email, 
+                    ""Approved"" = @Approved, 
+                    ""AccountType"" = @AccountType 
+                WHERE ""ShelterId"" = @ShelterId";
 
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
@@ -89,7 +89,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
             cmd.Parameters.AddWithValue("@Address", Address);
             cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.Parameters.AddWithValue("@Email", Email);
             cmd.Parameters.AddWithValue("@Approved", Approved);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
@@ -101,7 +101,7 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Shelters WHERE ShelterId = @ShelterId";
+            string stm = "SELECT * FROM \"Shelters\" WHERE \"ShelterId\" = @ShelterId";
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@ShelterId", shelterId);
 
@@ -115,7 +115,7 @@ namespace api.Models
                     ShelterPassword = rdr.GetString(rdr.GetOrdinal("ShelterPassword")),
                     Address = rdr.GetString(rdr.GetOrdinal("Address")),
                     HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                     Email = rdr.GetString(rdr.GetOrdinal("Email")),
                     Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
                     AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
@@ -130,7 +130,7 @@ namespace api.Models
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
-            using var cmd = new NpgsqlCommand("UPDATE Shelters SET Approved = @Approved WHERE ShelterId = @ShelterId", con);
+            using var cmd = new NpgsqlCommand("UPDATE \"Shelters\" SET \"Approved\" = @Approved WHERE \"ShelterId\" = @ShelterId", con);
             cmd.Parameters.AddWithValue("@ShelterId", shelterId);
             cmd.Parameters.AddWithValue("@Approved", approved);
             cmd.ExecuteNonQuery();
@@ -143,12 +143,12 @@ namespace api.Models
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
-            string query = @"SELECT p.PetProfileId, p.Name, p.Breed, p.Species, p.Age, p.FavoriteCount, 
-                           p.BirthDate, p.deleted, p.ShelterId, p.ImageUrl 
-                           FROM Shelters s 
-                           JOIN Pets p ON s.ShelterId = p.ShelterId 
-                           WHERE p.deleted = false AND s.ShelterId = @ShelterId 
-                           ORDER BY p.PetProfileId";
+            string query = @"SELECT p.""PetProfileId"", p.""Name"", p.""Breed"", p.""Species"", p.""Age"", p.""FavoriteCount"", 
+                           p.""BirthDate"", p.""Deleted"", p.""ShelterId"", p.""ImageUrl"" 
+                           FROM ""Shelters"" s 
+                           JOIN ""Pets"" p ON s.""ShelterId"" = p.""ShelterId"" 
+                           WHERE p.""Deleted"" = false AND s.""ShelterId"" = @ShelterId 
+                           ORDER BY p.""PetProfileId""";
 
             using var cmd = new NpgsqlCommand(query, con);
             cmd.Parameters.AddWithValue("@ShelterId", shelterId);
@@ -164,7 +164,7 @@ namespace api.Models
                     Breed = rdr.GetString(rdr.GetOrdinal("Breed")),
                     Name = rdr.GetString(rdr.GetOrdinal("Name")),
                     Species = rdr.GetString(rdr.GetOrdinal("Species")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                     ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
                     ImageUrl = rdr.GetString(rdr.GetOrdinal("ImageUrl")),
                     FavoriteCount = rdr.GetInt32(rdr.GetOrdinal("FavoriteCount"))
@@ -181,7 +181,7 @@ namespace api.Models
             try
             {
                 con.Open();
-                string stm = "SELECT * FROM Shelters WHERE Email = @Email AND ShelterPassword = @ShelterPassword";
+                string stm = "SELECT * FROM \"Shelters\" WHERE \"Email\" = @Email AND \"ShelterPassword\" = @ShelterPassword";
                 using var cmd = new NpgsqlCommand(stm, con);
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@ShelterPassword", password);
@@ -197,7 +197,7 @@ namespace api.Models
                         Address = rdr.GetString(rdr.GetOrdinal("Address")),
                         HoursOfOperation = rdr.GetString(rdr.GetOrdinal("HoursOfOperation")),
                         Email = rdr.GetString(rdr.GetOrdinal("Email")),
-                        Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                        Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                         Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
                         AccountType = rdr.GetString(rdr.GetOrdinal("AccountType"))
                     };

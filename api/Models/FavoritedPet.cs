@@ -18,7 +18,7 @@ namespace api.Models
             con.Open();
 
             // Get favorite pet IDs
-            string stm = "SELECT PetProfileId FROM FavoritePet WHERE UserId = @user";
+            string stm = "SELECT \"PetProfileId\" FROM \"FavoritePets\" WHERE \"UserId\" = @user";
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@user", user);
 
@@ -31,7 +31,7 @@ namespace api.Models
             // Fetch pet details for each favorite
             foreach (var petProfileId in favoritePets)
             {
-                string query = "SELECT * FROM Pet_Profile WHERE PetProfileId = @petProfileId";
+                string query = "SELECT * FROM \"Pets\" WHERE \"PetProfileId\" = @petProfileId";
                 using var petCmd = new NpgsqlCommand(query, con);
                 petCmd.Parameters.AddWithValue("@petProfileId", petProfileId);
 
@@ -47,7 +47,7 @@ namespace api.Models
                         FavoriteCount = petRdr.GetInt32(petRdr.GetOrdinal("FavoriteCount")),
                         ShelterId = petRdr.GetInt32(petRdr.GetOrdinal("ShelterId")),
                         BirthDate = petRdr.GetDateTime(petRdr.GetOrdinal("BirthDate")),
-                        Deleted = petRdr.GetBoolean(petRdr.GetOrdinal("deleted")),
+                        Deleted = petRdr.GetBoolean(petRdr.GetOrdinal("Deleted")),
                         Age = petRdr.GetInt32(petRdr.GetOrdinal("Age")),
                         ImageUrl = petRdr.GetString(petRdr.GetOrdinal("ImageUrl"))
                     });
@@ -68,7 +68,7 @@ namespace api.Models
             {
                 // Check if favorite exists
                 using var checkCmd = new NpgsqlCommand(
-                    "SELECT COUNT(*) FROM FavoritePet WHERE UserId = @user AND PetProfileId = @pet",
+                    "SELECT COUNT(*) FROM \"FavoritePets\" WHERE \"UserId\" = @user AND \"PetProfileId\" = @pet",
                     con,
                     transaction);
                 checkCmd.Parameters.AddWithValue("@user", user);
@@ -83,7 +83,7 @@ namespace api.Models
 
                 // Insert new favorite
                 using var insertCmd = new NpgsqlCommand(
-                    "INSERT INTO FavoritePet (UserId, PetProfileId, favorited) VALUES (@user, @pet, true)",
+                    "INSERT INTO \"FavoritePets\" (\"UserId\", \"PetProfileId\", \"Favorited\") VALUES (@user, @pet, true)",
                     con,
                     transaction);
                 insertCmd.Parameters.AddWithValue("@user", user);
@@ -92,7 +92,7 @@ namespace api.Models
 
                 // Update favorite count
                 using var updateCmd = new NpgsqlCommand(
-                    "UPDATE Pet_Profile SET FavoriteCount = FavoriteCount + 1 WHERE PetProfileId = @pet",
+                    "UPDATE \"Pets\" SET \"FavoriteCount\" = \"FavoriteCount\" + 1 WHERE \"PetProfileId\" = @pet",
                     con,
                     transaction);
                 updateCmd.Parameters.AddWithValue("@pet", pet);
@@ -118,16 +118,16 @@ namespace api.Models
             {
                 // Delete the favorite entry
                 using var deleteCmd = new NpgsqlCommand(
-                    "DELETE FROM FavoritePet WHERE UserId = @userId AND PetProfileId = @petProfileId",
+                    "DELETE FROM \"FavoritePets\" WHERE \"UserId\" = @userId AND \"PetProfileId\" = @petProfileId",
                     con,
                     transaction);
                 deleteCmd.Parameters.AddWithValue("@userId", userId);
                 deleteCmd.Parameters.AddWithValue("@petProfileId", petProfileId);
                 deleteCmd.ExecuteNonQuery();
 
-                // Decrease favorite count in Pet_Profile
+                // Decrease favorite count in Pets
                 using var updateCmd = new NpgsqlCommand(
-                    "UPDATE Pets SET FavoriteCount = FavoriteCount - 1 WHERE PetProfileId = @pet AND FavoriteCount > 0",
+                    "UPDATE \"Pets\" SET \"FavoriteCount\" = \"FavoriteCount\" - 1 WHERE \"PetProfileId\" = @pet AND \"FavoriteCount\" > 0",
                     con,
                     transaction);
                 updateCmd.Parameters.AddWithValue("@pet", petProfileId);

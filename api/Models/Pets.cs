@@ -21,7 +21,7 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Pets WHERE deleted = false";
+            string stm = "SELECT * FROM \"Pets\" WHERE \"Deleted\" = false";
             using var cmd = new NpgsqlCommand(stm, con);
 
             using var rdr = cmd.ExecuteReader();
@@ -35,7 +35,7 @@ namespace api.Models
                     Breed = rdr.GetString(rdr.GetOrdinal("Breed")),
                     Name = rdr.GetString(rdr.GetOrdinal("Name")),
                     Species = rdr.GetString(rdr.GetOrdinal("Species")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                     ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
                     ImageUrl = rdr.GetString(rdr.GetOrdinal("ImageUrl")),
                     FavoriteCount = rdr.GetInt32(rdr.GetOrdinal("FavoriteCount"))
@@ -49,10 +49,10 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = @"INSERT INTO Pets 
-                (Age, BirthDate, Breed, Name, Species, deleted, ShelterId, ImageUrl, FavoriteCount) 
-                VALUES 
-                (@Age, @BirthDate, @Breed, @Name, @Species, @deleted, @ShelterId, @ImageUrl, @FavoriteCount)";
+            string stm = @"INSERT INTO ""Pets"" (
+                ""Age"", ""BirthDate"", ""Breed"", ""Name"", ""Species"", ""Deleted"", ""ShelterId"", ""ImageUrl"", ""FavoriteCount"") 
+                VALUES (
+                @Age, @BirthDate, @Breed, @Name, @Species, @Deleted, @ShelterId, @ImageUrl, @FavoriteCount)";
 
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -60,7 +60,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
@@ -73,17 +73,17 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = @"UPDATE Pets 
-                SET Age = @Age, 
-                    BirthDate = @BirthDate, 
-                    Breed = @Breed, 
-                    Name = @Name, 
-                    Species = @Species, 
-                    deleted = @deleted, 
-                    ShelterId = @ShelterId, 
-                    ImageUrl = @ImageUrl, 
-                    FavoriteCount = @FavoriteCount 
-                WHERE PetProfileId = @PetProfileId";
+            string stm = @"UPDATE ""Pets"" 
+                SET ""Age"" = @Age, 
+                    ""BirthDate"" = @BirthDate, 
+                    ""Breed"" = @Breed, 
+                    ""Name"" = @Name, 
+                    ""Species"" = @Species, 
+                    ""Deleted"" = @Deleted, 
+                    ""ShelterId"" = @ShelterId, 
+                    ""ImageUrl"" = @ImageUrl, 
+                    ""FavoriteCount"" = @FavoriteCount 
+                WHERE ""PetProfileId"" = @PetProfileId";
 
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
@@ -92,7 +92,7 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@Breed", Breed);
             cmd.Parameters.AddWithValue("@Name", Name);
             cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
             cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
             cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
@@ -108,7 +108,7 @@ namespace api.Models
 
             using var cmd = new NpgsqlCommand();
             cmd.Connection = con;
-            cmd.CommandText = "UPDATE Pets SET favorited = @favorited WHERE PetProfileId = @PetProfileId";
+            cmd.CommandText = "UPDATE \"Pets\" SET \"Favorited\" = @Favorited WHERE \"PetProfileId\" = @PetProfileId";
             cmd.Parameters.AddWithValue("@PetProfileId", value.PetProfileId);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
@@ -120,7 +120,7 @@ namespace api.Models
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
-            using var cmd = new NpgsqlCommand("UPDATE Pets SET deleted = true WHERE PetProfileId = @PetProfileId", con);
+            using var cmd = new NpgsqlCommand("UPDATE \"Pets\" SET \"Deleted\" = true WHERE \"PetProfileId\" = @PetProfileId", con);
             cmd.Parameters.AddWithValue("@PetProfileId", petId);
             cmd.ExecuteNonQuery();
         }
@@ -130,7 +130,7 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Pets WHERE PetProfileId = @PetProfileId";
+            string stm = "SELECT * FROM \"Pets\" WHERE \"PetProfileId\" = @PetProfileId";
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@PetProfileId", petProfileId);
 
@@ -145,7 +145,7 @@ namespace api.Models
                     Breed = rdr.GetString(rdr.GetOrdinal("Breed")),
                     Name = rdr.GetString(rdr.GetOrdinal("Name")),
                     Species = rdr.GetString(rdr.GetOrdinal("Species")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted")),
                     ShelterId = rdr.GetInt32(rdr.GetOrdinal("ShelterId")),
                     ImageUrl = rdr.GetString(rdr.GetOrdinal("ImageUrl")),
                     FavoriteCount = rdr.GetInt32(rdr.GetOrdinal("FavoriteCount"))

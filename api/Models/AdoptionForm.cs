@@ -22,7 +22,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Adoption_Forms";
+            string stm = "SELECT * FROM \"AdoptionForms\"";
             using var cmd = new NpgsqlCommand(stm, con);
 
             using var rdr = cmd.ExecuteReader();
@@ -34,7 +34,7 @@ namespace api.Models
                     UserId = rdr.GetInt32(rdr.GetOrdinal("UserId")),
                     FormDate = rdr.GetDateTime(rdr.GetOrdinal("FormDate")),
                     Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted"))
                 });
             }
             return forms;
@@ -46,24 +46,29 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "INSERT INTO AdoptionForms (UserId, FormDate, Approved, deleted) VALUES (@UserId, @FormDate, @Approved, @deleted)";
+            string stm = @"INSERT INTO ""AdoptionForms"" (
+                ""UserId"", ""FormDate"", ""Approved"", ""Deleted"") 
+                VALUES (
+                @UserId, @FormDate, @Approved, @Deleted)";
+
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
             cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.ExecuteNonQuery();
         }
 
         // Method to retrieve a specific adoption Form by ID
-        public static AdoptionForm GetAdoptionFormById(int FormId)
+        public static AdoptionForm GetAdoptionFormById(int formId)
         {
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Adoption_Forms WHERE FormId = @FormId";
+            string stm = "SELECT * FROM \"AdoptionForms\" WHERE \"FormId\" = @FormId";
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@FormId", FormId);
+            cmd.Parameters.AddWithValue("@FormId", formId);
+
             using var rdr = cmd.ExecuteReader();
             if (rdr.Read())
             {
@@ -73,7 +78,7 @@ namespace api.Models
                     UserId = rdr.GetInt32(rdr.GetOrdinal("UserId")),
                     FormDate = rdr.GetDateTime(rdr.GetOrdinal("FormDate")),
                     Approved = rdr.GetBoolean(rdr.GetOrdinal("Approved")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted")),
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted"))
                 };
             }
             return null;
@@ -84,13 +89,19 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "UPDATE Adoption_Forms SET FormId = @FormId, UserId = @UserId, FormDate = @FormDate, Approved = @Approved, deleted = @deleted";
+            string stm = @"UPDATE ""AdoptionForms"" 
+                SET ""FormId"" = @FormId, 
+                    ""UserId"" = @UserId, 
+                    ""FormDate"" = @FormDate, 
+                    ""Approved"" = @Approved, 
+                    ""Deleted"" = @Deleted";
+
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@FormId", FormId);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@FormDate", FormDate);
             cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.ExecuteNonQuery();
         }
 
@@ -102,12 +113,11 @@ namespace api.Models
 
             using var cmd = new NpgsqlCommand();
             cmd.Connection = con;
-            cmd.CommandText = "UPDATE Adoption_Forms SET deleted = @deleted WHERE FormId = @FormId";
+            cmd.CommandText = "UPDATE \"AdoptionForms\" SET \"Deleted\" = @Deleted WHERE \"FormId\" = @FormId";
             cmd.Parameters.AddWithValue("@FormId", value.FormId);
-            cmd.Parameters.AddWithValue("@deleted", value.Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", value.Deleted);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
-            con.Close();
         }
     }
 }
