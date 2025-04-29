@@ -22,7 +22,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "SELECT * FROM Appointment";
+            string stm = "SELECT * FROM \"Appointment\"";
             using var cmd = new NpgsqlCommand(stm, con);
 
             using var rdr = cmd.ExecuteReader();
@@ -34,7 +34,7 @@ namespace api.Models
                     AppointmentDate = rdr.GetDateTime(rdr.GetOrdinal("AppointmentDate")),
                     UserId = rdr.GetInt32(rdr.GetOrdinal("UserId")),
                     PetProfileId = rdr.GetInt32(rdr.GetOrdinal("PetProfileId")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted"))
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted"))
                 });
             }
             return appointments;
@@ -46,13 +46,16 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "INSERT INTO Appointment (AppointmentId, AppointmentDate, UserId, PetProfileId, deleted) VALUES (@AppointmentId, @AppointmentDate, @UserId, @PetProfileId, @deleted)";
+            string stm = @"INSERT INTO ""Appointment"" (
+                ""AppointmentId"", ""AppointmentDate"", ""UserId"", ""PetProfileId"", ""Deleted"") 
+                VALUES (
+                @AppointmentId, @AppointmentDate, @UserId, @PetProfileId, @Deleted)";
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
             cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.ExecuteNonQuery();
         }
 
@@ -62,13 +65,18 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string stm = "UPDATE Appointment SET AppointmentDate = @AppointmentDate, UserId = @UserId, PetProfileId = @PetProfileId, deleted = @deleted WHERE AppointmentId = @AppointmentId";
+            string stm = @"UPDATE ""Appointment"" 
+                SET ""AppointmentDate"" = @AppointmentDate, 
+                    ""UserId"" = @UserId, 
+                    ""PetProfileId"" = @PetProfileId, 
+                    ""Deleted"" = @Deleted 
+                WHERE ""AppointmentId"" = @AppointmentId";
             using var cmd = new NpgsqlCommand(stm, con);
             cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
             cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
             cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.ExecuteNonQuery();
         }
 
@@ -78,7 +86,7 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string query = "SELECT * FROM Appointment WHERE AppointmentId = @AppointmentId AND deleted = false";
+            string query = "SELECT * FROM \"Appointment\" WHERE \"AppointmentId\" = @AppointmentId AND \"Deleted\" = false";
             using var cmd = new NpgsqlCommand(query, con);
             cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
             using var reader = cmd.ExecuteReader();
@@ -90,7 +98,7 @@ namespace api.Models
                     AppointmentDate = reader.GetDateTime(reader.GetOrdinal("AppointmentDate")),
                     UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                     PetProfileId = reader.GetInt32(reader.GetOrdinal("PetProfileId")),
-                    Deleted = reader.GetBoolean(reader.GetOrdinal("deleted"))
+                    Deleted = reader.GetBoolean(reader.GetOrdinal("Deleted"))
                 };
             }
             return null;
@@ -102,7 +110,7 @@ namespace api.Models
             Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string query = "SELECT * FROM Appointment WHERE UserId = @UserId AND deleted = false";
+            string query = "SELECT * FROM \"Appointment\" WHERE \"UserId\" = @UserId AND \"Deleted\" = false";
 
             using var cmd = new NpgsqlCommand(query, con);
             cmd.Parameters.AddWithValue("@UserId", userId);
@@ -116,7 +124,7 @@ namespace api.Models
                     AppointmentDate = rdr.GetDateTime(rdr.GetOrdinal("AppointmentDate")),
                     UserId = rdr.GetInt32(rdr.GetOrdinal("UserId")),
                     PetProfileId = rdr.GetInt32(rdr.GetOrdinal("PetProfileId")),
-                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("deleted"))
+                    Deleted = rdr.GetBoolean(rdr.GetOrdinal("Deleted"))
                 };
                 appointments.Add(appointment);
             }
@@ -133,9 +141,9 @@ namespace api.Models
 
             using var cmd = new NpgsqlCommand();
             cmd.Connection = con;
-            cmd.CommandText = "UPDATE Appointment SET deleted = @deleted WHERE AppointmentId = @AppointmentId";
+            cmd.CommandText = "UPDATE \"Appointment\" SET \"Deleted\" = @Deleted WHERE \"AppointmentId\" = @AppointmentId";
             cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
-            cmd.Parameters.AddWithValue("@deleted", Deleted);
+            cmd.Parameters.AddWithValue("@Deleted", Deleted);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -146,9 +154,9 @@ namespace api.Models
             GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
-            string query = @"SELECT AppointmentId, AppointmentDate, UserId, PetProfileId, deleted 
-                         FROM Appointment 
-                         WHERE PetProfileId = @PetProfileId AND deleted = false";
+            string query = @"SELECT ""AppointmentId"", ""AppointmentDate"", ""UserId"", ""PetProfileId"", ""Deleted"" 
+                         FROM ""Appointment"" 
+                         WHERE ""PetProfileId"" = @PetProfileId AND ""Deleted"" = false";
 
             using var cmd = new NpgsqlCommand(query, con);
             cmd.Parameters.AddWithValue("@PetProfileId", petId);
@@ -162,7 +170,7 @@ namespace api.Models
                     AppointmentDate = reader.GetDateTime(reader.GetOrdinal("AppointmentDate")),
                     UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                     PetProfileId = reader.GetInt32(reader.GetOrdinal("PetProfileId")),
-                    Deleted = reader.GetBoolean(reader.GetOrdinal("deleted"))
+                    Deleted = reader.GetBoolean(reader.GetOrdinal("Deleted"))
                 };
                 appointments.Add(appointment);
             }
