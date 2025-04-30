@@ -55,14 +55,14 @@ namespace api.Models
             con.Open();
 
             string stm = @"INSERT INTO ""UserAccounts"" (
-                ""UserId"", ""FirstName"", ""LastName"", ""Age"", ""Email"", ""Password"", 
+                ""FirstName"", ""LastName"", ""Age"", ""Email"", ""Password"", 
                 ""Deleted"", ""Address"", ""YardSize"", ""Fenced"", ""AccountType"")
             VALUES (
-                @UserId, @FirstName, @LastName, @Age, @Email, @Password, 
-                @Deleted, @Address, @YardSize, @Fenced, @AccountType)";
+                @FirstName, @LastName, @Age, @Email, @Password, 
+                @Deleted, @Address, @YardSize, @Fenced, @AccountType)
+            RETURNING ""UserId""";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
             cmd.Parameters.AddWithValue("@FirstName", FirstName);
             cmd.Parameters.AddWithValue("@LastName", LastName);
             cmd.Parameters.AddWithValue("@Age", Age);
@@ -73,7 +73,9 @@ namespace api.Models
             cmd.Parameters.AddWithValue("@YardSize", YardSize);
             cmd.Parameters.AddWithValue("@Fenced", Fenced);
             cmd.Parameters.AddWithValue("@AccountType", AccountType);
-            cmd.ExecuteNonQuery();
+
+            // Execute the command and get the generated UserId
+            UserId = (int)cmd.ExecuteScalar();
         }
 
         public void UpdateToDB(int userId)
