@@ -23,7 +23,7 @@ function loginUser() {
   }
 
   fetch(
-    `http://localhost:8080/api/UserAccounts/by-credentials?email=${encodeURIComponent(
+    `https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts/by-credentials?email=${encodeURIComponent(
       userEmail
     )}&password=${encodeURIComponent(userPassword)}`,
     {
@@ -71,7 +71,7 @@ function loginShelter() {
   }
 
   fetch(
-    `http://localhost:8080/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+    `https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
     {
       method: "GET",
       headers: {

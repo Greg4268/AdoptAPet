@@ -1,5 +1,5 @@
-const profURL = "http://localhost:8080/api/UserAccounts";
-const shelterURL = "http://localhost:8080/api/Shelters";
+const profURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts";
+const shelterURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters";
 
 function updateFormFields() {
   console.log("Updating form fields displayed");
@@ -77,7 +77,7 @@ function submitForm(event) {
 
 function registerAdopter(formData) {
   //alert("register adopter called")
-  fetch("http://localhost:8080/api/UserAccounts", {
+  fetch("https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -124,7 +124,7 @@ function registerAdopter(formData) {
 }
 
 function registerShelter(formData) {
-  fetch("http://localhost:8080/api/shelters", {
+  fetch("https://adoptapet-production-1bb7.up.railway.app:8080/api/shelters", {
     method: "POST",
     headers: {
       Accept: "application/json",
