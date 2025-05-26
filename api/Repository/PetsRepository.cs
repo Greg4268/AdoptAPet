@@ -10,11 +10,16 @@ namespace api.Repository
 {
     public class PetsRepository : IPetsRepository
     {
-        private readonly GetPublicConnection cs = new();
+        private readonly GetPublicConnection _cs;
+    
+        public PetsRepository(GetPublicConnection cs)
+        {
+            _cs = cs;
+        }
         public List<Pets> GetAllPets()
         {
             List<Pets> myPets = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Pets\" WHERE \"Deleted\" = false";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -41,7 +46,7 @@ namespace api.Repository
 
         public void SaveToDB(Pets value)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Pets"" (
                 ""Age"", ""BirthDate"", ""Breed"", ""Name"", ""Species"", ""Deleted"", ""ShelterId"", ""ImageUrl"", ""FavoriteCount"") 
@@ -64,7 +69,7 @@ namespace api.Repository
 
         public void UpdateToDB(Pets pet)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"UPDATE ""Pets"" 
                 SET ""Age"" = @Age, 
@@ -95,7 +100,7 @@ namespace api.Repository
 
         public void OldFavoritePet(Pets value)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand();
@@ -108,7 +113,7 @@ namespace api.Repository
 
         public void DeletePet(int petId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand("UPDATE \"Pets\" SET \"Deleted\" = true WHERE \"PetProfileId\" = @PetProfileId", con);
@@ -118,7 +123,7 @@ namespace api.Repository
 
         public Pets GetPetById(int petProfileId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Pets\" WHERE \"PetProfileId\" = @PetProfileId";
             using var cmd = new NpgsqlCommand(stm, con);

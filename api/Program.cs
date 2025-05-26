@@ -1,4 +1,5 @@
 using api.Models;
+using api.Data;
 using api.Repository;
 
 Console.WriteLine("=== STARTING APPLICATION ===");
@@ -13,16 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
 Console.WriteLine("Adding controllers...");
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<GetPublicConnection>(); 
+
 Console.WriteLine("Adding repositories...");
-// Comment out ALL repositories temporarily to test
-/*
 builder.Services.AddScoped<IAdoptionFormRepository, AdoptionFormRepository>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IFavoritedPetRepository, FavoritedPetRepository>();
 builder.Services.AddScoped<IPetsRepository, PetsRepository>();
 builder.Services.AddScoped<IShelterRepository, SheltersRepository>();
 builder.Services.AddScoped<IUserAccountsRepository, UserAccountsRepository>();
-*/
+
 
 Console.WriteLine("Adding CORS...");
 builder.Services.AddCors(options =>

@@ -6,11 +6,16 @@ namespace api.Repository
 {
     public class SheltersRepository : IShelterRepository
     {
-        private readonly GetPublicConnection cs = new();
+        private readonly GetPublicConnection _cs;
+    
+        public SheltersRepository(GetPublicConnection cs)
+        {
+            _cs = cs;
+        }
         public List<Shelters> GetAllShelters()
         {
             List<Shelters> myShelters = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Shelters\"";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -36,7 +41,7 @@ namespace api.Repository
 
         public void SaveToDB(Shelters shelter)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Shelters"" 
                 (""ShelterId"", ""ShelterUsername"", ""ShelterPassword"", ""Address"", ""HoursOfOperation"", ""Deleted"", ""Email"", ""Approved"", ""AccountType"") 
@@ -58,7 +63,7 @@ namespace api.Repository
 
         public void UpdateToDB(Shelters shelter)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             string stm = @"UPDATE ""Shelters"" 
@@ -88,7 +93,7 @@ namespace api.Repository
 
         public Shelters GetShelterById(int shelterId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Shelters\" WHERE \"ShelterId\" = @ShelterId";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -115,7 +120,7 @@ namespace api.Repository
 
         public void ApprovalOfShelter(int shelterId, bool approved)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand("UPDATE \"Shelters\" SET \"Approved\" = @Approved WHERE \"ShelterId\" = @ShelterId", con);
@@ -127,7 +132,7 @@ namespace api.Repository
         public List<Pets> GetPetsByShelter(int shelterId)
         {
             var pets = new List<Pets>();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             string query = @"SELECT p.""PetProfileId"", p.""Name"", p.""Breed"", p.""Species"", p.""Age"", p.""FavoriteCount"", 
@@ -163,7 +168,7 @@ namespace api.Repository
 
         public Shelters GetUserLogin(string email, string password)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             try
             {
                 con.Open();

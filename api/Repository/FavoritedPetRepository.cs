@@ -6,14 +6,19 @@ namespace api.Repository
 {
     public class FavoritedPetRepository : IFavoritedPetRepository
     {
-        private readonly GetPublicConnection cs = new();
+        private readonly GetPublicConnection _cs;
+    
+        public FavoritedPetRepository(GetPublicConnection cs)
+        {
+            _cs = cs;
+        }
 
         public List<Pets> GetFavoritePets(int user)
         {
             List<int> favoritePets = new();
             List<Pets> myPets = new();
 
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             // Get favorite pet IDs
@@ -58,7 +63,7 @@ namespace api.Repository
 
         public void FavoritePet(int user, int pet)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var transaction = con.BeginTransaction();
@@ -107,7 +112,7 @@ namespace api.Repository
 
         public void UpdateUnfavorite(int userId, int petProfileId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var transaction = con.BeginTransaction();
