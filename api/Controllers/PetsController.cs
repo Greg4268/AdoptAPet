@@ -15,44 +15,46 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class PetsController : ControllerBase
     {
+        private readonly IPetsRepository _repository;
+
+        public PetsController(IPetsRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/Pets
         [HttpGet]
         public List<Pets> GetPets()
         {
-            return PetsRepository.GetAllPets();
+            return _repository.GetAllPets();
         }
 
         // GET: api/Pets/5
         [HttpGet("{id}", Name = "GetPet")]
         public Pets GetPet(int id)
         {
-            return PetsRepository.GetPetById(id);
+            return _repository.GetPetById(id);
         }
 
         // POST: api/Pets
         [HttpPost]
         public void Post([FromBody] Pets value)
         {
-            value.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/Pets/5
         [HttpPut("{petId}")]
         public void Put(int petId, [FromBody] Pets value)
         {
-            value.PetProfileId = petId;
-            value.UpdateToDB();
+            _repository.UpdateToDB(petId, value);
         }
 
         // DELETE: api/Pets/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            PetsRepository.DeletePet(id);
+            _repository.DeletePet(id);
         }
-    }
-
-    internal class PetsContext
-    {
     }
 }

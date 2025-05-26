@@ -15,11 +15,17 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class FavoriteController : ControllerBase
     {
+        private readonly IFavoritedPetRepository _repository;
+        public FavoritedPetController(IFavoritedPetRepository repository)
+        {
+            _repository = repository;
+        }
+        
         // GET: api/Favorite
         [HttpGet]
         public List<Pets> GetFavorites(int user)
         {
-            return FavoritedPetRepository.GetFavoritePets(user);
+            return _repository.GetFavoritePets(user);
         }
 
         // GET: api/Favorite/5
@@ -41,7 +47,7 @@ namespace api.Controllers
         {
             try
             {
-                FavoritedPetRepository.FavoritePet(user, pet);  // Assume this toggles the favorite status
+                _repository.FavoritePet(user, pet);  // Assume this toggles the favorite status
                 return Ok(new { Message = "Favorite status toggled successfully." });
             }
             catch (Exception ex)
@@ -54,7 +60,7 @@ namespace api.Controllers
         [HttpDelete("{user}, {pet}")]
         public void StraightDelete(int user, int pet)
         {
-            FavoritedPetRepository.UpdateUnfavorite(user, pet);
+            _repository.UpdateUnfavorite(user, pet);
         }
     }
 }

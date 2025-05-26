@@ -6,7 +6,7 @@ using api.Models;
 
 namespace api.Repository
 {
-    public interface IFavoritedPetRepostiory
+    public interface IFavoritedPetRepository
     {
         public List<Pets> GetFavoritePets(int user);
         public void FavoritePet(int user, int pet);

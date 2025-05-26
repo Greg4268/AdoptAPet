@@ -16,18 +16,25 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class UserAccountsController : ControllerBase
     {
+        private readonly IUserAccountsRepository _repository;
+
+        public UserAccountsController(IUserAccountsRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/UserAccounts
         [HttpGet]
         public ActionResult<List<UserAccounts>> GetUserAccounts()
         {
-            return Ok(UserAccountsRepository.GetAllUsers());
+            return Ok(_repository.GetAllUsers());
         }
 
         // GET: api/UserAccounts/by-id/5
         [HttpGet("by-id/{UserId:int}", Name = "GetUserById")]
         public ActionResult<UserAccounts> GetUserById(int UserId)
         {
-            var user = UserAccountsRepository.GetUserByIdd(UserId);
+            var user = _repository.GetUserByIdd(UserId);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -42,7 +49,7 @@ namespace api.Controllers
             {
                 return BadRequest("Email and password are required.");
             }
-            var user = UserAccountsRepository.GetUserById(email, password);
+            var user = _repository.GetUserById(email, password);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -50,7 +57,7 @@ namespace api.Controllers
         [HttpPost]
         public void Post([FromBody] UserAccounts value)
         {
-            value.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/UserAccounts/5
@@ -63,7 +70,7 @@ namespace api.Controllers
                 return BadRequest("Invalid user data");
             }
 
-            value.UpdateToDB(id);  // Ensure this method correctly uses the passed 'id'
+            _repository.UpdateToDB(id, value);  // Ensure this method correctly uses the passed 'id'
             return Ok();
         }
 
@@ -72,7 +79,7 @@ namespace api.Controllers
         {
             try
             {
-                new UserAccountsRepository().DeleteUser(userId, deleted);
+                _repository.DeleteUser(userId, deleted);
                 return Ok(new { success = true, message = "User deletion status toggled." });
             }
             catch (MySqlException sqlEx)
