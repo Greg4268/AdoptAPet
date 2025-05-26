@@ -2,7 +2,6 @@ using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
 using Npgsql;
 
 namespace api.Controllers
