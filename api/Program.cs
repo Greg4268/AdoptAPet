@@ -3,7 +3,9 @@ using api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DotNetEnv.Env.Load();
+#if DEBUG
+    DotNetEnv.Env.Load(); 
+#endif
 
 builder.Services.AddControllers();
 
