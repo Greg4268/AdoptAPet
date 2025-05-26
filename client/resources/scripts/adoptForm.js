@@ -51,7 +51,7 @@ async function SubmitForm() {
 
       console.log("Form Data with existing user data:", formData);
 
-      fetch(`http://localhost:5292/api/UserAccounts/${userId}`, {
+      fetch(`http://localhost:8080/api/UserAccounts/${userId}`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json",
@@ -86,7 +86,7 @@ async function SubmitForm() {
 async function FetchUserData(userId) {
     console.log(userId);
 
-  return fetch(`http://localhost:5292/api/UserAccounts/by-id/${userId}`, {
+  return fetch(`http://localhost:8080/api/UserAccounts/by-id/${userId}`, {
       method: 'GET',
       headers: {
           "Content-Type": 'application/json'

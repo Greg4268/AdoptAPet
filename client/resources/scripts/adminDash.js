@@ -1,7 +1,7 @@
-const shelterURL = "http://localhost:5292/api/Shelters";
-const usersURL = "http://localhost:5292/api/UserAccounts";
-const petsURL = "http://localhost:5292/api/Pets";
-const appointmentsURL = "http://localhost:5292/api/Appointments";
+const shelterURL = "http://localhost:8080/api/Shelters";
+const usersURL = "http://localhost:8080/api/UserAccounts";
+const petsURL = "http://localhost:8080/api/Pets";
+const appointmentsURL = "http://localhost:8080/api/Appointments";
 
 $(document).ready(function () {
   $("#table1").DataTable();

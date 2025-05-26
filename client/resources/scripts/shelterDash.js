@@ -1,5 +1,5 @@
-const petsUrl = "http://localhost:5292/api/Pets";
-const shelterUrl = "http://localhost:5292/api/Shelters";
+const petsUrl = "http://localhost:8080/api/Pets";
+const shelterUrl = "http://localhost:8080/api/Shelters";
 
 const userToken = localStorage.getItem("userToken");
 const tokenData = JSON.parse(userToken);
