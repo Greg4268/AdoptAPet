@@ -12,8 +12,17 @@ namespace api.Data
 
         public GetPublicConnection()
         {
-            // Format the connection string according to Npgsql specifications
-            cs = $"Host={host};Port={port};Database={database};Username={username};Password={password};";
+            try 
+            {
+                Console.WriteLine($"Connecting to: {host}:{port}, DB: {database}, User: {username}");
+                cs = $"Host={host};Port={port};Database={database};Username={username};Password={password};SslMode=Require;Trust Server Certificate=true;";
+                Console.WriteLine("Connection string built successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error building connection string: {ex.Message}");
+                throw;
+            }
         }
     }
 }
