@@ -3,6 +3,7 @@ using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using Npgsql;
 
 namespace api.Controllers
 {
@@ -77,7 +78,7 @@ namespace api.Controllers
                 _repository.DeleteUser(userId, deleted);
                 return Ok(new { success = true, message = "User deletion status toggled." });
             }
-            catch (MySqlException sqlEx)
+            catch (NpgsqlException sqlEx)
             {
                 return StatusCode(500, new { success = false, message = sqlEx.Message });
             }
