@@ -20,7 +20,7 @@ function handleOnLoad() {
 
 async function fetchFavPets(userId) {
   try {
-    const response = await fetch(`http://localhost:5292/api/Favorite?user=${userId}`);
+    const response = await fetch(`http://localhost:8080/api/Favorite?user=${userId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -34,7 +34,7 @@ async function fetchFavPets(userId) {
 
 async function fetchUserInfo(userId) {
   try {
-    const response = await fetch(`http://localhost:5292/api/UserAccounts/by-id/${userId}`);
+    const response = await fetch(`http://localhost:8080/api/UserAccounts/by-id/${userId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -123,13 +123,13 @@ async function displayAppointments(userId) {
   const appointmentsBody = document.getElementById("appointmentsBody");
   appointmentsBody.innerHTML = ""; 
 
-  const petProfilesResponse = await fetch(`http://localhost:5292/api/Pets`);
+  const petProfilesResponse = await fetch(`http://localhost:8080/api/Pets`);
   const petProfiles = await petProfilesResponse.json();
 
-  const appointmentsResponse = await fetch(`http://localhost:5292/api/Appointments/ByUser/${userId}?deleted=0`);  
+  const appointmentsResponse = await fetch(`http://localhost:8080/api/Appointments/ByUser/${userId}?deleted=0`);  
   const appointments = await appointmentsResponse.json();
 
-  const sheltersResponse = await fetch(`http://localhost:5292/api/Shelters`);
+  const sheltersResponse = await fetch(`http://localhost:8080/api/Shelters`);
   const shelters = await sheltersResponse.json();
 
   appointments.forEach(appointment => {
@@ -151,7 +151,7 @@ async function displayAppointments(userId) {
 
 async function deleteAppointment(appointmentId) {
   try {
-    const response = await fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+    const response = await fetch(`http://localhost:8080/api/Appointments/${appointmentId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"

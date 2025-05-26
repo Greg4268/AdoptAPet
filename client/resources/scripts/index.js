@@ -1,4 +1,4 @@
-const petsURL = "http://localhost:5292/api/Pets";
+const petsURL = "http://localhost:8080/api/Pets";
 // const imageURL = "https://dog.ceo/api/breeds/image/random";
 let allPets = [];
 

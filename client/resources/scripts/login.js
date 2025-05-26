@@ -23,7 +23,7 @@ function loginUser() {
   }
 
   fetch(
-    `http://localhost:5292/api/UserAccounts/by-credentials?email=${encodeURIComponent(
+    `http://localhost:8080/api/UserAccounts/by-credentials?email=${encodeURIComponent(
       userEmail
     )}&password=${encodeURIComponent(userPassword)}`,
     {
@@ -71,7 +71,7 @@ function loginShelter() {
   }
 
   fetch(
-    `http://localhost:5292/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+    `http://localhost:8080/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
     {
       method: "GET",
       headers: {
