@@ -6,18 +6,18 @@ namespace api.Repository
 {
     public class AdoptionFormRepository : IAdoptionFormRepository
     {
-        private readonly GetPublicConnection cs = new();
-
-        public AdoptionFormRepository()
+        private readonly GetPublicConnection _cs;
+    
+        public AdoptionFormRepository(GetPublicConnection cs)
         {
-
+            _cs = cs;
         }
 
         // Method to retrieve all adoption forms from the database
         public List<AdoptionForm> GetAllAdoptionForms()
         {
             List<AdoptionForm> forms = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"AdoptionForms\"";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -39,7 +39,7 @@ namespace api.Repository
 
         public void SaveToDB(AdoptionForm form)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""AdoptionForms"" (
                 ""UserId"", ""FormDate"", ""Approved"", ""Deleted"") 
@@ -57,7 +57,7 @@ namespace api.Repository
         // Method to retrieve a specific adoption Form by ID
         public AdoptionForm GetAdoptionFormById(int formId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"AdoptionForms\" WHERE \"FormId\" = @FormId";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -80,7 +80,7 @@ namespace api.Repository
 
         public void UpdateToDB(AdoptionForm form)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"UPDATE ""AdoptionForms"" 
                 SET ""FormId"" = @FormId, 
@@ -100,7 +100,7 @@ namespace api.Repository
 
         public void DeleteAdoptionForm(AdoptionForm value)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand();

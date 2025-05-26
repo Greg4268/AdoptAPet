@@ -6,12 +6,17 @@ namespace api.Repository
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-        private readonly GetPublicConnection cs = new();
+        private readonly GetPublicConnection _cs;
+    
+        public AppointmentRepository(GetPublicConnection cs)
+        {
+            _cs = cs;
+        }
         
         public List<Appointment> GetAllAppointments()
         {
             List<Appointment> appointments = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Appointment\"";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -34,7 +39,7 @@ namespace api.Repository
         // Method to save the appointment to the database
         public void SaveToDB(Appointment app)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Appointment"" (
                 ""AppointmentId"", ""AppointmentDate"", ""UserId"", ""PetProfileId"", ""Deleted"") 
@@ -52,7 +57,7 @@ namespace api.Repository
         // Method to update the appointment in the database
         public void UpdateToDB(Appointment app)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = @"UPDATE ""Appointment"" 
                 SET ""AppointmentDate"" = @AppointmentDate, 
@@ -71,7 +76,7 @@ namespace api.Repository
 
         public Appointment GetAppointmentById(int appointmentId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string query = "SELECT * FROM \"Appointment\" WHERE \"AppointmentId\" = @AppointmentId AND \"Deleted\" = false";
             using var cmd = new NpgsqlCommand(query, con);
@@ -94,7 +99,7 @@ namespace api.Repository
         public List<Appointment> GetAppointmentsByUserId(int userId)
         {
             List<Appointment> appointments = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string query = "SELECT * FROM \"Appointment\" WHERE \"UserId\" = @UserId AND \"Deleted\" = false";
 
@@ -120,7 +125,7 @@ namespace api.Repository
         // method to delete appt
         public void DeleteAppointment(Appointment app)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand();
@@ -135,7 +140,7 @@ namespace api.Repository
         public List<Appointment> GetAppointmentByPet(int petId)
         {
             List<Appointment> appointments = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string query = @"SELECT ""AppointmentId"", ""AppointmentDate"", ""UserId"", ""PetProfileId"", ""Deleted"" 
                          FROM ""Appointment"" 

@@ -6,11 +6,16 @@ namespace api.Repository
 {
     public class UserAccountsRepository : IUserAccountsRepository
     {
-        private readonly GetPublicConnection cs = new();
+        private readonly GetPublicConnection _cs;
+    
+        public UserAccountsRepository(GetPublicConnection cs)
+        {
+            _cs = cs;
+        }
         public List<UserAccounts> GetAllUsers()
         {
             List<UserAccounts> myUsers = new();
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"UserAccounts\"";
             using var cmd = new NpgsqlCommand(stm, con);
@@ -38,7 +43,7 @@ namespace api.Repository
 
         public void SaveToDB(UserAccounts user)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             string stm = @"INSERT INTO ""UserAccounts"" (
@@ -67,7 +72,7 @@ namespace api.Repository
 
         public void UpdateToDB(UserAccounts user)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             string stm = @"UPDATE ""UserAccounts"" 
@@ -87,7 +92,7 @@ namespace api.Repository
 
         public UserAccounts GetUserById(string email, string password)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             try
             {
                 con.Open();
@@ -125,7 +130,7 @@ namespace api.Repository
 
         public UserAccounts GetUserByIdd(int userId)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             try
             {
                 con.Open();
@@ -161,7 +166,7 @@ namespace api.Repository
 
         public void DeleteUser(int userId, bool Deleted)
         {
-            using var con = new NpgsqlConnection(cs.cs);
+            using var con = new NpgsqlConnection(_cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand("UPDATE \"UserAccounts\" SET \"Deleted\" = @Deleted WHERE \"UserId\" = @UserId", con);
