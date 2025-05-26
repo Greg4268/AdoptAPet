@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -15,39 +16,46 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class AdoptionFormsController : ControllerBase
     {
+        private readonly IAdoptionFormRepository _repository;
+
+        public AdoptionFormsController(IAdoptionFormRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/AdoptionForm
         [HttpGet]
         public List<AdoptionForm> GetAdoptionForms()
         {
-            return AdoptionForm.GetAllAdoptionForms();
+            return _repository.GetAllAdoptionForms();
         }
 
         // GET: api/AdoptionForm/5
         [HttpGet("{id}", Name = "GetAdoptionForm")]
         public AdoptionForm GetAdoptionForm(int id)
         {
-            return AdoptionForm.GetAdoptionFormById(id);
+            return _repository.GetAdoptionFormById(id);
         }
 
         // POST: api/AdoptionForm
         [HttpPost]
         public void Post([FromBody] AdoptionForm value)
         {
-            value.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/AdoptionForm/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] AdoptionForm value)
         {
-            value.UpdateToDB();
+            _repository.UpdateToDB(value);
         }
 
         // DELETE: api/AdoptionForm/5
         [HttpDelete("{id}")]
         public void Delete(int id, [FromBody] AdoptionForm value)
         {
-            value.DeleteAdoptionForm(value);
+            _repository.DeleteAdoptionForm(value);
         }
     }
 }

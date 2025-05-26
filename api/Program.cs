@@ -1,9 +1,18 @@
+using api.Models;
+using api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IAdoptionFormRepository, AdoptionFormRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IFavoritedPetRepository, FavoritedPetRepository>();
+builder.Services.AddScoped<IPetsRepository, PetsRepository>();
+builder.Services.AddScoped<IShelterRepository, SheltersRepository>();
+builder.Services.AddScoped<IUserAccountsRepository, UserAccountsRepository>();
 
 builder.Services.AddCors(options =>
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,17 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class FavoriteController : ControllerBase
     {
+        private readonly IFavoritedPetRepository _repository;
+        public FavoriteController(IFavoritedPetRepository repository)
+        {
+            _repository = repository;
+        }
+        
         // GET: api/Favorite
         [HttpGet]
         public List<Pets> GetFavorites(int user)
         {
-            return FavoritedPet.GetFavoritePets(user);
+            return _repository.GetFavoritePets(user);
         }
 
         // GET: api/Favorite/5
@@ -40,7 +47,7 @@ namespace api.Controllers
         {
             try
             {
-                FavoritedPet.FavoritePet(user, pet);  // Assume this toggles the favorite status
+                _repository.FavoritePet(user, pet);  // Assume this toggles the favorite status
                 return Ok(new { Message = "Favorite status toggled successfully." });
             }
             catch (Exception ex)
@@ -53,7 +60,7 @@ namespace api.Controllers
         [HttpDelete("{user}, {pet}")]
         public void StraightDelete(int user, int pet)
         {
-            FavoritedPet.UpdateUnfavorite(user, pet);
+            _repository.UpdateUnfavorite(user, pet);
         }
     }
 }

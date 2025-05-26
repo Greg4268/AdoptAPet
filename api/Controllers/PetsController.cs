@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,44 +15,46 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class PetsController : ControllerBase
     {
+        private readonly IPetsRepository _repository;
+
+        public PetsController(IPetsRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/Pets
         [HttpGet]
         public List<Pets> GetPets()
         {
-            return Pets.GetAllPets();
+            return _repository.GetAllPets();
         }
 
         // GET: api/Pets/5
         [HttpGet("{id}", Name = "GetPet")]
         public Pets GetPet(int id)
         {
-            return Pets.GetPetById(id);
+            return _repository.GetPetById(id);
         }
 
         // POST: api/Pets
         [HttpPost]
         public void Post([FromBody] Pets value)
         {
-            value.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/Pets/5
         [HttpPut("{petId}")]
         public void Put(int petId, [FromBody] Pets value)
         {
-            value.PetProfileId = petId;
-            value.UpdateToDB();
+            _repository.UpdateToDB(value);
         }
 
         // DELETE: api/Pets/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Pets.DeletePet(id);
+            _repository.DeletePet(id);
         }
-    }
-
-    internal class PetsContext
-    {
     }
 }

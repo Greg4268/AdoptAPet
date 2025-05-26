@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -16,25 +17,32 @@ namespace api.Controllers
     [EnableCors("OpenPolicy")]
     public class SheltersController : ControllerBase
     {
+        private readonly IShelterRepository _repository;
+
+        public SheltersController(IShelterRepository repository)
+        {
+            _repository = repository;
+        }
+
         // GET: api/Shelters
         [HttpGet]
         public List<Shelters> GetShelters()
         {
-            return Shelters.GetAllShelters();
+            return _repository.GetAllShelters();
         }
 
         // GET: api/Shelters/5
         [HttpGet("{id}", Name = "GetShelter")]
         public Shelters GetShelter(int id)
         {
-            return Shelters.GetShelterById(id);
+            return _repository.GetShelterById(id);
         }
 
         // GET: api/Shelters/5/Pets
         [HttpGet("{shelterId}/Pets")]
         public ActionResult<List<Pets>> GetPetsByShelterId(int shelterId)
         {
-            var pets = Shelters.GetPetsByShelter(shelterId);
+            var pets = _repository.GetPetsByShelter(shelterId);
             if (pets == null || pets.Count == 0)
             {
                 return NotFound("No pets found for this shelter.");
@@ -49,7 +57,7 @@ namespace api.Controllers
             {
                 return BadRequest("Email and password are required.");
             }
-            var user = Shelters.GetUserLogin(email, password);
+            var user = _repository.GetUserLogin(email, password);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -59,20 +67,20 @@ namespace api.Controllers
         [HttpPost]
         public void Post([FromBody] Shelters value)
         {
-            value.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/Shelters/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Shelters value)
         {
-            value.UpdateToDB();
+            _repository.UpdateToDB(value);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, bool Approved)
         {
-            new Shelters().ApprovalOfShelter(id, Approved);
+            _repository.ApprovalOfShelter(id, Approved);
             return NoContent();
 
         }

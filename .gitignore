@@ -27,3 +27,5 @@ api/obj/Debug/net7.0/api.GeneratedMSBuildEditorConfig.editorconfig
 .DS_Store
 .env
 .appsettings.json
+.vscode
+.vscode/
