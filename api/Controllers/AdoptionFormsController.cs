@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +20,14 @@ namespace api.Controllers
         [HttpGet]
         public List<AdoptionForm> GetAdoptionForms()
         {
-            return AdoptionForm.GetAllAdoptionForms();
+            return AdoptionFormRepository.GetAllAdoptionForms();
         }
 
         // GET: api/AdoptionForm/5
         [HttpGet("{id}", Name = "GetAdoptionForm")]
         public AdoptionForm GetAdoptionForm(int id)
         {
-            return AdoptionForm.GetAdoptionFormById(id);
+            return AdoptionFormRepository.GetAdoptionFormById(id);
         }
 
         // POST: api/AdoptionForm

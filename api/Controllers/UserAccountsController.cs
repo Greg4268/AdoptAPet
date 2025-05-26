@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,14 @@ namespace api.Controllers
         [HttpGet]
         public ActionResult<List<UserAccounts>> GetUserAccounts()
         {
-            return Ok(UserAccounts.GetAllUsers());
+            return Ok(UserAccountsRepository.GetAllUsers());
         }
 
         // GET: api/UserAccounts/by-id/5
         [HttpGet("by-id/{UserId:int}", Name = "GetUserById")]
         public ActionResult<UserAccounts> GetUserById(int UserId)
         {
-            var user = UserAccounts.GetUserByIdd(UserId);
+            var user = UserAccountsRepository.GetUserByIdd(UserId);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -41,7 +42,7 @@ namespace api.Controllers
             {
                 return BadRequest("Email and password are required.");
             }
-            var user = UserAccounts.GetUserById(email, password);
+            var user = UserAccountsRepository.GetUserById(email, password);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -71,7 +72,7 @@ namespace api.Controllers
         {
             try
             {
-                new UserAccounts().DeleteUser(userId, deleted);
+                new UserAccountsRepository().DeleteUser(userId, deleted);
                 return Ok(new { success = true, message = "User deletion status toggled." });
             }
             catch (MySqlException sqlEx)

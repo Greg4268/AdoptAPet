@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,14 @@ namespace api.Controllers
         [HttpGet]
         public List<Pets> GetPets()
         {
-            return Pets.GetAllPets();
+            return PetsRepository.GetAllPets();
         }
 
         // GET: api/Pets/5
         [HttpGet("{id}", Name = "GetPet")]
         public Pets GetPet(int id)
         {
-            return Pets.GetPetById(id);
+            return PetsRepository.GetPetById(id);
         }
 
         // POST: api/Pets
@@ -47,7 +48,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            Pets.DeletePet(id);
+            PetsRepository.DeletePet(id);
         }
     }
 

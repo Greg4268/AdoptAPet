@@ -52,6 +52,7 @@ function submitForm(event) {
       deleted: false,
       Address: "N/A",
       YardSize: 0,
+      HasForm: false,
       Fenced: false,
       AccountType: "adopter",
     };

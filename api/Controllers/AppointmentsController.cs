@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -20,28 +21,28 @@ namespace api.Controllers
         [HttpGet]
         public List<Appointment> GetAppointment()
         {
-            return Appointment.GetAllAppointments();
+            return AppointmentRepository.GetAllAppointments();
         }
 
         // GET: api/Appointment/5
         [HttpGet("{id}", Name = "GetAppointment")]
         public Appointment GetAppointment(int id)
         {
-            return Appointment.GetAppointmentById(id);
+            return AppointmentRepository.GetAppointmentById(id);
         }
 
         // GET: api/Appointment/Pet/5
         [HttpGet("ByUser/{user}")]
         public List<Appointment> GetAppointmentsByUser(int user)
         {
-            return Appointment.GetAppointmentsByUserId(user);
+            return AppointmentRepository.GetAppointmentsByUserId(user);
         }
 
         // GET: api/Appointment/Pet/5
         [HttpGet("ByPet/{pet}")]
         public List<Appointment> GetAppointmentsByPet(int pet)
         {
-            return Appointment.GetAppointmentByPet(pet);
+            return AppointmentRepository.GetAppointmentByPet(pet);
         }
 
         // POST: api/Appointment

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.Repository;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -20,21 +21,21 @@ namespace api.Controllers
         [HttpGet]
         public List<Shelters> GetShelters()
         {
-            return Shelters.GetAllShelters();
+            return SheltersRepository.GetAllShelters();
         }
 
         // GET: api/Shelters/5
         [HttpGet("{id}", Name = "GetShelter")]
         public Shelters GetShelter(int id)
         {
-            return Shelters.GetShelterById(id);
+            return SheltersRepository.GetShelterById(id);
         }
 
         // GET: api/Shelters/5/Pets
         [HttpGet("{shelterId}/Pets")]
         public ActionResult<List<Pets>> GetPetsByShelterId(int shelterId)
         {
-            var pets = Shelters.GetPetsByShelter(shelterId);
+            var pets = SheltersRepository.GetPetsByShelter(shelterId);
             if (pets == null || pets.Count == 0)
             {
                 return NotFound("No pets found for this shelter.");
@@ -49,7 +50,7 @@ namespace api.Controllers
             {
                 return BadRequest("Email and password are required.");
             }
-            var user = Shelters.GetUserLogin(email, password);
+            var user = SheltersRepository.GetUserLogin(email, password);
             if (user == null) return NotFound();
             return Ok(user);
         }
@@ -72,7 +73,7 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, bool Approved)
         {
-            new Shelters().ApprovalOfShelter(id, Approved);
+            new SheltersRepository().ApprovalOfShelter(id, Approved);
             return NoContent();
 
         }
