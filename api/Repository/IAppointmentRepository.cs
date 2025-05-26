@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 
 namespace api.Repository
@@ -9,11 +5,11 @@ namespace api.Repository
     public interface IAppointmentRepository
     {
         public List<Appointment> GetAllAppointments();
-        public void SaveToDB();
-        public void UpdateToDB();
+        public void SaveToDB(Appointment app);
+        public void UpdateToDB(Appointment app);
         public Appointment GetAppointmentById(int appointmentId);
         public List<Appointment> GetAppointmentsByUserId(int userId);
-        public void DeleteAppointment(int id);
+        public void DeleteAppointment(Appointment app);
         public List<Appointment> GetAppointmentByPet(int petId);
     }
 }

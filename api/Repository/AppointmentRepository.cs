@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using Npgsql;
 using api.Data;
@@ -10,11 +6,11 @@ namespace api.Repository
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-        // Method to retrieve all appointments from the database
+        private readonly GetPublicConnection cs = new();
+        
         public List<Appointment> GetAllAppointments()
         {
             List<Appointment> appointments = new();
-            Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Appointment\"";
@@ -36,9 +32,8 @@ namespace api.Repository
         }
 
         // Method to save the appointment to the database
-        public void SaveToDB()
+        public void SaveToDB(Appointment app)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Appointment"" (
@@ -46,18 +41,17 @@ namespace api.Repository
                 VALUES (
                 @AppointmentId, @AppointmentDate, @UserId, @PetProfileId, @Deleted)";
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
-            cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
+            cmd.Parameters.AddWithValue("@AppointmentId", app.AppointmentId);
+            cmd.Parameters.AddWithValue("@AppointmentDate", app.AppointmentDate);
+            cmd.Parameters.AddWithValue("@UserId", app.UserId);
+            cmd.Parameters.AddWithValue("@PetProfileId", app.PetProfileId);
+            cmd.Parameters.AddWithValue("@Deleted", app.Deleted);
             cmd.ExecuteNonQuery();
         }
 
         // Method to update the appointment in the database
-        public void UpdateToDB()
+        public void UpdateToDB(Appointment app)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"UPDATE ""Appointment"" 
@@ -67,18 +61,16 @@ namespace api.Repository
                     ""Deleted"" = @Deleted 
                 WHERE ""AppointmentId"" = @AppointmentId";
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
-            cmd.Parameters.AddWithValue("@AppointmentDate", AppointmentDate);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
+            cmd.Parameters.AddWithValue("@AppointmentId", app.AppointmentId);
+            cmd.Parameters.AddWithValue("@AppointmentDate", app.AppointmentDate);
+            cmd.Parameters.AddWithValue("@UserId", app.UserId);
+            cmd.Parameters.AddWithValue("@PetProfileId", app.PetProfileId);
+            cmd.Parameters.AddWithValue("@Deleted", app.Deleted);
             cmd.ExecuteNonQuery();
         }
 
-        // Method to retrieve a specific appointment by ID
         public Appointment GetAppointmentById(int appointmentId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string query = "SELECT * FROM \"Appointment\" WHERE \"AppointmentId\" = @AppointmentId AND \"Deleted\" = false";
@@ -102,7 +94,6 @@ namespace api.Repository
         public List<Appointment> GetAppointmentsByUserId(int userId)
         {
             List<Appointment> appointments = new();
-            Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string query = "SELECT * FROM \"Appointment\" WHERE \"UserId\" = @UserId AND \"Deleted\" = false";
@@ -127,18 +118,16 @@ namespace api.Repository
         }
 
         // method to delete appt
-        public void DeleteAppointment(int id)
+        public void DeleteAppointment(Appointment app)
         {
-            AppointmentId = id;
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
             using var cmd = new NpgsqlCommand();
             cmd.Connection = con;
             cmd.CommandText = "UPDATE \"Appointment\" SET \"Deleted\" = @Deleted WHERE \"AppointmentId\" = @AppointmentId";
-            cmd.Parameters.AddWithValue("@AppointmentId", AppointmentId);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
+            cmd.Parameters.AddWithValue("@AppointmentId", app.AppointmentId);
+            cmd.Parameters.AddWithValue("@Deleted", app.Deleted);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -146,7 +135,6 @@ namespace api.Repository
         public List<Appointment> GetAppointmentByPet(int petId)
         {
             List<Appointment> appointments = new();
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string query = @"SELECT ""AppointmentId"", ""AppointmentDate"", ""UserId"", ""PetProfileId"", ""Deleted"" 

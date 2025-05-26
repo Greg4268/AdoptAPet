@@ -16,7 +16,7 @@ namespace api.Controllers
     public class FavoriteController : ControllerBase
     {
         private readonly IFavoritedPetRepository _repository;
-        public FavoritedPetController(IFavoritedPetRepository repository)
+        public FavoriteController(IFavoritedPetRepository repository)
         {
             _repository = repository;
         }

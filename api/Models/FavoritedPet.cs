@@ -1,5 +1,3 @@
-using Npgsql;
-using api.Data;
 namespace api.Models
 {
     public class FavoritedPet

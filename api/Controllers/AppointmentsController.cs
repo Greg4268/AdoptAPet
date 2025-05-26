@@ -63,14 +63,14 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Appointment value)
         {
-            _repository.UpdateToDB(id, value);
+            _repository.UpdateToDB(value);
         }
 
         // DELETE: api/Appointment/5
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] Appointment value)
+        public void Delete([FromBody] Appointment value)
         {
-            _repository.DeleteAppointment(id);
+            _repository.DeleteAppointment(value);
         }
     }
 }

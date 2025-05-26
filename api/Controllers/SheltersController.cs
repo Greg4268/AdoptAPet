@@ -19,7 +19,7 @@ namespace api.Controllers
     {
         private readonly IShelterRepository _repository;
 
-        public ShelterController(IShelterRepository repository)
+        public SheltersController(IShelterRepository repository)
         {
             _repository = repository;
         }
@@ -74,7 +74,7 @@ namespace api.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Shelters value)
         {
-            _repository.UpdateToDB(id, value);
+            _repository.UpdateToDB(value);
         }
 
         [HttpDelete("{id}")]

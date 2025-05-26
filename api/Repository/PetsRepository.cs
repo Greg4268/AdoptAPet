@@ -10,10 +10,10 @@ namespace api.Repository
 {
     public class PetsRepository : IPetsRepository
     {
+        private readonly GetPublicConnection cs = new();
         public List<Pets> GetAllPets()
         {
             List<Pets> myPets = new();
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Pets\" WHERE \"Deleted\" = false";
@@ -39,9 +39,8 @@ namespace api.Repository
             return myPets;
         }
 
-        public void SaveToDB()
+        public void SaveToDB(Pets value)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Pets"" (
@@ -50,22 +49,21 @@ namespace api.Repository
                 @Age, @BirthDate, @Breed, @Name, @Species, @Deleted, @ShelterId, @ImageUrl, @FavoriteCount)";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@Age", Age);
-            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
-            cmd.Parameters.AddWithValue("@Breed", Breed);
-            cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-            cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
-            cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
+            cmd.Parameters.AddWithValue("@Age", value.Age);
+            cmd.Parameters.AddWithValue("@BirthDate", value.BirthDate);
+            cmd.Parameters.AddWithValue("@Breed", value.Breed);
+            cmd.Parameters.AddWithValue("@Name", value.Name);
+            cmd.Parameters.AddWithValue("@Species", value.Species);
+            cmd.Parameters.AddWithValue("@Deleted", value.Deleted);
+            cmd.Parameters.AddWithValue("@ShelterId", value.ShelterId);
+            cmd.Parameters.AddWithValue("@ImageUrl", value.ImageUrl);
+            cmd.Parameters.AddWithValue("@FavoriteCount", value.FavoriteCount);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
 
-        public void UpdateToDB()
+        public void UpdateToDB(Pets pet)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"UPDATE ""Pets"" 
@@ -81,23 +79,22 @@ namespace api.Repository
                 WHERE ""PetProfileId"" = @PetProfileId";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@PetProfileId", PetProfileId);
-            cmd.Parameters.AddWithValue("@Age", Age);
-            cmd.Parameters.AddWithValue("@BirthDate", BirthDate);
-            cmd.Parameters.AddWithValue("@Breed", Breed);
-            cmd.Parameters.AddWithValue("@Name", Name);
-            cmd.Parameters.AddWithValue("@Species", Species);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-            cmd.Parameters.AddWithValue("@ImageUrl", ImageUrl);
-            cmd.Parameters.AddWithValue("@FavoriteCount", FavoriteCount);
+            cmd.Parameters.AddWithValue("@PetProfileId", pet.PetProfileId);
+            cmd.Parameters.AddWithValue("@Age", pet.Age);
+            cmd.Parameters.AddWithValue("@BirthDate", pet.BirthDate);
+            cmd.Parameters.AddWithValue("@Breed", pet.Breed);
+            cmd.Parameters.AddWithValue("@Name", pet.Name);
+            cmd.Parameters.AddWithValue("@Species", pet.Species);
+            cmd.Parameters.AddWithValue("@Deleted", pet.Deleted);
+            cmd.Parameters.AddWithValue("@ShelterId", pet.ShelterId);
+            cmd.Parameters.AddWithValue("@ImageUrl", pet.ImageUrl);
+            cmd.Parameters.AddWithValue("@FavoriteCount", pet.FavoriteCount);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
 
         public void OldFavoritePet(Pets value)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -111,7 +108,6 @@ namespace api.Repository
 
         public void DeletePet(int petId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -122,7 +118,6 @@ namespace api.Repository
 
         public Pets GetPetById(int petProfileId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Pets\" WHERE \"PetProfileId\" = @PetProfileId";

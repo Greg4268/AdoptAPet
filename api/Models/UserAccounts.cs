@@ -1,6 +1,3 @@
-using Npgsql;
-using api.Data;
-using System.ComponentModel.DataAnnotations;
 namespace api.Models
 {
     public class UserAccounts

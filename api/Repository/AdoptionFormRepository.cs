@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using api.Data;
 using Npgsql;
@@ -10,12 +6,17 @@ namespace api.Repository
 {
     public class AdoptionFormRepository : IAdoptionFormRepository
     {
+        private readonly GetPublicConnection cs = new();
+
+        public AdoptionFormRepository()
+        {
+
+        }
 
         // Method to retrieve all adoption forms from the database
         public List<AdoptionForm> GetAllAdoptionForms()
         {
             List<AdoptionForm> forms = new();
-            Data.GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"AdoptionForms\"";
@@ -36,9 +37,8 @@ namespace api.Repository
             return forms;
         }
 
-        public void SaveToDB()
+        public void SaveToDB(AdoptionForm form)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""AdoptionForms"" (
@@ -47,17 +47,16 @@ namespace api.Repository
                 @UserId, @FormDate, @Approved, @Deleted)";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
-            cmd.Parameters.AddWithValue("@FormDate", FormDate);
-            cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
+            cmd.Parameters.AddWithValue("@UserId", form.UserId);
+            cmd.Parameters.AddWithValue("@FormDate", form.FormDate);
+            cmd.Parameters.AddWithValue("@Approved", form.Approved);
+            cmd.Parameters.AddWithValue("@Deleted", form.Deleted);
             cmd.ExecuteNonQuery();
         }
 
         // Method to retrieve a specific adoption Form by ID
         public AdoptionForm GetAdoptionFormById(int formId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"AdoptionForms\" WHERE \"FormId\" = @FormId";
@@ -79,9 +78,8 @@ namespace api.Repository
             return null;
         }
 
-        public void UpdateToDB()
+        public void UpdateToDB(AdoptionForm form)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"UPDATE ""AdoptionForms"" 
@@ -92,17 +90,16 @@ namespace api.Repository
                     ""Deleted"" = @Deleted";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@FormId", FormId);
-            cmd.Parameters.AddWithValue("@UserId", UserId);
-            cmd.Parameters.AddWithValue("@FormDate", FormDate);
-            cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
+            cmd.Parameters.AddWithValue("@FormId", form.FormId);
+            cmd.Parameters.AddWithValue("@UserId", form.UserId);
+            cmd.Parameters.AddWithValue("@FormDate", form.FormDate);
+            cmd.Parameters.AddWithValue("@Approved", form.Approved);
+            cmd.Parameters.AddWithValue("@Deleted", form.Deleted);
             cmd.ExecuteNonQuery();
         }
 
         public void DeleteAdoptionForm(AdoptionForm value)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 

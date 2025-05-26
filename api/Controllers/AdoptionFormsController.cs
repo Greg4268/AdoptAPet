@@ -41,14 +41,14 @@ namespace api.Controllers
         [HttpPost]
         public void Post([FromBody] AdoptionForm value)
         {
-            _repository.SaveToDB();
+            _repository.SaveToDB(value);
         }
 
         // PUT: api/AdoptionForm/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] AdoptionForm value)
         {
-            _repository.UpdateToDB();
+            _repository.UpdateToDB(value);
         }
 
         // DELETE: api/AdoptionForm/5

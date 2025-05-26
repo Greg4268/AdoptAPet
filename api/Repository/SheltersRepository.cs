@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using api.Data;
 using Npgsql;
@@ -10,10 +6,10 @@ namespace api.Repository
 {
     public class SheltersRepository : IShelterRepository
     {
+        private readonly GetPublicConnection cs = new();
         public List<Shelters> GetAllShelters()
         {
             List<Shelters> myShelters = new();
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Shelters\"";
@@ -38,9 +34,8 @@ namespace api.Repository
             return myShelters;
         }
 
-        public void SaveToDB()
+        public void SaveToDB(Shelters shelter)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = @"INSERT INTO ""Shelters"" 
@@ -49,21 +44,20 @@ namespace api.Repository
                 (@ShelterId, @ShelterUsername, @ShelterPassword, @Address, @HoursOfOperation, @Deleted, @Email, @Approved, @AccountType)";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-            cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
-            cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
-            cmd.Parameters.AddWithValue("@Address", Address);
-            cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@AccountType", AccountType);
+            cmd.Parameters.AddWithValue("@ShelterId", shelter.ShelterId);
+            cmd.Parameters.AddWithValue("@ShelterUsername", shelter.ShelterUsername);
+            cmd.Parameters.AddWithValue("@ShelterPassword", shelter.ShelterPassword);
+            cmd.Parameters.AddWithValue("@Address", shelter.Address);
+            cmd.Parameters.AddWithValue("@HoursOfOperation", shelter.HoursOfOperation);
+            cmd.Parameters.AddWithValue("@Deleted", shelter.Deleted);
+            cmd.Parameters.AddWithValue("@Email", shelter.Email);
+            cmd.Parameters.AddWithValue("@Approved", shelter.Approved);
+            cmd.Parameters.AddWithValue("@AccountType", shelter.AccountType);
             cmd.ExecuteNonQuery();
         }
 
-        public void UpdateToDB()
+        public void UpdateToDB(Shelters shelter)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -80,21 +74,20 @@ namespace api.Repository
                 WHERE ""ShelterId"" = @ShelterId";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@ShelterId", ShelterId);
-            cmd.Parameters.AddWithValue("@ShelterUsername", ShelterUsername);
-            cmd.Parameters.AddWithValue("@ShelterPassword", ShelterPassword);
-            cmd.Parameters.AddWithValue("@Address", Address);
-            cmd.Parameters.AddWithValue("@HoursOfOperation", HoursOfOperation);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@Approved", Approved);
-            cmd.Parameters.AddWithValue("@AccountType", AccountType);
+            cmd.Parameters.AddWithValue("@ShelterId", shelter.ShelterId);
+            cmd.Parameters.AddWithValue("@ShelterUsername", shelter.ShelterUsername);
+            cmd.Parameters.AddWithValue("@ShelterPassword", shelter.ShelterPassword);
+            cmd.Parameters.AddWithValue("@Address", shelter.Address);
+            cmd.Parameters.AddWithValue("@HoursOfOperation", shelter.HoursOfOperation);
+            cmd.Parameters.AddWithValue("@Deleted", shelter.Deleted);
+            cmd.Parameters.AddWithValue("@Email", shelter.Email);
+            cmd.Parameters.AddWithValue("@Approved", shelter.Approved);
+            cmd.Parameters.AddWithValue("@AccountType", shelter.AccountType);
             cmd.ExecuteNonQuery();
         }
 
         public Shelters GetShelterById(int shelterId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"Shelters\" WHERE \"ShelterId\" = @ShelterId";
@@ -122,7 +115,6 @@ namespace api.Repository
 
         public void ApprovalOfShelter(int shelterId, bool approved)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -135,7 +127,6 @@ namespace api.Repository
         public List<Pets> GetPetsByShelter(int shelterId)
         {
             var pets = new List<Pets>();
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -172,7 +163,6 @@ namespace api.Repository
 
         public Shelters GetUserLogin(string email, string password)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             try
             {

@@ -47,7 +47,7 @@ namespace api.Controllers
         [HttpPut("{petId}")]
         public void Put(int petId, [FromBody] Pets value)
         {
-            _repository.UpdateToDB(petId, value);
+            _repository.UpdateToDB(value);
         }
 
         // DELETE: api/Pets/5

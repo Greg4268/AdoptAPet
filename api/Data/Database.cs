@@ -1,6 +1,3 @@
-using Npgsql;
-using System;
-
 namespace api.Data
 {
     public class GetPublicConnection

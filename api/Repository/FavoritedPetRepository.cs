@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using api.Data;
 using Npgsql;
@@ -10,11 +6,12 @@ namespace api.Repository
 {
     public class FavoritedPetRepository : IFavoritedPetRepository
     {
+        private readonly GetPublicConnection cs = new();
+
         public List<Pets> GetFavoritePets(int user)
         {
             List<int> favoritePets = new();
             List<Pets> myPets = new();
-            GetPublicConnection cs = new();
 
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
@@ -61,7 +58,6 @@ namespace api.Repository
 
         public void FavoritePet(int user, int pet)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -111,7 +107,6 @@ namespace api.Repository
 
         public void UpdateUnfavorite(int userId, int petProfileId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 

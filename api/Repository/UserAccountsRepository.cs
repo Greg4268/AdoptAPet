@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using api.Data;
 using Npgsql;
@@ -10,10 +6,10 @@ namespace api.Repository
 {
     public class UserAccountsRepository : IUserAccountsRepository
     {
+        private readonly GetPublicConnection cs = new();
         public List<UserAccounts> GetAllUsers()
         {
             List<UserAccounts> myUsers = new();
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
             string stm = "SELECT * FROM \"UserAccounts\"";
@@ -40,9 +36,8 @@ namespace api.Repository
             return myUsers;
         }
 
-        public void SaveToDB()
+        public void SaveToDB(UserAccounts user)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -55,24 +50,23 @@ namespace api.Repository
             RETURNING ""UserId""";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@FirstName", FirstName);
-            cmd.Parameters.AddWithValue("@LastName", LastName);
-            cmd.Parameters.AddWithValue("@Age", Age);
-            cmd.Parameters.AddWithValue("@Email", Email);
-            cmd.Parameters.AddWithValue("@Password", Password);
-            cmd.Parameters.AddWithValue("@Deleted", Deleted);
-            cmd.Parameters.AddWithValue("@Address", Address);
-            cmd.Parameters.AddWithValue("@YardSize", YardSize);
-            cmd.Parameters.AddWithValue("@Fenced", Fenced);
-            cmd.Parameters.AddWithValue("@AccountType", AccountType);
+            cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", user.LastName);
+            cmd.Parameters.AddWithValue("@Age", user.Age);
+            cmd.Parameters.AddWithValue("@Email", user.Email);
+            cmd.Parameters.AddWithValue("@Password", user.Password);
+            cmd.Parameters.AddWithValue("@Deleted", user.Deleted);
+            cmd.Parameters.AddWithValue("@Address", user.Address);
+            cmd.Parameters.AddWithValue("@YardSize", user.YardSize);
+            cmd.Parameters.AddWithValue("@Fenced", user.Fenced);
+            cmd.Parameters.AddWithValue("@AccountType", user.AccountType);
 
             // Execute the command and get the generated UserId
-            UserId = (int)cmd.ExecuteScalar();
+            user.UserId = (int)cmd.ExecuteScalar();
         }
 
-        public void UpdateToDB(int userId)
+        public void UpdateToDB(UserAccounts user)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 
@@ -84,16 +78,15 @@ namespace api.Repository
                 WHERE ""UserId"" = @UserId";
 
             using var cmd = new NpgsqlCommand(stm, con);
-            cmd.Parameters.AddWithValue("@UserId", userId);
-            cmd.Parameters.AddWithValue("@Address", Address);
-            cmd.Parameters.AddWithValue("@YardSize", YardSize);
-            cmd.Parameters.AddWithValue("@Fenced", Fenced);
+            cmd.Parameters.AddWithValue("@UserId", user.UserId);
+            cmd.Parameters.AddWithValue("@Address", user.Address);
+            cmd.Parameters.AddWithValue("@YardSize", user.YardSize);
+            cmd.Parameters.AddWithValue("@Fenced", user.Fenced);
             cmd.ExecuteNonQuery();
         }
 
         public UserAccounts GetUserById(string email, string password)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             try
             {
@@ -132,7 +125,6 @@ namespace api.Repository
 
         public UserAccounts GetUserByIdd(int userId)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             try
             {
@@ -169,7 +161,6 @@ namespace api.Repository
 
         public void DeleteUser(int userId, bool Deleted)
         {
-            GetPublicConnection cs = new();
             using var con = new NpgsqlConnection(cs.cs);
             con.Open();
 

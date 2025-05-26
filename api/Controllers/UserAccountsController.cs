@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 using api.Repository;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
@@ -70,7 +65,7 @@ namespace api.Controllers
                 return BadRequest("Invalid user data");
             }
 
-            _repository.UpdateToDB(id, value);  // Ensure this method correctly uses the passed 'id'
+            _repository.UpdateToDB(value);  // Ensure this method correctly uses the passed 'id'
             return Ok();
         }
 

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Models;
 
 namespace api.Repository
@@ -9,8 +5,8 @@ namespace api.Repository
     public interface IShelterRepository
     {
         public List<Shelters> GetAllShelters();
-        public void SaveToDB();
-        public void UpdateToDB();
+        public void SaveToDB(Shelters shelter);
+        public void UpdateToDB(Shelters shelter);
         public Shelters GetShelterById(int shelterId);
         public void ApprovalOfShelter(int shelterId, bool approved);
         public  List<Pets> GetPetsByShelter(int shelterId);
