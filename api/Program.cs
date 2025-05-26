@@ -31,6 +31,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://0.0.0.0:{port}");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -38,12 +41,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.UseCors("OpenPolicy");
 
 app.MapControllers();
+
 
 app.Run();
