@@ -1,4 +1,4 @@
-const petsURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Pets";
+const petsURL = "https://adoptapet-production-1bb7.up.railway.app/api/pets";
 // const imageURL = "https://dog.ceo/api/breeds/image/random";
 let allPets = [];
 
