@@ -11,13 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function fetchPetDetails(petId) {
   try {
-    const petResponse = await fetch(`https://adoptapet-production-1bb7.up.railway.app:8080/api/Pets/${petId}`);
+    const petResponse = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Pets/${petId}`);
     if (!petResponse.ok) {
       throw new Error("Failed to fetch pet details");
     }
     const pet = await petResponse.json();
     const shelterResponse = await fetch(
-      `https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters/${pet.shelterId}`
+      `https://adoptapet-production-1bb7.up.railway.app/api/Shelters/${pet.shelterId}`
     );
     if (!shelterResponse.ok) {
       throw new Error("Failed to fetch shelter details");
@@ -64,7 +64,7 @@ function FavoritePet(petId) {
   console.log("User ID: ", userId);
   console.log("Pet ID: ", petId);
 
-  fetch(`https://adoptapet-production-1bb7.up.railway.app:8080/api/Favorite/${userId},${petId}`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Favorite/${userId},${petId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -144,7 +144,7 @@ function scheduleAppointment(petId, formattedDate, userId) {
   // appointmentDate = new Date(appointmentDate)
   console.log("userId: ", userId, " petId: ", petId, " appointmentDate: ", appointmentDate);
   
-  fetch(`https://adoptapet-production-1bb7.up.railway.app:8080/api/Appointments`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Appointments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,7 @@
-const shelterURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters";
-const usersURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts";
-const petsURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Pets";
-const appointmentsURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Appointments";
+const shelterURL = "https://adoptapet-production-1bb7.up.railway.app/api/Shelters";
+const usersURL = "https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts";
+const petsURL = "https://adoptapet-production-1bb7.up.railway.app/api/Pets";
+const appointmentsURL = "https://adoptapet-production-1bb7.up.railway.app/api/Appointments";
 
 $(document).ready(function () {
   $("#table1").DataTable();
