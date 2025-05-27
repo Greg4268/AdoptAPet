@@ -51,5 +51,7 @@ app.UseAuthorization();
 app.UseCors("OpenPolicy");
 app.MapControllers();
 
+app.MapGet("/", () => "Pet Adoption API is running!");
+
 Console.WriteLine($"Starting on port {port}...");
 app.Run();
