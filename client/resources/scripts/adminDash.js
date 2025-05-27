@@ -1,7 +1,7 @@
-const shelterURL = "http://localhost:8080/api/Shelters";
-const usersURL = "http://localhost:8080/api/UserAccounts";
-const petsURL = "http://localhost:8080/api/Pets";
-const appointmentsURL = "http://localhost:8080/api/Appointments";
+const shelterURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters";
+const usersURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts";
+const petsURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Pets";
+const appointmentsURL = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Appointments";
 
 $(document).ready(function () {
   $("#table1").DataTable();
@@ -163,7 +163,7 @@ function AltShelterApproval(shelterId, approved) {
   console.log("Modifying shelter approval of shelter ID: ", shelterId);
   console.log(approved)
 
-  fetch(`http://localhost:5292/api/Shelters/${shelterId}`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Shelters/${shelterId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -194,7 +194,7 @@ function AltShelterApproval(shelterId, approved) {
 function softDeleteUser(userId, deleted) {
   console.log("Toggling deletion status for user ID:", userId);
 
-  fetch(`http://localhost:5292/api/UserAccounts/${userId}/toggle-delete`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/UserAccounts/${userId}/toggle-delete`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -227,7 +227,7 @@ function softDeleteUser(userId, deleted) {
 */
 async function deleteAppointment(appointmentId) {
   try {
-    const response = await fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+    const response = await fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Appointments/${appointmentId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -245,7 +245,7 @@ async function deleteAppointment(appointmentId) {
 function softDeletePet(petProfileId, deleted) {
   console.log("Toggling deletion status for pet ID:", petProfileId);
 
-  fetch(`http://localhost:5292/api/Pets/${petProfileId}`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Pets/${petProfileId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -277,7 +277,7 @@ function softDeletePet(petProfileId, deleted) {
 function softDeleteAppointment(appointmentId, deleted) {
   console.log("Toggling deletion for appointment: ", appointmentId);
 
-  fetch(`http://localhost:5292/api/Appointments/${appointmentId}`, {
+  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Appointments/${appointmentId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-const userURL = "http://localhost:5292/api/UserAccounts";
+const userURL = "https://adoptapet-production-1bb7.up.railway.app:5292/api/UserAccounts";
 
 // document.addEventListener("DOMContentLoaded", function () {
 //   var adoptionFormButton = document.getElementById("adoptionFormButton");
@@ -51,7 +51,7 @@ async function SubmitForm() {
 
       console.log("Form Data with existing user data:", formData);
 
-      fetch(`http://localhost:8080/api/UserAccounts/${userId}`, {
+      fetch(`https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts/${userId}`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json",
@@ -86,7 +86,7 @@ async function SubmitForm() {
 async function FetchUserData(userId) {
     console.log(userId);
 
-  return fetch(`http://localhost:8080/api/UserAccounts/by-id/${userId}`, {
+  return fetch(`https://adoptapet-production-1bb7.up.railway.app:8080/api/UserAccounts/by-id/${userId}`, {
       method: 'GET',
       headers: {
           "Content-Type": 'application/json'

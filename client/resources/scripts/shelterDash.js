@@ -1,5 +1,5 @@
-const petsUrl = "http://localhost:8080/api/Pets";
-const shelterUrl = "http://localhost:8080/api/Shelters";
+const petsUrl = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Pets";
+const shelterUrl = "https://adoptapet-production-1bb7.up.railway.app:8080/api/Shelters";
 
 const userToken = localStorage.getItem("userToken");
 const tokenData = JSON.parse(userToken);
