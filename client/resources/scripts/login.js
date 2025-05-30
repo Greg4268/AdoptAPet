@@ -1,3 +1,6 @@
+import API_ENDPOINTS from "./apiConfig";
+
+
 document.addEventListener("DOMContentLoaded", function () {
   var userLoginButton = document.getElementById("loginButton");
   var shelterLoginButton = document.getElementById("loginShelterButton");
@@ -22,10 +25,7 @@ function loginUser() {
     return;
   }
 
-  fetch(
-    `https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts/by-credentials?email=${encodeURIComponent(
-      userEmail
-    )}&password=${encodeURIComponent(userPassword)}`,
+  fetch(API_ENDPOINTS.login_user + `?email=${encodeURIComponent(userEmail)}&password=${encodeURIComponent(userPassword)}`,
     {
       method: "GET",
       headers: {
@@ -70,8 +70,7 @@ function loginShelter() {
     return;
   }
 
-  fetch(
-    `https://adoptapet-production-1bb7.up.railway.app/api/Shelters/by-credentials?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+  fetch(API_ENDPOINTS.login_shelter + `?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
     {
       method: "GET",
       headers: {

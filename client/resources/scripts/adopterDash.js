@@ -1,3 +1,4 @@
+import API_ENDPOINTS from "./apiConfig";
 
 const userToken = localStorage.getItem("userToken"); // get user token at form submission 
 const tokenData = JSON.parse(userToken); // parse user token
@@ -20,7 +21,7 @@ function handleOnLoad() {
 
 async function fetchFavPets(userId) {
   try {
-    const response = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Favorite?user=${userId}`);
+    const response = await fetch(API_ENDPOINTS.fav_pet + `?user=${userId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -34,7 +35,7 @@ async function fetchFavPets(userId) {
 
 async function fetchUserInfo(userId) {
   try {
-    const response = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts/by-id/${userId}`);
+    const response = await fetch(API_ENDPOINTS.user + `/${userId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -44,10 +45,6 @@ async function fetchUserInfo(userId) {
   } catch (error) {
     console.error("Error fetching user info:", error);
   }
-}
-
-async function fetchUserAppointments(userId){
-
 }
 
 async function displayFavPets(pets) {
@@ -123,13 +120,13 @@ async function displayAppointments(userId) {
   const appointmentsBody = document.getElementById("appointmentsBody");
   appointmentsBody.innerHTML = ""; 
 
-  const petProfilesResponse = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Pets`);
+  const petProfilesResponse = await fetch(API_ENDPOINTS.pets);
   const petProfiles = await petProfilesResponse.json();
 
-  const appointmentsResponse = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Appointments/ByUser/${userId}?deleted=0`);  
+  const appointmentsResponse = await fetch(API_ENDPOINTS.appointments + `/ByUser/${userId}?deleted=0`);  
   const appointments = await appointmentsResponse.json();
 
-  const sheltersResponse = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Shelters`);
+  const sheltersResponse = await fetch(API_ENDPOINTS.shelters);
   const shelters = await sheltersResponse.json();
 
   appointments.forEach(appointment => {
@@ -151,7 +148,7 @@ async function displayAppointments(userId) {
 
 async function deleteAppointment(appointmentId) {
   try {
-    const response = await fetch(`https://adoptapet-production-1bb7.up.railway.app/api/Appointments/${appointmentId}`, {
+    const response = await fetch(API_ENDPOINTS.appointments + `/${appointmentId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
