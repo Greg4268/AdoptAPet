@@ -1,22 +1,4 @@
-const userURL = "https://adoptapet-production-1bb7.up.railway.app:5292/api/UserAccounts";
-
-// document.addEventListener("DOMContentLoaded", function () {
-//   var adoptionFormButton = document.getElementById("adoptionFormButton");
-
-//   if (adoptionFormButton) {
-//     adoptionFormButton.addEventListener("click", function (event) {
-//       event.preventDefault(); // Prevent the link from navigating immediately
-
-//       // Check if the user is logged in
-//       if (!localStorage.getItem("userToken")) {
-//         alert("Please login to complete the adoption form.");
-//         window.location.href = "./login.html"; // Redirect to the login page
-//       } else {
-//         window.location.href = "./adoptForm.html"; // Navigate to the form if logged in
-//       }
-//     });
-//   }
-// });
+import API_ENDPOINTS from "./apiConfig";
 
 async function SubmitForm() {
   const userToken = localStorage.getItem("userToken"); // get user token at form submission 
@@ -51,7 +33,7 @@ async function SubmitForm() {
 
       console.log("Form Data with existing user data:", formData);
 
-      fetch(`https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts/${userId}`, {
+      fetch(API_ENDPOINTS.user + `/${userId}`, {
           method: "PUT",
           headers: {
               "Content-Type": "application/json",
@@ -86,7 +68,7 @@ async function SubmitForm() {
 async function FetchUserData(userId) {
     console.log(userId);
 
-  return fetch(`https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts/by-id/${userId}`, {
+  return fetch(API_ENDPOINTS.user + `/${userId}`, {
       method: 'GET',
       headers: {
           "Content-Type": 'application/json'

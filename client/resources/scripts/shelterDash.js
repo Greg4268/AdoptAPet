@@ -1,5 +1,5 @@
-const petsUrl = "https://adoptapet-production-1bb7.up.railway.app/api/Pets";
-const shelterUrl = "https://adoptapet-production-1bb7.up.railway.app/api/Shelters";
+import API_ENDPOINTS from "./apiConfig";
+
 
 const userToken = localStorage.getItem("userToken");
 const tokenData = JSON.parse(userToken);
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function fetchAndDisplayPets(shelterId) 
 {
-  fetch(`${shelterUrl}/${shelterId}/Pets`, {
+  fetch(API_ENDPOINTS.shelters + `${shelterUrl}/${shelterId}/Pets`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${userToken}`,
@@ -73,7 +73,7 @@ function fetchAndDisplayPets(shelterId)
 
 function editPet(petId) 
 {
-  fetch(`${petsUrl}/${petId}`)
+  fetch(API_ENDPOINTS.pets + `${petsUrl}/${petId}`)
     .then((response) => response.json())
     .then((pet) => {
       let newName = prompt("Enter new name for the pet:", pet.Name);
@@ -105,7 +105,7 @@ function editPet(petId)
 
 function updatePet(petId, updatedPet) 
 {
-  fetch(`${petsUrl}/${petId}`, {
+  fetch(API_ENDPOINTS.pets + `${petsUrl}/${petId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -186,7 +186,7 @@ async function addPet(event) {
   };
   console.log(JSON.stringify(pet));
 
-  const response =  await fetch(petsUrl, {
+  const response =  await fetch(API_ENDPOINTS.pets, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

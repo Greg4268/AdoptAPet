@@ -1,14 +1,14 @@
-const petsURL = "https://adoptapet-production-1bb7.up.railway.app/api/pets";
-// const imageURL = "https://dog.ceo/api/breeds/image/random";
+import API_ENDPOINTS from "./apiConfig";
+
 let allPets = [];
 
 function handleOnLoad() {
-  fetchPets(petsURL);
+  fetchPets();
 }
 
-async function fetchPets(petsURL) {
+async function fetchPets() {
   try {
-    const response = await fetch(petsURL);
+    const response = await fetch(API_ENDPOINTS.pets);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -88,7 +88,4 @@ document.getElementById("clearSearch").addEventListener("click", function () {
   document.getElementById("searchInput").value = ""; 
   displayPets(allPets); // Display all pets
 });
-
-// -------------------------------------------------
-
 

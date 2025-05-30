@@ -1,7 +1,4 @@
-const shelterURL = "https://adoptapet-production-1bb7.up.railway.app/api/Shelters";
-const usersURL = "https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts";
-const petsURL = "https://adoptapet-production-1bb7.up.railway.app/api/Pets";
-const appointmentsURL = "https://adoptapet-production-1bb7.up.railway.app/api/Appointments";
+import API_ENDPOINTS from "./apiConfig";
 
 $(document).ready(function () {
   $("#table1").DataTable();
@@ -12,15 +9,15 @@ $(document).ready(function () {
 });
 
 function handleOnLoad() {
-  fetchShelters(shelterURL);
-  fetchUsers(usersURL);
-  fetchPets(petsURL);
-  fetchAppointments(appointmentsURL);
+  fetchShelters();
+  fetchUsers();
+  fetchPets();
+  fetchAppointments();
 }
 
-async function fetchShelters(shelterURL) {
+async function fetchShelters() {
   try {
-    const response = await fetch(shelterURL);
+    const response = await fetch(API_ENDPOINTS.shelters);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -32,9 +29,9 @@ async function fetchShelters(shelterURL) {
   }
 }
 
-async function fetchUsers(usersURL) {
+async function fetchUsers() {
   try {
-    const response = await fetch(usersURL);
+    const response = await fetch(API_ENDPOINTS.user);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -46,9 +43,9 @@ async function fetchUsers(usersURL) {
   }
 }
 
-async function fetchPets(petsURL) {
+async function fetchPets() {
   try {
-    const response = await fetch(petsURL);
+    const response = await fetch(API_ENDPOINTS.pets);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -60,9 +57,9 @@ async function fetchPets(petsURL) {
   }
 }
 
-async function fetchAppointments(appointmentsURL) {
+async function fetchAppointments() {
   try {
-    const response = await fetch(appointmentsURL);
+    const response = await fetch(API_ENDPOINTS.appointments);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -163,7 +160,7 @@ function AltShelterApproval(shelterId, approved) {
   console.log("Modifying shelter approval of shelter ID: ", shelterId);
   console.log(approved)
 
-  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Shelters/${shelterId}`, {
+  fetch(API_ENDPOINTS.shelters + `/${shelterId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -183,7 +180,7 @@ function AltShelterApproval(shelterId, approved) {
     .then((data) => {
       console.log("Deletion status toggled successfully", data);
       // Call fetchUsers to update the table with the current information
-      fetchUsers(usersURL);
+      fetchUsers();
     })
     .catch((error) => {
       console.error("Error toggling deletion status:", error);
@@ -227,7 +224,7 @@ function softDeleteUser(userId, deleted) {
 */
 async function deleteAppointment(appointmentId) {
   try {
-    const response = await fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Appointments/${appointmentId}`, {
+    const response = await fetch(API_ENDPOINTS.appointments + `/${appointmentId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -245,7 +242,7 @@ async function deleteAppointment(appointmentId) {
 function softDeletePet(petProfileId, deleted) {
   console.log("Toggling deletion status for pet ID:", petProfileId);
 
-  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Pets/${petProfileId}`, {
+  fetch(API_ENDPOINTS.pets + `/${petProfileId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -277,7 +274,7 @@ function softDeletePet(petProfileId, deleted) {
 function softDeleteAppointment(appointmentId, deleted) {
   console.log("Toggling deletion for appointment: ", appointmentId);
 
-  fetch(`https://adoptapet-production-1bb7.up.railway.app:5292/api/Appointments/${appointmentId}`, {
+  fetch(API_ENDPOINTS.appointments + `/${appointmentId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -299,7 +296,7 @@ function softDeleteAppointment(appointmentId, deleted) {
     })
     .then((data) => {
       console.log("Deletion status toggled successfully", data);
-      fetchUsers(usersURL);
+      fetchUsers();
     })
     .catch((error) => {
       console.error("Error toggling deletion status:", error);

@@ -1,5 +1,4 @@
-const profURL = "https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts";
-const shelterURL = "https://adoptapet-production-1bb7.up.railway.app/api/Shelters";
+import API_ENDPOINTS from "./apiConfig";
 
 function updateFormFields() {
   console.log("Updating form fields displayed");
@@ -77,7 +76,7 @@ function submitForm(event) {
 
 function registerAdopter(formData) {
   //alert("register adopter called")
-  fetch("https://adoptapet-production-1bb7.up.railway.app/api/UserAccounts", {
+  fetch(API_ENDPOINTS.user, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -124,7 +123,7 @@ function registerAdopter(formData) {
 }
 
 function registerShelter(formData) {
-  fetch("https://adoptapet-production-1bb7.up.railway.app/api/shelters", {
+  fetch(API_ENDPOINTS.user, {
     method: "POST",
     headers: {
       Accept: "application/json",
