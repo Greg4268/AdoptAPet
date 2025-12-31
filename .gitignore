@@ -29,3 +29,9 @@ api/obj/Debug/net7.0/api.GeneratedMSBuildEditorConfig.editorconfig
 .appsettings.json
 .vscode
 .vscode/
+
+*.sln
+api/appsettings.Development.json
+api/bin/
+api/obj/
+api/Properties/
